@@ -1,0 +1,208 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: left;
+  scrollbar-width: thin;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+section#filter {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  width: 20vw;
+  height: 100%;
+  padding: 20px;
+}
+section#filter .filter-card {
+  margin-right: 30px;
+}
+section#filter .filter-card .artifact-type {
+  margin-top: 10px;
+}
+section#filter .filter-card .artifact-type:first-of-type {
+  margin-top: 0;
+}
+section#filter .dropdown.active {
+  color: lightgreen;
+  font-weight: 700;
+}
+section#filter .dropdown:hover {
+  background-color: #313131;
+}
+section#filter .dropdown {
+  cursor: pointer;
+  border: 1px solid #141414;
+  width: 300px;
+  background-color: #222222;
+}
+section#filter .dropdown p {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+section#filter .dropdown-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #141414;
+  position: absolute;
+  width: 300px;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #222222;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+section#filter .dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+section#filter .dropdown-menu li:hover {
+  background-color: #313131;
+}
+
+section#results .highlighted {
+  color: lightgreen;
+}
+
+section#results {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 20vw;
+  padding: 20px;
+  overflow-y: scroll;
+  width: 80vw;
+  height: 100vh;
+  scrollbar-width: thin;
+}
+section#results .rarity-4 {
+  border-bottom: 3px solid purple;
+}
+section#results .rarity-5 {
+  border-bottom: 3px solid orange;
+}
+section#results .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  padding: 0 4px;
+}
+section#results .column {
+  flex: 33%;
+  max-width: 33%;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 1560px) {
+  section#results .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+@media screen and (max-width: 1060px) {
+  section#results .column {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+section#results h3 {
+  margin-bottom: 20px;
+}
+section#results div.character-card {
+  position: relative;
+  width: 400px;
+  background-color: #222222;
+  margin-bottom: 30px;
+  box-shadow: 1px 3px 5px #191919;
+  border-radius: 5px;
+}
+section#results div.character-card div.build-header {
+  border-radius: 5px;
+  height: 100px;
+  width: 410px;
+  position: relative;
+  right: 5px;
+  background-color: #1f1f1f;
+}
+section#results div.character-card div.build-header img.character-portrait {
+  height: 103px;
+  width: 103px;
+  border-radius: 10px;
+  margin-left: 10px;
+  padding: 0;
+}
+section#results div.character-card div.build-header img.character-element {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -15px;
+  left: -20px;
+}
+section#results div.character-card div.build-header div.character-title {
+  position: absolute;
+  left: 130px;
+  top: 15px;
+}
+section#results div.character-card div.build-header div.character-title h3.build-name {
+  margin: 0;
+  color: #BBB;
+  font-weight: 700;
+}
+section#results div.character-card div.build-content {
+  padding: 20px;
+}
+section#results div.character-card div.build-content div.constellation {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  opacity: 0.05;
+}
+section#results div.character-card div.build-content div.constellation img {
+  width: 100%;
+  height: 100%;
+}
+section#results div.character-card div.build-content div.artifact-set {
+  margin-bottom: 10px;
+}
+section#results div.character-card div.build-content div.artifact-types {
+  float: left;
+  width: 50%;
+  margin-bottom: 10px;
+}
+section#results div.character-card div.build-content div.artifact-types div.artifact-type {
+  margin-bottom: 5px;
+}
+section#results div.character-card div.build-content div.substats {
+  float: left;
+  width: 50%;
+}
+section#results div.character-card div.build-content div.er-requirements {
+  margin-bottom: 10px;
+  clear: both;
+}
+section#results div.character-card div.build-content p {
+  font-size: 0.9em;
+  color: #BBB;
+}
+section#results div.character-card div.build-content li {
+  font-weight: 700;
+}
+
+/*# sourceMappingURL=App.css.map */

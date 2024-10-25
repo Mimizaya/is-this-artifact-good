@@ -1,0 +1,13 @@
+﻿character_name;build_name;artifact_set;artifact_set_2;sands;sands_2;goblet;goblet_2;circlet;circlet_2;substats;substats_2;substats_3;substats_4;substats_5;substats_6;er_min;er_max;note
+Xilonen;Resistance Shredder Support;Scroll of the Hero of Cinder City;;DEF%;Energy Recharge;DEF%;;DEF%;Healing Bonus;DEF%;Energy Recharge;DEF;CRIT DMG;CRIT Rate;;170;200;
+Neuvillette;Main DPS;Marechaussee Hunter;;HP%;;Hydro DMG Bonus;HP%;CRIT Rate;CRIT DMG;HP%;CRIT Rate;CRIT DMG;Energy Recharge;HP;Elemental Mastery;140;160;
+Furina;Off-Field DPS;Golden Troupe;;HP%;Energy Recharge;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;CRIT Rate;CRIT DMG;HP%;Energy Recharge;HP;Elemental Mastery;150;210;
+Furina;Buffer Support;Tenacity of the Millelith;;Energy Recharge;HP%;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;Energy Recharge;HP%;CRIT Rate;CRIT DMG;HP;;;;
+Furina;Healer;Ocean-Hued Clam;;HP%;Energy Recharge;HP%;;Healing Bonus;HP%;HP%;Energy Recharge;HP;;;;150;210;
+Navia;Main DPS;Nighttime Whispers;;ATK%;;Geo DMG Bonus;;CRIT DMG;CRIT Rate;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;;;120;160;
+Navia;Main DPS;Marechaussee Hunter;;ATK%;;Geo DMG Bonus;;CRIT DMG;;CRIT DMG;ATK%;Energy Recharge;CRIT Rate;;;120;160;with Furina
+Faruzan;Buffer Support;Noblesse Oblige;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;;Energy Recharge;CRIT Rate;;;;;220;260;prioritize ER over main stats
+Faruzan;Swirl Support;Viridescent Venerer;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;;Energy Recharge;CRIT Rate;Elemental Mastery;;;;220;260;prioritize ER over main stats
+Faruzan;C6 Support;Tenacity of the Millelith;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;Energy Recharge;CRIT Rate;CRIT DMG;;;;175;200;
+Chiori;Off-Field DPS;Golden Troupe;;DEF%;;Geo DMG Bonus;DEF%;CRIT Rate;CRIT DMG;CRIT Rate;CRIT DMG;DEF%;ATK%;;;n/a;n/a;do not run triple DEF%
+Chiori;Off-Field DPS;Husk of Opulent Dreams;;DEF%;;Geo DMG Bonus;DEF%;CRIT Rate;CRIT DMG;CRIT Rate;CRIT DMG;DEF%;ATK%;;;n/a;n/a;Alternative build, highly preferable with C6, do not run triple DEF%
