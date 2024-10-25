@@ -1,6 +1,4 @@
 export default function CharacterCard({
-  characterRarity,
-  characterElement,
   build,
   selectedCharacter,
   selectedArtifactSet,
@@ -9,10 +7,11 @@ export default function CharacterCard({
   selectedCirclet,
   selectedSubstats,
 }) {
+	
 	return (
 		<div className="character-card">
-      <div className={`rarity-${characterRarity} build-header`}>
-				<img className="character-element" src={"/images/elements/" + characterElement + ".webp"} alt={characterElement}/>
+      <div className={`rarity-${build.rarity} build-header`}>
+				<img className="character-element" src={"/images/elements/" + build.element + ".webp"} alt={build.element}/>
         <img className="character-portrait" src={"/images/characters/" + build.character_name + ".webp"} alt={build.character_name}/>
         <div className="character-title">
         	<h2 className={selectedCharacter.includes(build.character_name) ? 'highlighted' : ''}>{build.character_name}</h2>
@@ -22,13 +21,18 @@ export default function CharacterCard({
 
       <div className="build-content">
       	<div className="constellation">
-      		<img src={"/images/constellations/" + build.character_name +"-Constellation.webp"}/>
+      		<img src={"/images/constellations/" + build.character_name +" Constellation.webp"}/>
       	</div>
 	      <div className="artifact-set">
-	      <p>Artifact Set</p>
+	      <p>Artifact Set{build.artifact_logic === 'AND' && 's'}</p>
 	        <ul>
-	          {build.artifact_set && <li className={selectedArtifactSet.includes(build.artifact_set) ? 'highlighted' : ''}>{build.artifact_set}</li>}
-	          {build.artifact_set_2 && <li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>{build.artifact_set_2}</li>}
+	          {build.artifact_set && 
+	          <li className={selectedArtifactSet.includes(build.artifact_set) ? 'highlighted' : ''}>
+	          	{build.artifact_set}{build.artifact_logic === 'AND' && <span className="artifact-logic-and"> x2</span>}
+	          	{build.artifact_logic === 'OR' && <span className="artifact-logic-or"> or</span>}</li>}
+	          {build.artifact_set_2 && 
+	          <li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
+	          	{build.artifact_set_2}{build.artifact_logic === 'AND' && <span className="artifact-logic-and"> x2</span>}</li>}
 	        </ul>
 	      </div>
 
@@ -54,6 +58,7 @@ export default function CharacterCard({
 		        <ul>
 		          {build.circlet && <li className={selectedCirclet.includes(build.circlet) ? 'highlighted' : ''}>{build.circlet}</li>}
 		          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{build.circlet_2}</li>}
+		          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{build.circlet_3}</li>}
 		        </ul>
 		      </div>
 	      </div>
@@ -70,7 +75,6 @@ export default function CharacterCard({
 	        </ul>
 	      </div>
 
-	      
 	      <div className="er-requirements">
 		      {build.er_min !== '' &&
 		      <>
@@ -82,7 +86,6 @@ export default function CharacterCard({
 		       </>
 		     	}
 	      </div>
-	      
 	      
 	      {build.note &&
 	      <div className="note">

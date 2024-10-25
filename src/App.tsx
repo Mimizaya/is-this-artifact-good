@@ -8,7 +8,7 @@ import Results from 'src/ui/results';
 
 export default function App() {
 
-  // Selection states
+  // Filter selection states
     const [selectedCharacter, setSelectedCharacter] = useState([]);
     const [selectedArtifactSet, setSelectedArtifactSet] = useState([]);
     const [selectedSands, setSelectedSands] = useState([]);
@@ -71,21 +71,9 @@ export default function App() {
     }
 
     const handleElementsChange = (element) => {
-      // Update selected elements and check for matches
-      setSelectedElements((prev) => {
-        const newSelectedElements = prev.includes(element) 
-          ? prev.filter((n) => n !== element) 
-          : [...prev, element];
-
-        // Check element against characters
-        const elementalMatch = characterData.filter(character => 
-          newSelectedElements.includes(character.element)
-        ).map(character => character.name); // Get character names
-
-        setSelectedCharacter(elementalMatch); // Update selected characters based on new state
-
-        return newSelectedElements; // Return the new state
-      });
+      setSelectedElements((prev) =>
+        prev.includes(element) ? prev.filter((n) => n !== element) : [...prev, element]
+      );
     };
 
   // Reset all filters
@@ -103,19 +91,19 @@ export default function App() {
     const [rawData, setRawData] = useState([]);
 
     // Increment version when updating data to invalidate storage and parse new data
-    const VERSION = '1.0';
+    const VERSION = '1.1';
 
     useEffect(() => {
       // Check localstorage data exists, and which version
       const storedData = localStorage.getItem('csvData');
       const storedVersion = localStorage.getItem('csvDataVersion');
 
-      if (storedData && storedVersion) {
+      if (storedData && storedVersion === VERSION) {
         setRawData(JSON.parse(storedData));
       } 
       else {
         // Fetch the CSV file from the public folder
-        fetch('/raw-data.csv')
+        fetch('/builds-data.csv')
           .then((response) => response.text())
           .then((text) => {
             Papa.parse(text, {

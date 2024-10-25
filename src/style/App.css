@@ -30,13 +30,38 @@ section#filter {
 section#filter .filter-card {
   margin-right: 30px;
 }
+section#filter .filter-card div.close-menu {
+  position: absolute;
+  z-index: 15;
+  right: 0;
+  top: 0;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  padding-top: 8px;
+  cursor: pointer;
+}
+section#filter .filter-card div.search-bar {
+  height: 44px;
+  width: 300px;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #222222;
+  border: 1px solid #141414;
+  position: relative;
+}
+section#filter .filter-card div.search-bar input.search-input {
+  all: unset;
+  padding: 0 10px;
+  height: 44px;
+  width: 260px;
+}
 section#filter .filter-card .artifact-type {
   margin-top: 10px;
 }
 section#filter .filter-card .artifact-type:first-of-type {
   margin-top: 0;
 }
-section#filter .dropdown.active {
+section#filter .dropdown.active p {
   color: lightgreen;
   font-weight: 700;
 }
@@ -48,6 +73,7 @@ section#filter .dropdown {
   border: 1px solid #141414;
   width: 300px;
   background-color: #222222;
+  position: relative;
 }
 section#filter .dropdown p {
   padding: 10px;
@@ -58,11 +84,12 @@ section#filter .dropdown-menu {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border: 1px solid #141414;
   position: absolute;
+  z-index: 10;
   width: 300px;
   color: rgba(255, 255, 255, 0.87);
   background-color: #222222;
+  border: 1px solid #141414;
   overflow-y: scroll;
   scrollbar-width: thin;
 }
@@ -78,6 +105,7 @@ section#filter .dropdown-menu li:hover {
 
 section#results .highlighted {
   color: lightgreen;
+  font-weight: 700 !important;
 }
 
 section#results {
@@ -121,8 +149,8 @@ section#results .column {
     max-width: 100%;
   }
 }
-section#results h3 {
-  margin-bottom: 20px;
+section#results h3.results-header {
+  margin-bottom: 30px;
 }
 section#results div.character-card {
   position: relative;
@@ -172,7 +200,8 @@ section#results div.character-card div.build-content div.constellation {
   bottom: 0;
   right: 0;
   width: 100%;
-  opacity: 0.05;
+  opacity: 0.06;
+  pointer-events: none;
 }
 section#results div.character-card div.build-content div.constellation img {
   width: 100%;
@@ -180,6 +209,13 @@ section#results div.character-card div.build-content div.constellation img {
 }
 section#results div.character-card div.build-content div.artifact-set {
   margin-bottom: 10px;
+}
+section#results div.character-card div.build-content div.artifact-set .artifact-logic-and {
+  font-weight: 400;
+}
+section#results div.character-card div.build-content div.artifact-set .artifact-logic-or {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
 }
 section#results div.character-card div.build-content div.artifact-types {
   float: left;
@@ -197,12 +233,16 @@ section#results div.character-card div.build-content div.er-requirements {
   margin-bottom: 10px;
   clear: both;
 }
+section#results div.character-card div.build-content div.note li {
+  font-size: 0.9em;
+  font-weight: 600;
+}
 section#results div.character-card div.build-content p {
   font-size: 0.9em;
   color: #BBB;
 }
 section#results div.character-card div.build-content li {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /*# sourceMappingURL=App.css.map */

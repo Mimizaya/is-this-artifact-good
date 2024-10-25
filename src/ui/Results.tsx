@@ -1,7 +1,5 @@
 import React from 'react';
 import CharacterCard from 'src/ui/charactercard'
-
-// Contains all static character data
 import { characterData } from 'src/data/character-data';
 
 export default function Results({
@@ -24,8 +22,39 @@ export default function Results({
       selectedCirclet.length === 0 &&
       selectedSubstats.length === 0
 
+  // Map static character data to builds in filteredResult
+    const enrichedResults = characterDataCSV.map(build => {
+
+      // Find the corresponding character data based on name
+      const characterInfo = characterData.find(character => character.name === build.character_name);
+
+      // If a match is found, merge the relevant data
+      return {
+        ...build,
+        element: characterInfo ? characterInfo.element : null,
+        rarity: characterInfo ? characterInfo.rarity : null,
+      };
+    });
+
+  // Sort builds by elements, then by alphabetical order
+    // Define order for elements (based on loading screen order)
+    const elementOrder = ['Pyro', 'Hydro', 'Anemo', 'Electro', 'Dendro', 'Cryo', 'Geo'];
+
+    const sortedCharacters = enrichedResults.sort((a, b) => {
+      const indexA = elementOrder.indexOf(a.element);
+      const indexB = elementOrder.indexOf(b.element);
+
+      // Sort by element order first
+      if (indexA !== indexB) {
+        return indexA - indexB;
+      }
+
+      // If elements are the same, sort by name
+      return a.character_name.localeCompare(b.character_name);
+    });
+
   // Calculate results from active filters
-    const filteredResults = characterDataCSV.filter(build => {
+    const filteredResults = sortedCharacters.filter(build => {
 
       // Check character
       const isCharacterSelected = selectedCharacter.length === 0 || 
@@ -60,6 +89,10 @@ export default function Results({
         selectedSubstats.includes(build.substats_5) ||
         selectedSubstats.includes(build.substats_6);
 
+      // Check element
+      const isElementSelected = selectedElements.length === 0 || 
+        selectedElements.includes(build.element);
+
       // Only include builds that meet the criteria for selected filters
       return (
         isCharacterSelected &&
@@ -67,36 +100,26 @@ export default function Results({
         isSandsSelected &&
         isGobletSelected &&
         isCircletSelected &&
-        isSubstatsSelected
+        isSubstatsSelected &&
+        isElementSelected
       );
     });
 
   return (
     <section id="results">
-      <h3>{
+      <h3 className="results-header">{
         noFiltersActive ? 'Showing all builds' : 
         filteredResults.length === 1 ? `Found ${filteredResults.length} build matching filters` : 
         filteredResults.length > 1 ? `Found ${filteredResults.length} builds matching filters` : 
         'No builds matching current filters'}
       </h3>
       <div className="row">
-      {filteredResults.map(build => {
-
-        // Find static data for the character in build
-        const staticCharacterData = characterData.find(
-          (char) => char.name === build.character_name
-        );
-
-        // Assign static data
-        const characterRarity = staticCharacterData?.rarity;
-        const characterElement = staticCharacterData?.element;
-
-        return (
-          <div className="column">
+      {filteredResults.map(build => (
+        <div 
+          key={build.character_name + build.name + build.artifact_set + build.artifact_set_2} 
+          className="column"
+        >
           <CharacterCard 
-            key={build.character_name + build.name + build.artifact_set}
-            characterRarity={characterRarity}
-            characterElement={characterElement}
             build={build}
             selectedCharacter={selectedCharacter}
             selectedArtifactSet={selectedArtifactSet}
@@ -105,8 +128,8 @@ export default function Results({
             selectedCirclet={selectedCirclet}
             selectedSubstats={selectedSubstats}
           />
-          </div>
-      )})}
+        </div>
+      ))}
       </div>
     </section>
   );
