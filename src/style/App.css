@@ -30,17 +30,6 @@ section#filter {
 section#filter .filter-card {
   margin-right: 30px;
 }
-section#filter .filter-card div.close-menu {
-  position: absolute;
-  z-index: 15;
-  right: 0;
-  top: 0;
-  height: 40px;
-  width: 40px;
-  text-align: center;
-  padding-top: 8px;
-  cursor: pointer;
-}
 section#filter .filter-card div.search-bar {
   height: 44px;
   width: 300px;
@@ -53,13 +42,25 @@ section#filter .filter-card div.search-bar input.search-input {
   all: unset;
   padding: 0 10px;
   height: 44px;
-  width: 260px;
+  width: 300px;
+}
+section#filter .filter-card button.clear-input {
+  height: 46px;
+  width: 46px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border: 1px solid #141414;
+  border-left: none;
 }
 section#filter .filter-card .artifact-type {
   margin-top: 10px;
 }
 section#filter .filter-card .artifact-type:first-of-type {
   margin-top: 0;
+}
+section#filter .dropdown.active {
+  width: 256px;
 }
 section#filter .dropdown.active p {
   color: lightgreen;
@@ -74,6 +75,7 @@ section#filter .dropdown {
   width: 300px;
   background-color: #222222;
   position: relative;
+  float: left;
 }
 section#filter .dropdown p {
   padding: 10px;

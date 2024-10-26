@@ -17,7 +17,19 @@ Navia;Main DPS;Nighttime Whispers;;;ATK%;;Geo DMG Bonus;;CRIT DMG;CRIT Rate;;CRI
 Navia;Furina Team DPS;Marechaussee Hunter;;;ATK%;;Geo DMG Bonus;;CRIT DMG;;;CRIT DMG;ATK%;Energy Recharge;CRIT Rate;;;120;160;with Furina
 Neuvillette;Main DPS;Marechaussee Hunter;;;HP%;;Hydro DMG Bonus;HP%;CRIT Rate;CRIT DMG;;HP%;CRIT Rate;CRIT DMG;Energy Recharge;HP;Elemental Mastery;140;160;
 Raiden Shogun;Main DPS;Emblem of Severed Fate;;;Energy Recharge;ATK%;Electro DMG Bonus;ATK%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;ATK%;;;200;250;if you have weapon, ER always better than attack
-Raiden Shogun;Hyperbloom Sub DPS;Flower of Paradise Lost;OR;Gilded Dreams;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;;;;;n/a;n/a;Flower of Paradise lost gives more damage but Gilded dreams is easier to farm if you nee deepwood memories for your dendro support
+Raiden Shogun;Hyperbloom Sub-DPS;Flower of Paradise Lost;OR;Gilded Dreams;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;;;;;n/a;n/a;Flower of Paradise lost gives more damage but Gilded dreams is easier to farm if you nee deepwood memories for your dendro support
+Venti;Swirl Sub-DPS;Viridescent Venerer;;;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;ATK;165;200;
+Venti;Crit Burst DPS;Viridescent Venerer;;;ATK%;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Elemental Mastery;Energy Recharge;;;165;200;
 Xilonen;Resistance Shredder Support;Scroll of the Hero of Cinder City;;;DEF%;Energy Recharge;DEF%;;DEF%;Healing Bonus;;DEF%;Energy Recharge;DEF;CRIT DMG;CRIT Rate;;170;200;
 Zhongli;Shielder/Buffer;Tenacity of the Millelith;;;HP%;;HP%;;HP%;;;HP%;HP;;;;;;;
 Zhongli;Shielder+;Tenacity of the Millelith;AND;Vourukasha's Glow;HP%;;HP%;;HP%;;;HP%;HP;;;;;;;
+Mualani;Main DPS;Obsidian Codex;OR;Heart of Depth;HP%;Elemental Mastery;Hydro DMG Bonus;HP%;CRIT DMG;;;CRIT DMG;HP%;Elemental Mastery;CRIT Rate;Energy Recharge;HP;n/a;n/a;do not farm heart of depth, only use it if you already have it
+Kachina;Geo Sub-DPS;Scroll of the Hero of Cinder City;;;DEF%;;Geo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;DEF%;Energy Recharge;DEF;;;;
+Thoma;Burgeon Sub-DPS;Flower of Paradise Lost;;;Energy Recharge;Elemental Mastery;Elemental Mastery;;Elemental Mastery;;;Energy Recharge;Elemental Mastery;HP%;HP;;;165;250;
+Thoma;Off-Field Support;Noblesse Oblige;;;Energy Recharge;HP%;HP%;;CRIT Rate;HP%;;Energy Recharge;CRIT Rate;HP%;HP;;;;;
+Thoma;Shielder;Emblem of Severed Fate;AND;Tenacity of the Millelith;HP%;Energy Recharge;HP%;;HP%;CRIT Rate;;Energy Recharge;CRIT Rate;HP%;HP;;;;;build for pure shielding, needs to get burst up to shield
+Layla;Shielder;Tenacity of the Millelith;;;HP%;Energy Recharge;HP%;;HP%;;;HP%;HP;Energy Recharge;CRIT Rate;;;150;220;
+Layla;Off-Field DPS;Blizzard Strayer;;;HP%;Energy Recharge;Cryo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;HP%;HP;;150;220;
+Kuki Shinobu;Hyperbloom Trigger;Flower of Paradise Lost;OR;Gilded Dreams;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;HP%;HP;;;n/a;n/a;Flower is better, but gilded dreams is easier to farm because you need Deepwood for the team anyway
+Kuki Shinobu;Healer;Tenacity of the Millelith;;;HP%;Elemental Mastery;HP%;Elemental Mastery;Healing Bonus;HP%;;HP%;Elemental Mastery;HP;Energy Recharge;;;n/a;n/a;
+Wanderer;Main DPS;Desert Pavilion Chronicle;OR;Shimenawa's Reminiscence;ATK%;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;ATK;;105;135;do not farm shimenawa, only use if if you dont wanna farm pavilion and have it lying around

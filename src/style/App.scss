@@ -28,18 +28,6 @@ section#filter {
   .filter-card {
     margin-right: 30px;
 
-    div.close-menu {
-      position: absolute;
-      z-index: 15;
-      right: 0;
-      top: 0;
-      height: 40px;
-      width: 40px;
-      text-align: center;
-      padding-top: 8px;
-      cursor: pointer;
-    }
-
     div.search-bar {
       height: 44px;
       width: 300px;
@@ -52,8 +40,17 @@ section#filter {
         all: unset;
         padding: 0 10px;
         height: 44px;
-        width: 260px;
+        width: 300px;
       }
+    }
+    button.clear-input {
+      height: 46px;
+      width: 46px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      border: 1px solid #141414;
+      border-left: none;
     }
   }
   .filter-card .artifact-type {
@@ -63,10 +60,15 @@ section#filter {
     margin-top: 0;
   }
 
-  .dropdown.active p {
-    color: lightgreen;
-    font-weight: 700;
+  .dropdown.active {
+    width: 256px;
+
+    p {
+      color: lightgreen;
+      font-weight: 700;
+    }
   }
+
   .dropdown:hover {
     background-color: lighten(#242424, 5%);
   }
@@ -76,6 +78,7 @@ section#filter {
     width: 300px;
     background-color: #222222;
     position: relative;
+    float: left;
 
     p {
       padding: 10px;

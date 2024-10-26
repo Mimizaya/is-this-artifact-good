@@ -89,7 +89,7 @@ export default function App() {
     const [rawData, setRawData] = useState<string[]>([]);
 
     // Increment version when updating data to invalidate storage and parse new data
-    const VERSION = '1.1';
+    const VERSION = '1.2';
 
     useEffect(() => {
       // Check localstorage data exists, and which version
@@ -101,7 +101,7 @@ export default function App() {
       } 
       else {
         // Fetch the CSV file from the public folder
-        fetch('/builds-data.csv')
+        fetch('./builds-data.csv')
           .then((response) => response.text())
           .then((text) => {
             Papa.parse(text, {

@@ -21,8 +21,8 @@ export default function CharacterCard({
 	return (
 		<div className="character-card">
       <div className={`rarity-${build.rarity} build-header`}>
-				<img className="character-element" src={"/images/elements/" + build.element + ".webp"} alt={build.element}/>
-        <img className="character-portrait" src={"/images/characters/" + build.character_name + ".webp"} alt={build.character_name}/>
+				<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
+        <img className="character-portrait" src={"./images/characters/" + build.character_name + ".webp"} alt={build.character_name}/>
         <div className="character-title">
         	<h2 className={selectedCharacter.includes(build.character_name) ? 'highlighted' : ''}>{build.character_name}</h2>
         	<h3 className="build-name">{build.build_name}</h3>
@@ -31,7 +31,7 @@ export default function CharacterCard({
 
       <div className="build-content">
       	<div className="constellation">
-      		<img src={"/images/constellations/" + build.character_name +" Constellation.webp"}/>
+      		<img src={"./images/constellations/" + build.character_name +" Constellation.webp"}/>
       	</div>
 	      <div className="artifact-set">
 	      <p>Artifact Set{build.artifact_logic === 'AND' && 's'}</p>
