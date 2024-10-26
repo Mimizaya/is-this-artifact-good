@@ -1,0 +1,23 @@
+﻿character_name;build_name;artifact_set;artifact_logic;artifact_set_2;sands;sands_2;goblet;goblet_2;circlet;circlet_2;circlet_3;substats;substats_2;substats_3;substats_4;substats_5;substats_6;er_min;er_max;note
+Barbara;Healer;Ocean-Hued Clam;OR;Maiden Beloved;HP%;;HP%;;Healing Bonus;HP%;;HP%;HP;;;;;n/a;n/a;do not farm Maiden Beloved only for Barbara
+Barbara;Bloom DPS;Gilded Dreams;;;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;HP%;HP;;;;n/a;n/a;
+Chiori;Off-Field DPS;Golden Troupe;OR;Husk of Opulent Dreams;DEF%;;Geo DMG Bonus;DEF%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;DEF%;ATK%;;;n/a;n/a;do not run triple DEF%, husk preferable at C6
+Faruzan;Buffer Support;Noblesse Oblige;;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;;;Energy Recharge;CRIT Rate;;;;;220;260;prioritize ER over main stats
+Faruzan;Swirl Support;Viridescent Venerer;;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;;;Energy Recharge;CRIT Rate;Elemental Mastery;;;;220;260;prioritize ER over main stats
+Faruzan;C6 Support;Tenacity of the Millelith;;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;;;;175;200;
+Furina;Off-Field DPS;Golden Troupe;;;HP%;Energy Recharge;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;HP%;Energy Recharge;HP;Elemental Mastery;150;210;
+Furina;Buffer Support;Tenacity of the Millelith;;;Energy Recharge;HP%;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;;Energy Recharge;HP%;CRIT Rate;CRIT DMG;HP;;150;210;
+Furina;Healer;Ocean-Hued Clam;;;HP%;Energy Recharge;HP%;;Healing Bonus;HP%;;HP%;Energy Recharge;HP;;;;150;210;
+Kinich;Burning or Burgeon DPS;Obsidian Codex;;;ATK%;;Dendro DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;Elemental Mastery;ATK;;;
+Kinich;Burning DPS;Unfinished Reverie;;;ATK%;;Dendro DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;Elemental Mastery;ATK;;;Alternative Build focussing on Burning only
+Nahida;Dendro Reaction Support;Deepwood Memories;;;Elemental Mastery;;Elemental Mastery;Dendro DMG Bonus;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Generalist set for personal damage and dendro reactions. Only one per party needed, nahida is the best holder.
+Nahida;Off-Field DPS;Golden Troupe;OR;Gilded Dreams;Elemental Mastery;;Dendro DMG Bonus;Elemental Mastery;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Maximizes Nahida's personal damage, preferable when she is the only dendro in party. Gilded not recommended if Nahida doesnt trigger many reactions
+Nahida;ATK Buffer;Tenacity of the Millelith;;;Elemental Mastery;;Elemental Mastery;Dendro DMG Bonus;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Potential Best-in-Slot if the team has ATK-scaling characters who deal significantly more damage than Nahida (e.g., Yae Miko, Fischl)
+Navia;Main DPS;Nighttime Whispers;;;ATK%;;Geo DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;;;120;160;
+Navia;Furina Team DPS;Marechaussee Hunter;;;ATK%;;Geo DMG Bonus;;CRIT DMG;;;CRIT DMG;ATK%;Energy Recharge;CRIT Rate;;;120;160;with Furina
+Neuvillette;Main DPS;Marechaussee Hunter;;;HP%;;Hydro DMG Bonus;HP%;CRIT Rate;CRIT DMG;;HP%;CRIT Rate;CRIT DMG;Energy Recharge;HP;Elemental Mastery;140;160;
+Raiden Shogun;Main DPS;Emblem of Severed Fate;;;Energy Recharge;ATK%;Electro DMG Bonus;ATK%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;ATK%;;;200;250;if you have weapon, ER always better than attack
+Raiden Shogun;Hyperbloom Sub DPS;Flower of Paradise Lost;OR;Gilded Dreams;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;;;;;n/a;n/a;Flower of Paradise lost gives more damage but Gilded dreams is easier to farm if you nee deepwood memories for your dendro support
+Xilonen;Resistance Shredder Support;Scroll of the Hero of Cinder City;;;DEF%;Energy Recharge;DEF%;;DEF%;Healing Bonus;;DEF%;Energy Recharge;DEF;CRIT DMG;CRIT Rate;;170;200;
+Zhongli;Shielder/Buffer;Tenacity of the Millelith;;;HP%;;HP%;;HP%;;;HP%;HP;;;;;;;
+Zhongli;Shielder+;Tenacity of the Millelith;AND;Vourukasha's Glow;HP%;;HP%;;HP%;;;HP%;HP;;;;;;;
