@@ -1,39 +1,42 @@
-﻿character_name;build_name;artifact_set;artifact_logic;artifact_set_2;sands;sands_2;goblet;goblet_2;circlet;circlet_2;circlet_3;substats;substats_2;substats_3;substats_4;substats_5;substats_6;er_min;er_max;note
-Barbara;Healer;Ocean-Hued Clam;OR;Maiden Beloved;HP%;;HP%;;Healing Bonus;HP%;;HP%;HP;;;;;n/a;n/a;do not farm Maiden Beloved only for Barbara
-Barbara;Bloom DPS;Gilded Dreams;;;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;HP%;HP;;;;n/a;n/a;
-Chiori;Off-Field DPS;Golden Troupe;OR;Husk of Opulent Dreams;DEF%;;Geo DMG Bonus;DEF%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;DEF%;ATK%;DEF;ATK;n/a;n/a;do not run triple DEF%, husk preferable at C6
-Faruzan;Buffer Support;Noblesse Oblige;;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;;;Energy Recharge;CRIT Rate;;;;;220;260;prioritize ER over main stats
-Faruzan;Swirl Support;Viridescent Venerer;;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;;;Energy Recharge;CRIT Rate;Elemental Mastery;;;;220;260;prioritize ER over main stats
-Faruzan;C6 Support;Tenacity of the Millelith;;;Energy Recharge;ATK%;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;;;;175;200;
-Furina;Off-Field DPS;Golden Troupe;;;HP%;Energy Recharge;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;HP%;Energy Recharge;HP;Elemental Mastery;150;210;
-Furina;Buffer Support;Tenacity of the Millelith;;;Energy Recharge;HP%;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;;Energy Recharge;HP%;CRIT Rate;CRIT DMG;HP;;150;210;
-Furina;Healer;Ocean-Hued Clam;;;HP%;Energy Recharge;HP%;;Healing Bonus;HP%;;HP%;Energy Recharge;HP;;;;150;210;
-Kachina;Geo Sub-DPS;Scroll of the Hero of Cinder City;;;DEF%;;Geo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;DEF%;Energy Recharge;DEF;;;;
-Kinich;Burning or Burgeon DPS;Obsidian Codex;;;ATK%;;Dendro DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;Elemental Mastery;ATK;;;
-Kinich;Burning DPS;Unfinished Reverie;;;ATK%;;Dendro DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;Elemental Mastery;ATK;;;Alternative Build focussing on Burning only
-Kuki Shinobu;Hyperbloom Trigger;Flower of Paradise Lost;OR;Gilded Dreams;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;HP%;HP;;;n/a;n/a;Flower is better, but gilded dreams is easier to farm because you need Deepwood for the team anyway
-Kuki Shinobu;Healer;Tenacity of the Millelith;;;HP%;Elemental Mastery;HP%;Elemental Mastery;Healing Bonus;HP%;;HP%;Elemental Mastery;HP;Energy Recharge;;;n/a;n/a;
-Layla;Shielder;Tenacity of the Millelith;;;HP%;Energy Recharge;HP%;;HP%;;;HP%;HP;Energy Recharge;CRIT Rate;;;150;220;
-Layla;Off-Field DPS;Blizzard Strayer;;;HP%;Energy Recharge;Cryo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;HP%;HP;;150;220;
-Mualani;Main DPS;Obsidian Codex;OR;Heart of Depth;HP%;Elemental Mastery;Hydro DMG Bonus;HP%;CRIT DMG;;;CRIT DMG;HP%;Elemental Mastery;CRIT Rate;Energy Recharge;HP;n/a;n/a;do not farm heart of depth, only use it if you already have it
-Nahida;Dendro Reaction Support;Deepwood Memories;;;Elemental Mastery;;Elemental Mastery;Dendro DMG Bonus;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Generalist set for personal damage and dendro reactions. Only one per party needed, nahida is the best holder.
-Nahida;Off-Field DPS;Golden Troupe;OR;Gilded Dreams;Elemental Mastery;;Dendro DMG Bonus;Elemental Mastery;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Maximizes Nahida's personal damage, preferable when she is the only dendro in party. Gilded not recommended if Nahida doesnt trigger many reactions
-Nahida;ATK Buffer;Tenacity of the Millelith;;;Elemental Mastery;;Elemental Mastery;Dendro DMG Bonus;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Potential Best-in-Slot if the team has ATK-scaling characters who deal significantly more damage than Nahida (e.g., Yae Miko, Fischl)
-Navia;Main DPS;Nighttime Whispers;;;ATK%;;Geo DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;;;120;160;
-Navia;Furina Team DPS;Marechaussee Hunter;;;ATK%;;Geo DMG Bonus;;CRIT DMG;;;CRIT DMG;ATK%;Energy Recharge;CRIT Rate;;;120;160;with Furina
-Neuvillette;Main DPS;Marechaussee Hunter;;;HP%;;Hydro DMG Bonus;HP%;CRIT Rate;CRIT DMG;;HP%;CRIT Rate;CRIT DMG;Energy Recharge;HP;Elemental Mastery;140;160;
-Raiden Shogun;Main DPS;Emblem of Severed Fate;;;Energy Recharge;ATK%;Electro DMG Bonus;ATK%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;ATK%;;;200;250;if you have weapon, ER always better than attack
-Raiden Shogun;Hyperbloom Sub-DPS;Flower of Paradise Lost;OR;Gilded Dreams;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;;;;;n/a;n/a;Flower of Paradise lost gives more damage but Gilded dreams is easier to farm if you nee deepwood memories for your dendro support
-Thoma;Burgeon Sub-DPS;Flower of Paradise Lost;;;Energy Recharge;Elemental Mastery;Elemental Mastery;;Elemental Mastery;;;Energy Recharge;Elemental Mastery;HP%;HP;;;165;250;
-Thoma;Off-Field Support;Noblesse Oblige;;;Energy Recharge;HP%;HP%;;CRIT Rate;HP%;;Energy Recharge;CRIT Rate;HP%;HP;;;;;
-Thoma;Shielder;Emblem of Severed Fate;AND;Tenacity of the Millelith;HP%;Energy Recharge;HP%;;HP%;CRIT Rate;;Energy Recharge;CRIT Rate;HP%;HP;;;;;build for pure shielding, needs to get burst up to shield
-Venti;Swirl Sub-DPS;Viridescent Venerer;;;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;ATK;165;200;
-Venti;Crit Burst DPS;Viridescent Venerer;;;ATK%;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Elemental Mastery;Energy Recharge;;;165;200;
-Wanderer;Main DPS;Desert Pavilion Chronicle;OR;Shimenawa's Reminiscence;ATK%;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;ATK;;105;135;do not farm shimenawa, only use if if you dont wanna farm pavilion and have it lying around
-Xilonen;Resistance Shredder Support;Scroll of the Hero of Cinder City;;;DEF%;Energy Recharge;DEF%;;DEF%;Healing Bonus;;DEF%;Energy Recharge;DEF;CRIT DMG;CRIT Rate;;170;200;
-Zhongli;Shielder/Buffer;Tenacity of the Millelith;;;HP%;;HP%;;HP%;;;HP%;HP;;;;;;;
-Zhongli;Shielder++;Tenacity of the Millelith;AND;Vourukasha's Glow;HP%;;HP%;;HP%;;;HP%;HP;;;;;;;
-Mona;Hydro Support;Noblesse Oblige;;;Energy Recharge;;Hydro DMG Bonus;ATK%;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;;;;220;250;prioritize ER substats, with enough ER, Mona can gain enough  Hydro DMG Bonus to the point where ATK Goblet is better
-Mona;Hydro and Burst Sub-DPS;Emblem of Severed Fate;;;ATK%;Elemental Mastery;Hydro DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;ATK;;150;200;
-Bennett;Healer/Buffer;Noblesse Oblige;;;Energy Recharge;HP%;HP%;;HP%;Healing Bonus;;Energy Recharge;HP%;HP;;;;200;350;
-Bennett;Pyro Burst DPS;Noblesse Oblige;;;Energy Recharge;ATK%;Pyro DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;Elemental Mastery;ATK%;HP%;200;350;
+﻿character_name;build_name;artifact_set;artifact_logic;artifact_set_2;artifact_logic_2;artifact_set_3;sands;sands_2;sands_3;goblet;goblet_2;circlet;circlet_2;circlet_3;substats;substats_2;substats_3;substats_4;substats_5;substats_6;er_min;er_max;note
+Barbara;Healer;Ocean-Hued Clam;OR;Maiden Beloved;;;HP%;;;HP%;;Healing Bonus;HP%;;HP%;HP;;;;;n/a;n/a;do not farm Maiden Beloved only for Barbara
+Barbara;Bloom DPS;Gilded Dreams;;;;;Elemental Mastery;;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;HP%;HP;;;;n/a;n/a;
+Chiori;Off-Field DPS;Golden Troupe;OR;Husk of Opulent Dreams;;;DEF%;;;Geo DMG Bonus;DEF%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;DEF%;ATK%;DEF;ATK;n/a;n/a;do not run triple DEF%, husk preferable at C6
+Faruzan;Buffer Support;Noblesse Oblige;;;;;Energy Recharge;ATK%;;Anemo DMG Bonus;;CRIT Rate;;;Energy Recharge;CRIT Rate;;;;;220;260;prioritize ER over main stats
+Faruzan;Swirl Support;Viridescent Venerer;;;;;Energy Recharge;ATK%;;Anemo DMG Bonus;;CRIT Rate;;;Energy Recharge;CRIT Rate;Elemental Mastery;;;;220;260;prioritize ER over main stats
+Faruzan;C6 Support;Tenacity of the Millelith;;;;;Energy Recharge;ATK%;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;;;;175;200;
+Furina;Off-Field DPS;Golden Troupe;;;;;HP%;Energy Recharge;;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;HP%;Energy Recharge;HP;Elemental Mastery;150;210;
+Furina;Buffer Support;Tenacity of the Millelith;;;;;Energy Recharge;HP%;;HP%;Hydro DMG Bonus;CRIT Rate;CRIT DMG;;Energy Recharge;HP%;CRIT Rate;CRIT DMG;HP;;150;210;
+Furina;Healer;Ocean-Hued Clam;;;;;HP%;Energy Recharge;;HP%;;Healing Bonus;HP%;;HP%;Energy Recharge;HP;;;;150;210;
+Kachina;Geo Sub DPS;Scroll of the Hero of Cinder City;;;;;DEF%;;;Geo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;DEF%;Energy Recharge;DEF;;;;
+Kinich;Burning or Burgeon DPS;Obsidian Codex;OR;Unfinished Reverie;;;ATK%;;;Dendro DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;Elemental Mastery;ATK;;;Reverie can only do burning reactions, whereas obsidian can also do burgeon
+Kuki Shinobu;Hyperbloom Trigger;Flower of Paradise Lost;OR;Gilded Dreams;;;Elemental Mastery;;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;HP%;HP;;;n/a;n/a;Flower is better, but gilded dreams is easier to farm because you need Deepwood for the team anyway
+Kuki Shinobu;Healer;Tenacity of the Millelith;;;;;HP%;Elemental Mastery;;HP%;Elemental Mastery;Healing Bonus;HP%;;HP%;Elemental Mastery;HP;Energy Recharge;;;n/a;n/a;
+Layla;Shielder;Tenacity of the Millelith;;;;;HP%;Energy Recharge;;HP%;;HP%;;;HP%;HP;Energy Recharge;CRIT Rate;;;150;220;
+Layla;Off-Field DPS;Blizzard Strayer;;;;;HP%;Energy Recharge;;Cryo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;HP%;HP;;150;220;
+Mualani;Main DPS;Obsidian Codex;OR;Heart of Depth;;;HP%;Elemental Mastery;;Hydro DMG Bonus;HP%;CRIT DMG;;;CRIT DMG;HP%;Elemental Mastery;CRIT Rate;Energy Recharge;HP;n/a;n/a;do not farm heart of depth, only use it if you already have it
+Nahida;Dendro Reaction Support;Deepwood Memories;;;;;Elemental Mastery;;;Elemental Mastery;Dendro DMG Bonus;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Generalist set for personal damage and dendro reactions. Only one per party needed, nahida is the best holder.
+Nahida;Off-Field DPS;Golden Troupe;OR;Gilded Dreams;;;Elemental Mastery;;;Dendro DMG Bonus;Elemental Mastery;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Maximizes Nahida's personal damage, preferable when she is the only dendro in party. Gilded not recommended if Nahida doesnt trigger many reactions
+Nahida;ATK Buffer;Tenacity of the Millelith;;;;;Elemental Mastery;;;Elemental Mastery;Dendro DMG Bonus;Elemental Mastery;CRIT Rate;CRIT DMG;Elemental Mastery;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;;100;160;Potential Best-in-Slot if the team has ATK-scaling characters who deal significantly more damage than Nahida (e.g., Yae Miko, Fischl)
+Navia;Main DPS;Nighttime Whispers in the Echoing Woods;;;;;ATK%;;;Geo DMG Bonus;;CRIT DMG;CRIT Rate;;CRIT DMG;CRIT Rate;ATK%;Energy Recharge;;;120;160;
+Navia;Furina Team DPS;Marechaussee Hunter;;;;;ATK%;;;Geo DMG Bonus;;CRIT DMG;;;CRIT DMG;ATK%;Energy Recharge;CRIT Rate;;;120;160;with Furina
+Neuvillette;Main DPS;Marechaussee Hunter;;;;;HP%;;;Hydro DMG Bonus;HP%;CRIT Rate;CRIT DMG;;HP%;CRIT Rate;CRIT DMG;Energy Recharge;HP;Elemental Mastery;140;160;
+Raiden Shogun;Main DPS;Emblem of Severed Fate;;;;;Energy Recharge;ATK%;;Electro DMG Bonus;ATK%;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Energy Recharge;ATK%;;;200;250;if you have weapon, ER always better than attack
+Raiden Shogun;Hyperbloom Sub DPS;Flower of Paradise Lost;OR;Gilded Dreams;;;Elemental Mastery;;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;;;;;n/a;n/a;Flower of Paradise lost gives more damage but Gilded dreams is easier to farm if you nee deepwood memories for your dendro support
+Thoma;Burgeon Sub DPS;Flower of Paradise Lost;;;;;Energy Recharge;Elemental Mastery;;Elemental Mastery;;Elemental Mastery;;;Energy Recharge;Elemental Mastery;HP%;HP;;;165;250;
+Thoma;Off-Field Support;Noblesse Oblige;;;;;Energy Recharge;HP%;;HP%;;CRIT Rate;HP%;;Energy Recharge;CRIT Rate;HP%;HP;;;;;
+Thoma;Shielder;Emblem of Severed Fate;AND;Tenacity of the Millelith;;;HP%;Energy Recharge;;HP%;;HP%;CRIT Rate;;Energy Recharge;CRIT Rate;HP%;HP;;;;;build for pure shielding, needs to get burst up to shield
+Venti;Swirl Sub-DPS;Viridescent Venerer;;;;;Elemental Mastery;;;Elemental Mastery;;Elemental Mastery;;;Elemental Mastery;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;ATK;165;200;
+Venti;Crit Burst DPS;Viridescent Venerer;;;;;ATK%;;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;Elemental Mastery;Energy Recharge;;;165;200;
+Wanderer;Main DPS;Desert Pavilion Chronicle;OR;Shimenawa's Reminiscence;;;ATK%;;;Anemo DMG Bonus;;CRIT Rate;CRIT DMG;;CRIT Rate;CRIT DMG;ATK%;Energy Recharge;ATK;;105;135;do not farm shimenawa, only use if if you dont wanna farm pavilion and have it lying around
+Xilonen;Resistance Shredder Support;Scroll of the Hero of Cinder City;;;;;DEF%;Energy Recharge;;DEF%;;DEF%;Healing Bonus;;DEF%;Energy Recharge;DEF;CRIT DMG;CRIT Rate;;170;200;
+Zhongli;Shielder/Buffer;Tenacity of the Millelith;;;;;HP%;;;HP%;;HP%;;;HP%;HP;;;;;;;
+Zhongli;Shielder++;Tenacity of the Millelith;AND;Vourukasha's Glow;;;HP%;;;HP%;;HP%;;;HP%;HP;;;;;;;
+Mona;Hydro Support;Noblesse Oblige;;;;;Energy Recharge;;;Hydro DMG Bonus;ATK%;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;;;;220;250;prioritize ER substats, with enough ER, Mona can gain enough  Hydro DMG Bonus to the point where ATK Goblet is better
+Mona;Hydro and Burst Sub DPS;Emblem of Severed Fate;;;;;ATK%;Elemental Mastery;;Hydro DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;ATK;;150;200;
+Bennett;Healer/Buffer;Noblesse Oblige;;;;;Energy Recharge;HP%;;HP%;;HP%;Healing Bonus;;Energy Recharge;HP%;HP;;;;200;350;
+Bennett;Pyro Burst DPS;Noblesse Oblige;;;;;Energy Recharge;ATK%;;Pyro DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;Elemental Mastery;ATK%;HP%;200;350;
+Xingqiu;Off-Field DPS;Emblem of Severed Fate;OR;Noblesse Oblige;;;ATK%;Energy Recharge;;Hydro DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;ATK;;150;220;Emblem is easier to farm, but if no one else in the team has noblesse, xinqiu should be wearing it
+Xiangling;Off-Field DPS;Emblem of Severed Fate;OR;Crimson Witch of Flames;OR;Gilded Dreams;Energy Recharge;Elemental Mastery;ATK%;Pyro DMG Bonus;;CRIT Rate;CRIT DMG;;Energy Recharge;CRIT Rate;CRIT DMG;ATK%;Elemental Mastery;ATK;200;280;Emblem is the best set, the others are worse alternatives that are still valid if you have them lying around
+Chevreuse;Overload Support;Noblesse Oblige;;;;;;;;;;;;;;;;;;;;200;
+Chevreuse;Overload Sub DPS;Emblem of Severed Fate;;;;;;;;;;;;;;;;;;;;;
