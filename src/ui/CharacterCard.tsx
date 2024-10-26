@@ -1,3 +1,5 @@
+import { Build } from '../types/types';
+
 export default function CharacterCard({
   build,
   selectedCharacter,
@@ -6,8 +8,16 @@ export default function CharacterCard({
   selectedGoblet,
   selectedCirclet,
   selectedSubstats,
+} : {
+  build: Build;
+  selectedCharacter: any;
+  selectedArtifactSet: any;
+  selectedSands: any;
+  selectedGoblet: any;
+  selectedCirclet: any;
+  selectedSubstats: any;
 }) {
-	
+
 	return (
 		<div className="character-card">
       <div className={`rarity-${build.rarity} build-header`}>

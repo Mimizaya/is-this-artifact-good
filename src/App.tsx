@@ -1,24 +1,22 @@
 import { useState, useEffect } from 'react';
-import 'src/style/App.css';
+import './style/App.css';
 import Papa from 'papaparse';
-import rawData from 'src/data/raw-data.csv';
-import { characterData } from 'src/data/character-data';
-import Filter from 'src/ui/filter';
-import Results from 'src/ui/results';
+import Filter from './ui/Filter.tsx';
+import Results from './ui/Results.tsx';
 
 export default function App() {
 
   // Filter selection states
-    const [selectedCharacter, setSelectedCharacter] = useState([]);
-    const [selectedArtifactSet, setSelectedArtifactSet] = useState([]);
-    const [selectedSands, setSelectedSands] = useState([]);
-    const [selectedGoblet, setSelectedGoblet] = useState([]);
-    const [selectedCirclet, setSelectedCirclet] = useState([]);
-    const [selectedSubstats, setSelectedSubstats] = useState([]);
-    const [selectedElements, setSelectedElements] = useState([]);
+    const [selectedCharacter, setSelectedCharacter] = useState<string[]>([]);
+    const [selectedArtifactSet, setSelectedArtifactSet] = useState<string[]>([]);
+    const [selectedSands, setSelectedSands] = useState<string[]>([]);
+    const [selectedGoblet, setSelectedGoblet] = useState<string[]>([]);
+    const [selectedCirclet, setSelectedCirclet] = useState<string[]>([]);
+    const [selectedSubstats, setSelectedSubstats] = useState<string[]>([]);
+    const [selectedElements, setSelectedElements] = useState<string[]>([]);
 
   // Handle filter selections
-    const handleCharacterChange = (name) => {
+    const handleCharacterChange = (name: string) => {
       if(name === 'clear selection') {
         setSelectedCharacter([]);
       }
@@ -27,7 +25,7 @@ export default function App() {
       }
     };
 
-    const handleArtifactSetChange = (set) => {
+    const handleArtifactSetChange = (set: string) => {
       if(set === 'clear selection') {
         setSelectedArtifactSet([]);
       }
@@ -36,7 +34,7 @@ export default function App() {
       }
     };
 
-    const handleMainstatChange = (stat, type) => {
+    const handleMainstatChange = (stat: string, type: string) => {
       if(type === 'Sands') {
         if(stat === 'clear selection') {
           setSelectedSands([])
@@ -64,13 +62,13 @@ export default function App() {
       }
     }
 
-    const handleSubstatsChange = (stat) => {
+    const handleSubstatsChange = (stat: string) => {
       setSelectedSubstats((prev) =>
         prev.includes(stat) ? prev.filter((n) => n !== stat) : [...prev, stat]
       );
     }
 
-    const handleElementsChange = (element) => {
+    const handleElementsChange = (element: string) => {
       setSelectedElements((prev) =>
         prev.includes(element) ? prev.filter((n) => n !== element) : [...prev, element]
       );
@@ -88,7 +86,7 @@ export default function App() {
     }
 
   // Prepare data imported from CSV
-    const [rawData, setRawData] = useState([]);
+    const [rawData, setRawData] = useState<string[]>([]);
 
     // Increment version when updating data to invalidate storage and parse new data
     const VERSION = '1.1';
@@ -109,14 +107,14 @@ export default function App() {
             Papa.parse(text, {
               header: true,
               skipEmptyLines: true,
-              complete: (results) => {
+              complete: (results: any) => {
                 // Set parsed data to state
                 setRawData(results.data);
                 // Save parsed data to local storage
                 localStorage.setItem('csvData', JSON.stringify(results.data));
                 localStorage.setItem('csvDataVersion', VERSION);
               },
-              error: (error) => {
+              error: (error: any) => {
                 console.error('Error parsing CSV:', error);
               },
             });

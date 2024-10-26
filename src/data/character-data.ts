@@ -439,4 +439,29 @@ export const characterData = [
 		rarity: 4,
 		element: 'Pyro',
 	},
+	{
+		name: 'Hydro Traveler',
+		rarity: 5,
+		element: 'Hydro',
+	},
+	{
+		name: 'Dendro Traveler',
+		rarity: 5,
+		element: 'Dendro',
+	},
+	{
+		name: 'Electro Traveler',
+		rarity: 5,
+		element: 'Electro',
+	},
+	{
+		name: 'Geo Traveler',
+		rarity: 5,
+		element: 'Geo',
+	},
+	{
+		name: 'Anemo Traveller',
+		rarity: 5,
+		element: 'Anemo',
+	},
 ];

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { characterData } from 'src/data/character-data';
-import { artifactTypesAndStats, artifactSets } from 'src/data/artifact-data';
-import { substats } from 'src/data/substats';
-import { elements } from 'src/data/elements'
+import { characterData } from '../data/character-data.ts';
+import { artifactTypesAndStats, artifactSets } from '../data/artifact-data.ts';
+import { substats } from '../data/substats.ts';
+import { elements } from '../data/elements.ts';
+import { Character, ArtifactType, ArtifactSet } from '../types/types.ts';
 
 export default function Filter({
   resetFilters,
@@ -19,61 +20,75 @@ export default function Filter({
   selectedCirclet,
   selectedSubstats,
   selectedElements
+} : {
+  resetFilters: any;
+  handleCharacterChange: any;
+  handleArtifactSetChange: any;
+  handleMainstatChange: any;
+  handleSubstatsChange: any;
+  handleElementsChange: any;
+  selectedCharacter: any;
+  selectedArtifactSet: any;
+  selectedSands: any;
+  selectedGoblet: any;
+  selectedCirclet: any;
+  selectedSubstats: any;
+  selectedElements: any;
 }) {
 
   // States
-    const [characterQuery, setCharacterQuery] = useState('');
-    const [characterDropDownOpen, setCharacterDropDownOpen] = useState(false);
+    const [characterQuery, setCharacterQuery] = useState<string>('');
+    const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
 
-    const [artifactQuery, setArtifactQuery] = useState('');
-    const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState(false);
+    const [artifactQuery, setArtifactQuery] = useState<string>('');
+    const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState<boolean>(false);
 
-    const [sandsDropDownOpen, setSandsDropDownOpen] = useState(false);
-    const [gobletDropDownOpen, setGobletDropDownOpen] = useState(false);
-    const [circletDropDownOpen, setCircletDropDownOpen] = useState(false);
+    const [sandsDropDownOpen, setSandsDropDownOpen] = useState<boolean>(false);
+    const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
+    const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false);
 
   // Handle menu behaviours
-    const handleDropDown = (menu) => {
-    if(menu === 'Character') {
-      setCharacterDropDownOpen(true);
-      setArtifactSetDropDownOpen(false);
-      setSandsDropDownOpen(false);
-      setGobletDropDownOpen(false);
-      setCircletDropDownOpen(false);
+    const handleDropDown = (menu: string) => {
+      if(menu === 'Character') {
+        setCharacterDropDownOpen(true);
+        setArtifactSetDropDownOpen(false);
+        setSandsDropDownOpen(false);
+        setGobletDropDownOpen(false);
+        setCircletDropDownOpen(false);
+      }
+      if(menu === 'Artifact') {
+        setCharacterDropDownOpen(false);
+        setArtifactSetDropDownOpen(true);
+        setSandsDropDownOpen(false);
+        setGobletDropDownOpen(false);
+        setCircletDropDownOpen(false);
+      }
+      if(menu === 'Sands') {
+        setCharacterDropDownOpen(false);
+        setArtifactSetDropDownOpen(false);
+        setSandsDropDownOpen(true);
+        setGobletDropDownOpen(false);
+        setCircletDropDownOpen(false);
+      }
+      if(menu === 'Goblet') {
+        setCharacterDropDownOpen(false);
+        setArtifactSetDropDownOpen(false);
+        setSandsDropDownOpen(false);
+        setGobletDropDownOpen(true);
+        setCircletDropDownOpen(false);
+      }
+      if(menu === 'Circlet') {
+        setCharacterDropDownOpen(false);
+        setArtifactSetDropDownOpen(false);
+        setSandsDropDownOpen(false);
+        setGobletDropDownOpen(false);
+        setCircletDropDownOpen(true);
+      }
     }
-    if(menu === 'Artifact') {
-      setCharacterDropDownOpen(false);
-      setArtifactSetDropDownOpen(true);
-      setSandsDropDownOpen(false);
-      setGobletDropDownOpen(false);
-      setCircletDropDownOpen(false);
-    }
-    if(menu === 'Sands') {
-      setCharacterDropDownOpen(false);
-      setArtifactSetDropDownOpen(false);
-      setSandsDropDownOpen(true);
-      setGobletDropDownOpen(false);
-      setCircletDropDownOpen(false);
-    }
-    if(menu === 'Goblet') {
-      setCharacterDropDownOpen(false);
-      setArtifactSetDropDownOpen(false);
-      setSandsDropDownOpen(false);
-      setGobletDropDownOpen(true);
-      setCircletDropDownOpen(false);
-    }
-    if(menu === 'Circlet') {
-      setCharacterDropDownOpen(false);
-      setArtifactSetDropDownOpen(false);
-      setSandsDropDownOpen(false);
-      setGobletDropDownOpen(false);
-      setCircletDropDownOpen(true);
-    }
-  }
 
   // Automatically focus the search inputs when opened
-    const characterRef = useRef(null);
-    const artifactRef = useRef(null);
+    const characterRef = useRef<HTMLInputElement>(null);
+    const artifactRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
       if (characterDropDownOpen && characterRef.current) {
@@ -85,20 +100,20 @@ export default function Filter({
     }, [characterDropDownOpen, artifactSetDropDownOpen]);
 
   // Search queries
-    const handleCharacterQuery = (e) => {
+    const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
       setCharacterQuery(e.target.value)
     }
-    const handleArtifactQuery = (e) => {
+    const handleArtifactQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
       setArtifactQuery(e.target.value)
     }
 
   // Filtered character data based on the query
-    const filteredCharacterData = characterData.filter(character =>
+    const filteredCharacterData = characterData.filter((character: Character) =>
       character.name.toLowerCase().includes(characterQuery.toLowerCase())
     );
 
   // Sort artifacts alphabetically
-    const sortedArtifacts = artifactSets.sort((a, b) => {
+    const sortedArtifacts = artifactSets.sort((a: ArtifactSet, b: ArtifactSet) => {
       if (a.name < b.name) {
         return -1;
       }
@@ -109,7 +124,7 @@ export default function Filter({
     });
 
   // Filtered artifact data based on the query
-    const filteredArtifacts = sortedArtifacts.filter(set =>
+    const filteredArtifacts = sortedArtifacts.filter((set: ArtifactSet) =>
       set.name.toLowerCase().includes(artifactQuery.toLowerCase())
     );
 
@@ -117,17 +132,22 @@ export default function Filter({
     <section id="filter">
 
       {/* CHARACTER */}
-      {/* --------------------------------------- */}
       <div className="filter-card">
         <h2>Character</h2>
+
+          {/* If menu is open, render search bar */}
           {characterDropDownOpen ? (
             <>
             <div className="search-bar">
+
+              {/* X button to close the dropdown */}
               <div
                 className="close-menu"
-                onClick={() => setCharacterDropDownOpen(false)} 
-              >X
+                onClick={() => setCharacterDropDownOpen(false)}>
+                X
               </div>
+
+              {/* Input for filtering the character list */}
               <input
                 className="search-input"
                 ref={characterRef}
@@ -137,25 +157,35 @@ export default function Filter({
               />
             </div>
             </>
-            ) : (
+          ) : (
+            <>
+            {/* Else if menu is closed, render the dropdown toggle */}
             <div 
               onClick={() => handleDropDown('Character')} 
-              className={selectedCharacter.length === 1 ? 'dropdown active' : 'dropdown'}
-            >
-            <p>
-              {selectedCharacter.length === 1 &&
-              <img
-                src={`/images/characters/${selectedCharacter}.webp`}
-                alt={selectedCharacter}
-                style={{ width: '20px', marginRight: '10px' }}
-              />}
-              {selectedCharacter.length === 1 ? selectedCharacter[0] : "Select a character"}
-            </p>
+              className={selectedCharacter.length === 1 ? 'dropdown active' : 'dropdown'}>
+
+              <p>
+                {/* If character is selected, render their picture */}
+                {selectedCharacter.length === 1 &&
+                <img
+                  src={`/images/characters/${selectedCharacter}.webp`}
+                  alt={selectedCharacter}
+                  style={{ width: '20px', marginRight: '10px' }}
+                />}
+
+                {/* If character is selected, display their name, otherwise placeholder text */}
+                {selectedCharacter.length === 1 ? selectedCharacter : "Select a character"}
+              </p>
+
             </div>
-            )
-          }
+            </>
+          )
+        }
+        {/* Dropdown is open */}
         {characterDropDownOpen && (
           <ul className="dropdown-menu">
+
+            {/* If a character is selected, render a li to clear the selection */}
             {selectedCharacter.length === 1 &&
             <li 
               onClick={() => {
@@ -165,17 +195,22 @@ export default function Filter({
               Clear selection
             </li>}
 
-            {filteredCharacterData.map((character) => (
-              <li key={character.name} onClick={() => {
+            {/* Render a li for every character in the filtered data */}
+            {filteredCharacterData.map((character: Character) => (
+              <li key={character.name + character.element} onClick={() => {
                 handleCharacterChange(character.name)
                 setCharacterDropDownOpen(!characterDropDownOpen)
                 setCharacterQuery('')
               }}>
+
+                {/* Character image */}
                 <img
                   src={`/images/characters/${character.name}.webp`}
                   alt={character.name}
                   style={{ height: '64px', marginRight: '10px' }}
                 />
+
+                {/* Character name */}
                 {character.name}
               </li>
             ))}
@@ -184,7 +219,6 @@ export default function Filter({
       </div>
       
       {/* ARTIFACT SET */}
-      {/* --------------------------------------- */}
       <div className="filter-card">
         <h2>Artifact Set</h2>
           {artifactSetDropDownOpen ? (
@@ -229,7 +263,7 @@ export default function Filter({
               setArtifactSetDropDownOpen(!artifactSetDropDownOpen)
             }}>Clear selection</li>}
 
-            {filteredArtifacts.map((set) => (
+            {filteredArtifacts.map((set: ArtifactSet) => (
               <li key={set.name} onClick={() => {
                 handleArtifactSetChange(set.name)
                 setArtifactSetDropDownOpen(!artifactSetDropDownOpen)
@@ -249,9 +283,8 @@ export default function Filter({
       </div>
 
       {/* ARTIFACT TYPE - SANDS/GOBLET/CIRCLET */}
-      {/* --------------------------------------- */}
       <div className="filter-card">
-        {artifactTypesAndStats.map((artifact) => (
+        {artifactTypesAndStats.map((artifact: ArtifactType) => (
           <React.Fragment key={artifact.name}>
             <h2>{artifact.name}</h2>
 
@@ -288,7 +321,7 @@ export default function Filter({
                   handleMainstatChange('clear selection', artifact.name);
                   setSandsDropDownOpen(!sandsDropDownOpen);
                 }}>Clear selection</li>
-                {artifact.stats.map((stat) => (
+                {artifact.stats.map((stat: string) => (
                   <li key={stat} onClick={() => {
                     handleMainstatChange(stat, artifact.name);
                     setSandsDropDownOpen(!sandsDropDownOpen);
@@ -305,7 +338,7 @@ export default function Filter({
                   handleMainstatChange('clear selection', artifact.name);
                   setGobletDropDownOpen(!gobletDropDownOpen);
                 }}>Clear selection</li>
-                {artifact.stats.map((stat) => (
+                {artifact.stats.map((stat: string) => (
                   <li key={stat} onClick={() => {
                     handleMainstatChange(stat, artifact.name);
                     setGobletDropDownOpen(!gobletDropDownOpen);
@@ -322,7 +355,7 @@ export default function Filter({
                   handleMainstatChange('clear selection', artifact.name);
                   setCircletDropDownOpen(!circletDropDownOpen);
                 }}>Clear selection</li>
-                {artifact.stats.map((stat) => (
+                {artifact.stats.map((stat: string) => (
                   <li key={stat} onClick={() => {
                     handleMainstatChange(stat, artifact.name);
                     setCircletDropDownOpen(!circletDropDownOpen);
@@ -337,10 +370,9 @@ export default function Filter({
       </div>
 
       {/* SUBSTATS */}
-      {/* --------------------------------------- */}
       <div className="filter-card">
         <h2>Substats</h2>
-        {substats.map((stat) => (
+        {substats.map((stat: string) => (
           <label key={stat}>
             <input
               type="checkbox"
@@ -353,10 +385,9 @@ export default function Filter({
       </div>
 
       {/* ELEMENTS */}
-      {/* --------------------------------------- */}
       <div className="filter-card">
         <h2>Element</h2>
-        {elements.map((element) => (
+        {elements.map((element: string) => (
           <label key={element}>
             <input
               type="checkbox"

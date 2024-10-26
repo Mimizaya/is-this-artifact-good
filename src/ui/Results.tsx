@@ -1,6 +1,7 @@
-import React from 'react';
-import CharacterCard from 'src/ui/charactercard'
-import { characterData } from 'src/data/character-data';
+
+import CharacterCard from './CharacterCard.tsx'
+import { characterData } from '../data/character-data.ts';
+import { Character, Build } from '../types/types.ts';
 
 export default function Results({
   characterDataCSV,
@@ -11,22 +12,22 @@ export default function Results({
   selectedCirclet,
   selectedSubstats,
   selectedElements
+}: {
+  characterDataCSV: any;
+  selectedCharacter: any;
+  selectedArtifactSet: any;
+  selectedSands: any;
+  selectedGoblet: any;
+  selectedCirclet: any;
+  selectedSubstats: any;
+  selectedElements: any;
 }) {
 
-  // Check for no filters active
-    const noFiltersActive = 
-      selectedCharacter.length === 0 &&
-      selectedArtifactSet.length === 0 &&
-      selectedSands.length === 0 &&
-      selectedGoblet.length === 0 &&
-      selectedCirclet.length === 0 &&
-      selectedSubstats.length === 0
-
   // Map static character data to builds in filteredResult
-    const enrichedResults = characterDataCSV.map(build => {
+    const enrichedResults = characterDataCSV.map((build: Build) => {
 
       // Find the corresponding character data based on name
-      const characterInfo = characterData.find(character => character.name === build.character_name);
+      const characterInfo = characterData.find((character: Character) => character.name === build.character_name);
 
       // If a match is found, merge the relevant data
       return {
@@ -40,7 +41,7 @@ export default function Results({
     // Define order for elements (based on loading screen order)
     const elementOrder = ['Pyro', 'Hydro', 'Anemo', 'Electro', 'Dendro', 'Cryo', 'Geo'];
 
-    const sortedCharacters = enrichedResults.sort((a, b) => {
+    const sortedCharacters = enrichedResults.sort((a: Build, b: Build) => {
       const indexA = elementOrder.indexOf(a.element);
       const indexB = elementOrder.indexOf(b.element);
 
@@ -54,7 +55,7 @@ export default function Results({
     });
 
   // Calculate results from active filters
-    const filteredResults = sortedCharacters.filter(build => {
+    const filteredResults = sortedCharacters.filter((build: Build) => {
 
       // Check character
       const isCharacterSelected = selectedCharacter.length === 0 || 
@@ -105,18 +106,23 @@ export default function Results({
       );
     });
 
+    console.log(filteredResults)
+
+  // Filter applied?
+    const noFilter = sortedCharacters.length === filteredResults.length;
+
   return (
     <section id="results">
       <h3 className="results-header">{
-        noFiltersActive ? 'Showing all builds' : 
+        noFilter ? 'Showing all builds' : 
         filteredResults.length === 1 ? `Found ${filteredResults.length} build matching filters` : 
         filteredResults.length > 1 ? `Found ${filteredResults.length} builds matching filters` : 
         'No builds matching current filters'}
       </h3>
       <div className="row">
-      {filteredResults.map(build => (
+      {filteredResults.map((build: Build) => (
         <div 
-          key={build.character_name + build.name + build.artifact_set + build.artifact_set_2} 
+          key={build.character_name + build.build_name + build.artifact_set + build.artifact_set_2} 
           className="column"
         >
           <CharacterCard 
