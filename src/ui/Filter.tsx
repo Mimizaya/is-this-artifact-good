@@ -73,8 +73,8 @@ export default function Filter({
       character.name.toLowerCase().includes(characterQuery.toLowerCase())
     );
 
-  // Sort artifacts alphabetically
-    const sortedArtifacts = artifactSets.sort((a: ArtifactSet, b: ArtifactSet) => {
+  // Sort artifacts alphabetically (currently not in use)
+    /*const sortedArtifacts = artifactSets.sort((a: ArtifactSet, b: ArtifactSet) => {
       if (a.name < b.name) {
         return -1;
       }
@@ -82,10 +82,10 @@ export default function Filter({
         return 1;
       }
       return 0;
-    });
+    });*/
 
   // Filtered artifact data based on the query
-    const filteredArtifacts = sortedArtifacts.filter((set: ArtifactSet) =>
+    const filteredArtifacts = artifactSets.filter((set: ArtifactSet) =>
       set.name.toLowerCase().includes(artifactQuery.toLowerCase())
     );
 
@@ -145,12 +145,17 @@ export default function Filter({
       };
     }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
+  // Check for any filter applied
+
   return (
     <section id="filter">
+      <div className="filter-header">
+        <h2>Filter options</h2>
+      </div>
 
       {/* CHARACTER */}
-      <div className="filter-option">
-        <h2>Character</h2>
+      <div className="filter-option character">
+        <h3>Character</h3>
           <div ref={characterDropDownRef}>
           {/* If menu is open, render search bar */}
           {characterDropDownOpen ? (
@@ -172,17 +177,16 @@ export default function Filter({
             <div className="dropdown-wrapper">
             <div 
               onClick={() => handleDropDown('Character')} 
-              className={selectedCharacter.length === 1 ? 'dropdown active' : 'dropdown'}>
-
+              className={selectedCharacter.length === 1 ? 'dropdown highlighted' : 'dropdown'}>
+              <img 
+                className="filter-icon" 
+                src={
+                  selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
+                  selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
+                }
+                alt={selectedCharacter}
+              />
               <p>
-                {/* If character is selected, render their picture */}
-                {selectedCharacter.length === 1 &&
-                <img
-                  src={`./images/characters/${selectedCharacter}.webp`}
-                  alt={selectedCharacter}
-                  style={{ width: '20px', marginRight: '10px' }}
-                />}
-
                 {/* If character is selected, display their name, otherwise placeholder text */}
                 {selectedCharacter.length === 1 ? selectedCharacter : "Select a character"}
               </p>
@@ -194,7 +198,7 @@ export default function Filter({
             <button
               className="clear-input"
               onClick={() => handleCharacterChange('clear selection')}>
-              X
+              &#10006;
             </button>}
             </div>
             </>
@@ -239,7 +243,7 @@ export default function Filter({
       
       {/* ARTIFACT SET */}
       <div className="filter-option">
-        <h2>Artifact Set</h2>
+        <h3>Artifact</h3>
         <div ref={artifactDropDownRef}>
           {artifactSetDropDownOpen ? (
             <>
@@ -258,15 +262,17 @@ export default function Filter({
           <div className="dropdown-wrapper">
             <div 
               onClick={() => handleDropDown('Artifact')} 
-              className={selectedArtifactSet.length === 1 ? 'dropdown active' : 'dropdown'}
+              className={selectedArtifactSet.length === 1 ? 'dropdown highlighted' : 'dropdown'}
             >
+              <img
+                className="filter-icon"  
+                src={
+                  selectedArtifactSet.length > 0 ? `./images/artifacts/flowers/${selectedArtifactSet} Flower.webp` : 
+                  selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Flower.webp` : ''
+                }
+                alt={selectedArtifactSet}
+              />
               <p>
-                {selectedArtifactSet.length > 0 &&
-                <img
-                  src={`./images/artifacts/flowers/${selectedArtifactSet} Flower.webp`}
-                  alt={selectedArtifactSet}
-                  style={{ width: '20px', marginRight: '10px' }}
-                />}
                 {selectedArtifactSet.length > 0 ? selectedArtifactSet : "Select an artifact set"}
               </p>
             </div>
@@ -276,7 +282,7 @@ export default function Filter({
             <button
               className="clear-input"
               onClick={() => handleArtifactSetChange('clear selection')}>
-              X
+              &#10006;
             </button>}
 
           </div>
@@ -317,16 +323,26 @@ export default function Filter({
       <div className="filter-option">
         {artifactTypesAndStats.map((artifact: ArtifactType) => (
           <React.Fragment key={artifact.name}>
-            <h2>{artifact.name}</h2>
+            {/*<h2>{artifact.name}</h2>*/}
 
             {artifact.name === 'Sands' && 
               <div ref={sandsDropDownRef} >
                 <div className="dropdown-wrapper">
                   <div 
-                    className={selectedSands.length > 0 ? 'dropdown active' : 'dropdown'}
+                    className={selectedSands.length > 0 ? 'dropdown highlighted' : 'dropdown'}
                     onClick={() => handleDropDown('Sands')}
                   >
-                    <p>{selectedSands.length > 0 ? selectedSands : 'Select a sands'}</p>
+                    <img
+                      className="filter-icon"  
+                      src={
+                        selectedArtifactSet.length > 0 ? `./images/artifacts/sands/${selectedArtifactSet} ${artifact.name}.webp` : 
+                        selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                      }
+                      alt={selectedArtifactSet}
+                    />
+                    <p>                
+                      {selectedSands.length > 0 ? selectedSands : 'Select a sands'}
+                    </p>
                   </div>
 
                   {/* X button clear the input, if any */}
@@ -334,7 +350,7 @@ export default function Filter({
                   <button
                     className="clear-input"
                     onClick={() => handleMainstatChange('clear selection', artifact.name)}>
-                    X
+                    &#10006;
                   </button>}
 
                 </div>
@@ -363,10 +379,20 @@ export default function Filter({
               <div ref={gobletDropDownRef}>
                 <div className="dropdown-wrapper">
                   <div 
-                    className={selectedGoblet.length > 0 ? 'dropdown active' : 'dropdown'}
+                    className={selectedGoblet.length > 0 ? 'dropdown highlighted' : 'dropdown'}
                     onClick={() => handleDropDown('Goblet')}
                   >
-                    <p>{selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet'}</p>
+                    <img
+                      className="filter-icon"  
+                      src={
+                        selectedArtifactSet.length > 0 ? `./images/artifacts/goblets/${selectedArtifactSet} ${artifact.name}.webp` : 
+                        selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                      }
+                      alt={selectedArtifactSet}
+                    />
+                    <p>
+                      {selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet'}
+                    </p>
                   </div>
 
                   {/* X button clear the input, if any */}
@@ -374,7 +400,7 @@ export default function Filter({
                   <button
                     className="clear-input"
                     onClick={() => handleMainstatChange('clear selection', artifact.name)}>
-                    X
+                    &#10006;
                   </button>}
 
                 </div>
@@ -403,10 +429,20 @@ export default function Filter({
               <div ref={circletDropDownRef}>
                 <div className="dropdown-wrapper">
                   <div 
-                    className={selectedCirclet.length > 0 ? 'dropdown active' : 'dropdown'}
+                    className={selectedCirclet.length > 0 ? 'dropdown highlighted' : 'dropdown'}
                     onClick={() => handleDropDown('Circlet')}
                   >
-                    <p>{selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet'}</p>
+                    <img 
+                      className="filter-icon"
+                      src={
+                        selectedArtifactSet.length > 0 ? `./images/artifacts/circlets/${selectedArtifactSet} ${artifact.name}.webp` : 
+                        selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                      }
+                      alt={selectedArtifactSet}
+                    />
+                    <p>
+                      {selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet'}
+                    </p>
                   </div>
 
                   {/* X button clear the input, if any */}
@@ -414,7 +450,7 @@ export default function Filter({
                   <button
                     className="clear-input"
                     onClick={() => handleMainstatChange('clear selection', artifact.name)}>
-                    X
+                    &#10006;
                   </button>}
 
                 </div>
@@ -445,13 +481,22 @@ export default function Filter({
 
       {/* SUBSTATS */}
       <div className="filter-option">
-        <h2>Substats</h2>
+        <h3>Substats</h3>
         {substats.map((stat: string) => (
-          <label key={stat}>
+          <label key={stat} className={selectedSubstats.includes(stat) > 0 ? 'highlighted' : ''}>
             <input
               type="checkbox"
               checked={selectedSubstats.includes(stat)}
               onChange={() => handleSubstatsChange(stat)}
+            />
+            <img
+              className="filter-icon"  
+              src={
+                stat === 'HP%' ? `./images/artifacts/Icon HP.webp` :
+                stat === 'ATK%' ? `./images/artifacts/Icon ATK.webp` :
+                stat === 'DEF%' ? `./images/artifacts/Icon DEF.webp` :
+                stat === 'CRIT DMG' ? `./images/artifacts/Icon CRIT Rate.webp` :
+                `./images/artifacts/Icon ${stat}.webp`} 
             />
             {stat}
           </label>
@@ -460,20 +505,22 @@ export default function Filter({
 
       {/* ELEMENTS */}
       <div className="filter-option">
-        <h2>Element</h2>
+        <h3>Element</h3>
         {elements.map((element: string) => (
-          <label key={element}>
+          <label key={element} className={selectedElements.includes(element) > 0 ? 'highlighted' : ''}>
             <input
               type="checkbox"
               checked={selectedElements.includes(element)}
               onChange={() => handleElementsChange(element)}
             />
+            <img
+              className="filter-icon"   
+              src={`./images/elements/${element}.webp`} />
             {element}
           </label>
         ))}
       </div>
-
-      <button onClick={() => resetFilters()}>Reset all filters</button>
+      <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
     </section>
   );
 }

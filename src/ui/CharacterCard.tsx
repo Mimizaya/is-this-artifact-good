@@ -40,7 +40,7 @@ export default function CharacterCard({
 
 		      if (elementThree) {
 		        const elementThreeHeight = elementThree.offsetHeight;
-		        maxHeight = Math.max(maxHeight, elementTwoHeight + elementThreeHeight);
+		        maxHeight = Math.max(elementOneHeight, elementTwoHeight + elementThreeHeight);
 		      }
 
 	        if(elementOneHeight !== elementTwoHeight && elementThree === null) {
@@ -48,11 +48,9 @@ export default function CharacterCard({
 	          elementTwo.style.height = `${maxHeight}px`;
 	        }
 	        else if(elementThree) {
-	        	elementOne.style.height = `${maxHeight + 5}px`; // +10 for margins
+	        	elementOne.style.height = `${maxHeight + 5}px`; // +5 for margins
 	        }
 	      } 
-
-
 	    }
 	  }, []);
 
@@ -160,6 +158,7 @@ export default function CharacterCard({
 			  	</div>
 	      </div>
 
+
 	      <div className="artifact-types">
 		      {/* BUILD ENTRY - SANDS */}
 		      <div className="build-content-entry">
@@ -202,6 +201,7 @@ export default function CharacterCard({
 			      </div>
 		      </div>
 	      </div>
+
 
 	      {/* BUILD ENTRY - SUBSTATS */}
 	      <div className="substats">

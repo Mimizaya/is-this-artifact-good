@@ -3,11 +3,11 @@
 * {
   box-sizing: border-box;
 }
-#root {
+#root, body {
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: left;
-  scrollbar-width: thin;
+  overflow: hidden;
 }
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
@@ -21,34 +21,96 @@ ul, li {
 .clear {
   clear: both;
 }
+.highlighted {
+  color: lightgreen;
+  font-weight: 700 !important;
+
+  img {
+    filter: grayscale(0%) !important;
+  }
+}
+
+
+$filter-width: 250px;
+$filter-padding: 20px;
+$header-height: 50px;
 
 section#filter {
+  background-color: #222222;
   box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: hidden;
+  overflow-y: scroll;
   scrollbar-width: thin;
-  width: 20vw;
+  width: $filter-width + ($filter-padding *2) + 10; // +10 for scrollbar
   height: 100%;
-  padding: 20px;
+  padding: $filter-padding;
 
+  div.filter-header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    height: $header-height;
+    background-color: darken(#242424, 2%);
+    width: $filter-width +40;
+
+    h2 {
+      flex: 50%;
+      color: #CCC;
+      font-size: 1em;
+      font-weight: 700;
+      margin-top: 12px;
+      margin-left: 20px;
+    }
+  }
+
+  div.filter-option.character { 
+    margin-top: 40px;
+  }
   div.filter-option {
-    margin-right: 30px;
+    h3 {
+      margin-top: 15px;
+    }
+
+    img.filter-icon {
+      height: 25px;
+      margin-right: 7px;
+      filter: grayscale(100%);
+    }
 
     div.search-bar {
       height: 44px;
-      width: 300px;
+      width: $filter-width;
       color: rgba(255, 255, 255, 0.87);
-      background-color: #222222;
-      border: 1px solid #141414;
+      background-color: #252525;
+      border-bottom: 1px solid #192019;
       position: relative;
 
       input.search-input {
         all: unset;
         padding: 0 10px;
         height: 44px;
-        width: 300px;
+        width: $filter-width;
+      }
+    }
+    label:hover {
+      background-color: lighten(#242424, 5%);
+      cursor: pointer;
+    }
+    label {
+      display: flex;
+      padding: 5px;
+      width: $filter-width;
+      background-color: #252525;
+      border-bottom: 1px solid #192019;
+      box-shadow: 1px 3px 5px #202020;
+
+      input {
+        display: none;
+        visibility: hidden;
       }
     }
   }
@@ -61,31 +123,26 @@ section#filter {
 
   div.dropdown-wrapper {
     position: relative;
-    width: 300px;
+    width: $filter-width;
+    overflow: hidden;
 
     div.dropdown {
+      display: flex;
       cursor: pointer;
-      border: 1px solid #141414;
+      background-color: #252525;
+      border-bottom: 1px solid #192019;
+      box-shadow: 1px 3px 5px #202020;
       height: 44px;
-      width: 100%;
-      background-color: #222222;
+      width: 500px;
       position: relative;
-      padding: 10px;
-      overflow: hidden;
+      padding: 10px 10px 10px 5px;
     }
     div.dropdown:hover {
       background-color: lighten(#242424, 5%);
     }
-    div.dropdown.active {
-      width: 256px;
-
-      p {
-        color: lightgreen;
-        font-weight: 700;
-        width: 500px; // ensure all on one line, overflow is hidden
-      }
-    }
     button.clear-input {
+      color: #999;
+      font-weight: 700;
       position: absolute;
       top: 0;
       right: 0;
@@ -93,9 +150,9 @@ section#filter {
       width: 44px;
       text-align: center;
       cursor: pointer;
-      border: none;
-      border: 1px solid #141414;
-      border-left: none;
+      border: 1px solid #192019;
+      border-top: none;
+      background-color: #272222;
     }
   }
   ul.dropdown-menu {
@@ -104,12 +161,14 @@ section#filter {
     padding: 0;
     position: absolute;
     z-index: 10;
-    width: 300px;
+    width: $filter-width;
     color: rgba(255, 255, 255, 0.87);
     background-color: #222222;
-    border: 1px solid #141414;
+    box-shadow: 1px 3px 5px #191919;
+    border-bottom: 1px solid #192019;
     overflow-y: scroll;
     scrollbar-width: thin;
+    height: 500px;
 
     li {
       padding: 10px;
@@ -117,6 +176,7 @@ section#filter {
       cursor: pointer;
       display: flex;
       align-items: center;
+      border-bottom: 1px solid #192019;
 
       img {
         height: 100%;
@@ -127,52 +187,73 @@ section#filter {
       background-color: lighten(#242424, 5%);
     }
   }
+
 }
 
 section#results {
-  position: fixed;
-  top: 0;
-  left: 20vw;
-  padding: 20px;
+  margin-left: $filter-width + ($filter-padding *2) + 40; // +10 for scrollbar
   overflow-y: scroll;
-  width: 80vw;
-  height: 100vh;
   scrollbar-width: thin;
+  height: 100vh;
 
-  .highlighted {
-    color: lightgreen;
-    font-weight: 700 !important;
-  }
-  .rarity-4 {
-    border-bottom: 3px solid purple;
-  }
-  .rarity-5 {
-    border-bottom: 3px solid orange;
-  }
   .row {
+    margin-top: $header-height + 10;
     display: flex;
     flex-wrap: wrap;
-    padding: 0 4px;
   }
   .column {
     max-width: 33%;
-    padding: 0 4px;
     box-sizing: border-box;
+    margin: 20px;
   }
-  @media screen and (max-width: 1560px) {
+  @media screen and (max-width: 1750px) {
     .column {
-      flex: 50%;
       max-width: 50%;
     }
   }
-  @media screen and (max-width: 1060px) {
+  @media screen and (max-width: 1275px) {
     .column {
-      flex: 100%;
       max-width: 100%;
     }
   }
 
-  h3.results-header {
-    margin-bottom: 30px;
+  div.results-header {
+    position: fixed;
+    top: 0;
+    left: $filter-width + ($filter-padding *2) + 10;
+    z-index: 10;
+    height: $header-height;
+    background-color: darken(#242424, 2%);
+    width: 100%;
+
+    h2 {
+      color: #CCC;
+      font-size: 1em;
+      font-weight: 700;
+      margin-top: 12px;
+      margin-left: 20px;
+    }
   }
+}
+
+
+
+div#no-results {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 35vh;
+}
+button.reset-filters {
+  color: #DDD;
+  font-size: 0.9em;
+  font-family: inherit;
+  font-weight: 700;
+  border: none;
+  margin-top: 20px;
+  padding: 10px;
+  cursor: pointer;
+  width: $filter-width;
+  background-color: #272222;
+  border-bottom: 1px solid #192019;
+  box-shadow: 1px 3px 5px #202020;
 }

@@ -11,7 +11,8 @@ export default function Results({
   selectedGoblet,
   selectedCirclet,
   selectedSubstats,
-  selectedElements
+  selectedElements,
+  resetFilters,
 }: {
   characterDataCSV: any;
   selectedCharacter: any;
@@ -21,6 +22,7 @@ export default function Results({
   selectedCirclet: any;
   selectedSubstats: any;
   selectedElements: any;
+  resetFilters: any;
 }) {
 
   // Map static character data to builds in filteredResult
@@ -115,13 +117,23 @@ export default function Results({
 
   return (
     <section id="results">
-      <h3 className="results-header">{
-        noFilter ? 'Showing all builds' : 
-        filteredResults.length === 1 ? `Found ${filteredResults.length} build matching filters` : 
-        filteredResults.length > 1 ? `Found ${filteredResults.length} builds matching filters` : 
-        'No builds matching current filters'}
-      </h3>
+      <div className="results-header">
+        <h2>{
+          noFilter ? 'Showing all builds' : 
+          filteredResults.length === 1 ? `Found ${filteredResults.length} build matching filters` : 
+          filteredResults.length > 1 ? `Found ${filteredResults.length} builds matching filters` : 
+          'No builds matching current filters'}
+        </h2>
+      </div>
       <div className="row">
+
+      {filteredResults.length === 0 &&
+        <div id="no-results">
+          <h3>These are not the builds you're looking for...</h3>
+          <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
+        </div>
+      }
+
       {filteredResults.map((build: Build) => (
         <div 
           key={build.character_name + build.build_name + build.artifact_set + build.artifact_set_2} 

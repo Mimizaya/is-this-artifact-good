@@ -144,6 +144,7 @@ export default function App() {
           selectedElements={selectedElements}
         />
         <Results 
+          resetFilters={resetFilters}
           characterDataCSV={rawData}
           selectedCharacter={selectedCharacter}
           selectedArtifactSet={selectedArtifactSet}
