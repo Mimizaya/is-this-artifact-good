@@ -6,6 +6,45 @@ import Results from './ui/Results.tsx';
 
 export default function App() {
 
+  // Data version
+    const VERSION = '2.0';
+
+  // Prepare data imported from CSV
+    const [rawData, setRawData] = useState<string[]>([]);
+    useEffect(() => {
+      // Check localstorage data exists, and which version
+      const storedData = localStorage.getItem('csvData');
+      const storedVersion = localStorage.getItem('csvDataVersion');
+
+      if (storedData && storedVersion === VERSION) {
+        setRawData(JSON.parse(storedData));
+      } 
+      else {
+        // Fetch the CSV file from the public folder
+        fetch('./builds-data.csv')
+          .then((response) => response.text())
+          .then((text) => {
+            Papa.parse(text, {
+              header: true,
+              skipEmptyLines: true,
+              complete: (results: any) => {
+                // Set parsed data to state
+                setRawData(results.data);
+                // Save parsed data to local storage
+                localStorage.setItem('csvData', JSON.stringify(results.data));
+                localStorage.setItem('csvDataVersion', VERSION);
+              },
+              error: (error: any) => {
+                console.error('Error parsing CSV:', error);
+              },
+            });
+          })
+          .catch((error) => {
+            console.error('Error fetching CSV:', error);
+          });
+      }
+    }, []);
+
   // Filter selection states
     const [selectedCharacter, setSelectedCharacter] = useState<string[]>([]);
     const [selectedArtifactSet, setSelectedArtifactSet] = useState<string[]>([]);
@@ -84,46 +123,6 @@ export default function App() {
       setSelectedSubstats([]);
       setSelectedElements([]);
     }
-
-  // Prepare data imported from CSV
-    const [rawData, setRawData] = useState<string[]>([]);
-
-    // Increment version when updating data to invalidate storage and parse new data
-    const VERSION = '1.1';
-
-    useEffect(() => {
-      // Check localstorage data exists, and which version
-      const storedData = localStorage.getItem('csvData');
-      const storedVersion = localStorage.getItem('csvDataVersion');
-
-      if (storedData && storedVersion === VERSION) {
-        setRawData(JSON.parse(storedData));
-      } 
-      else {
-        // Fetch the CSV file from the public folder
-        fetch('./builds-data.csv')
-          .then((response) => response.text())
-          .then((text) => {
-            Papa.parse(text, {
-              header: true,
-              skipEmptyLines: true,
-              complete: (results: any) => {
-                // Set parsed data to state
-                setRawData(results.data);
-                // Save parsed data to local storage
-                localStorage.setItem('csvData', JSON.stringify(results.data));
-                localStorage.setItem('csvDataVersion', VERSION);
-              },
-              error: (error: any) => {
-                console.error('Error parsing CSV:', error);
-              },
-            });
-          })
-          .catch((error) => {
-            console.error('Error fetching CSV:', error);
-          });
-      }
-    }, []);
 
   return (
     <>

@@ -15,7 +15,7 @@ p, h1, h2, h3, h4, h5, h6 {
   padding: 0;
 }
 
-ul, li {
+ul, li, ol {
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -93,12 +93,14 @@ section#filter div.filter-option label:hover {
   cursor: pointer;
 }
 section#filter div.filter-option label {
+  transition: all 0.3s ease-out;
   display: flex;
   padding: 5px;
   width: 250px;
   background-color: #252525;
   border-bottom: 1px solid #192019;
   box-shadow: 1px 3px 5px #202020;
+  user-select: none;
 }
 section#filter div.filter-option label input {
   display: none;
@@ -116,6 +118,7 @@ section#filter div.dropdown-wrapper {
   overflow: hidden;
 }
 section#filter div.dropdown-wrapper div.dropdown {
+  transition: all 0.3s ease-out;
   display: flex;
   cursor: pointer;
   background-color: #252525;
@@ -125,23 +128,10 @@ section#filter div.dropdown-wrapper div.dropdown {
   width: 500px;
   position: relative;
   padding: 10px 10px 10px 5px;
+  user-select: none;
 }
 section#filter div.dropdown-wrapper div.dropdown:hover {
   background-color: #313131;
-}
-section#filter div.dropdown-wrapper button.clear-input {
-  color: #999;
-  font-weight: 700;
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 44px;
-  width: 44px;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid #192019;
-  border-top: none;
-  background-color: #272222;
 }
 section#filter ul.dropdown-menu {
   list-style-type: none;
@@ -159,6 +149,7 @@ section#filter ul.dropdown-menu {
   height: 500px;
 }
 section#filter ul.dropdown-menu li {
+  transition: all 0.3s ease-out;
   padding: 10px;
   height: 44px;
   cursor: pointer;
@@ -175,7 +166,7 @@ section#filter ul.dropdown-menu li:hover {
 }
 
 section#results {
-  margin-left: 330px;
+  margin-left: 320px;
   overflow-y: scroll;
   scrollbar-width: thin;
   height: 100vh;
@@ -188,7 +179,7 @@ section#results .row {
 section#results .column {
   max-width: 33%;
   box-sizing: border-box;
-  margin: 20px;
+  margin: 30px;
 }
 @media screen and (max-width: 1750px) {
   section#results .column {
@@ -224,18 +215,38 @@ div#no-results {
 }
 
 button.reset-filters {
-  color: #DDD;
-  font-size: 0.9em;
-  font-family: inherit;
-  font-weight: 700;
   border: none;
   margin-top: 20px;
   padding: 10px;
-  cursor: pointer;
   width: 250px;
-  background-color: #272222;
   border-bottom: 1px solid #192019;
+}
+
+button.clear-input {
+  color: #999;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 44px;
+  width: 44px;
+  border: 1px solid #192019;
+  border-top: none;
+}
+
+button.reset-filters, button.clear-input {
+  transition: all 0.3s ease-out;
+  background-color: #272222;
   box-shadow: 1px 3px 5px #202020;
+  cursor: pointer;
+  text-align: center;
+  color: #DDD;
+  font-weight: 700;
+  font-size: 0.9em;
+  font-family: inherit;
+}
+
+button.reset-filters:hover, button.clear-input:hover {
+  background-color: #362727;
 }
 
 /*# sourceMappingURL=App.css.map */

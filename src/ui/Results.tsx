@@ -1,6 +1,6 @@
-
 import CharacterCard from './CharacterCard.tsx'
 import { characterData } from '../data/character-data.ts';
+import { artifactSets } from '../data/artifact-data.ts';
 import { Character, Build } from '../types/types.ts';
 
 export default function Results({
@@ -25,6 +25,13 @@ export default function Results({
   resetFilters: any;
 }) {
 
+  // Save filter configurations
+    //const [currentFilterTab, setCurrentFilterTab] = useState(1);
+    //const [savedFilters, setSavedFilters] = useState([]);
+
+
+
+
   // Map static character data to builds in filteredResult
     const enrichedResults = characterDataCSV.map((build: Build) => {
 
@@ -39,26 +46,66 @@ export default function Results({
       };
     });
 
-  // Sort builds by elements, then by alphabetical order
-    // Define order for elements (based on loading screen order)
-    const elementOrder = ['Pyro', 'Hydro', 'Anemo', 'Electro', 'Dendro', 'Cryo', 'Geo'];
+  // Sorting 
+    // Sort builds by element > name
+      // Define order for elements (based on loading screen order)
+      /*const elementOrder = ['Pyro', 'Hydro', 'Anemo', 'Electro', 'Dendro', 'Cryo', 'Geo'];
 
-    const sortedCharacters = enrichedResults.sort((a: Build, b: Build) => {
-      const indexA = elementOrder.indexOf(a.element);
-      const indexB = elementOrder.indexOf(b.element);
+      const sortedCharacters = enrichedResults.sort((a: Build, b: Build) => {
+        const indexA = elementOrder.indexOf(a.element);
+        const indexB = elementOrder.indexOf(b.element);
 
-      // Sort by element order first
-      if (indexA !== indexB) {
-        return indexA - indexB;
-      }
+        // Sort by element order first
+        if (indexA !== indexB) {
+          return indexA - indexB;
+        }
 
-      // If elements are the same, sort by name
-      return a.character_name.localeCompare(b.character_name);
-    });
+        // If elements are the same, sort by name
+        return a.character_name.localeCompare(b.character_name);
+      });*/
+
+    // Sort builds by artifact set > name
+      /*const artifactOrder = artifactSets.map(artifact => artifact.name);
+
+      console.log(artifactOrder)
+
+      const sortedCharacters = enrichedResults.sort((a: Build, b: Build) => {
+        const indexA = artifactOrder.indexOf(a.artifact_set);
+        const indexB = artifactOrder.indexOf(b.artifact_set);
+
+        // Sort by element order first
+        if (indexA !== indexB) {
+          return indexA - indexB;
+        }
+
+        // If elements are the same, sort by name
+        return a.character_name.localeCompare(b.character_name);
+      });*/
+
+    // Sort builds by artifact set > element > name
+      const artifactOrder = artifactSets.map(artifact => artifact.name);
+      const elementOrder = ['Pyro', 'Hydro', 'Anemo', 'Electro', 'Dendro', 'Cryo', 'Geo'];
+
+      const sortedCharacters = enrichedResults.sort((a: Build, b: Build) => {
+        const indexAArtifact = artifactOrder.indexOf(a.artifact_set);
+        const indexBArtifact = artifactOrder.indexOf(b.artifact_set);
+        const indexAElement = elementOrder.indexOf(a.element);
+        const indexBElement = elementOrder.indexOf(b.element);
+
+        // Sort by artifact order
+        if (indexAArtifact !== indexBArtifact) {
+          return indexAArtifact - indexBArtifact;
+        }
+        // Sort by element order
+        if (indexAElement !== indexBElement) {
+          return indexAElement - indexBElement;
+        }
+        // Sort by name
+        return a.character_name.localeCompare(b.character_name);
+      });
 
   // Calculate results from active filters
     const filteredResults = sortedCharacters.filter((build: Build) => {
-
       // Check character
       const isCharacterSelected = selectedCharacter.length === 0 || 
         selectedCharacter.includes(build.character_name);
@@ -110,8 +157,6 @@ export default function Results({
       );
     });
 
-    console.log(filteredResults)
-
   // Filter applied?
     const noFilter = sortedCharacters.length === filteredResults.length;
 
@@ -125,14 +170,14 @@ export default function Results({
           'No builds matching current filters'}
         </h2>
       </div>
-      <div className="row">
 
+
+      <div className="row">
       {filteredResults.length === 0 &&
         <div id="no-results">
           <h3>These are not the builds you're looking for...</h3>
           <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
-        </div>
-      }
+        </div>}
 
       {filteredResults.map((build: Build) => (
         <div 

@@ -145,8 +145,6 @@ export default function Filter({
       };
     }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
-  // Check for any filter applied
-
   return (
     <section id="filter">
       <div className="filter-header">
@@ -157,87 +155,74 @@ export default function Filter({
       <div className="filter-option character">
         <h3>Character</h3>
           <div ref={characterDropDownRef}>
-          {/* If menu is open, render search bar */}
-          {characterDropDownOpen ? (
-            <>
-            <div className="search-bar">
-              {/* Input for filtering the character list */}
-              <input
-                className="search-input"
-                ref={characterRef}
-                value={characterQuery}
-                onChange={handleCharacterQuery}
-                placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to search"}
-              />
-            </div>
-            </>
-          ) : (
-            <>
-            {/* Else if menu is closed, render the dropdown toggle */}
-            <div className="dropdown-wrapper">
-            <div 
-              onClick={() => handleDropDown('Character')} 
-              className={selectedCharacter.length === 1 ? 'dropdown highlighted' : 'dropdown'}>
-              <img 
-                className="filter-icon" 
-                src={
-                  selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
-                  selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
-                }
-                alt={selectedCharacter}
-              />
-              <p>
-                {/* If character is selected, display their name, otherwise placeholder text */}
-                {selectedCharacter.length === 1 ? selectedCharacter : "Select a character"}
-              </p>
-            </div>
 
-            
-            {/* X button clear the input, if any */}
-            {selectedCharacter.length === 1 &&
-            <button
-              className="clear-input"
-              onClick={() => handleCharacterChange('clear selection')}>
-              &#10006;
-            </button>}
-            </div>
-            </>
-          )
-        }
-        {/* Dropdown is open */}
-        {characterDropDownOpen && (
-          <ul className="dropdown-menu">
+            {/* Render dropdown toggle */}
+            {!characterDropDownOpen ? (
+              <>
+              <div className="dropdown-wrapper">
+                <div 
+                  onClick={() => handleDropDown('Character')} 
+                  className={selectedCharacter.length === 1 ? 'dropdown highlighted' : 'dropdown'}>
+                  <img 
+                    className="filter-icon" 
+                    src={
+                      selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
+                      selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
+                    }
+                    alt={selectedCharacter}
+                  />
+                  <p>
+                    {/* If character is selected, display their name, otherwise placeholder text */}
+                    {selectedCharacter.length === 1 ? selectedCharacter : "Select a character"}
+                  </p>
+                </div>
 
-            {/* If a character is selected, render a li to clear the selection */}
-            {selectedCharacter.length === 1 &&
-            <li 
-              onClick={() => {
-              
-              setCharacterDropDownOpen(!characterDropDownOpen)
-            }}>
-              Clear selection
-            </li>}
-
-            {/* Render a li for every character in the filtered data */}
-            {filteredCharacterData.map((character: Character) => (
-              <li key={character.name + character.element} onClick={() => {
-                handleCharacterChange(character.name)
-                setCharacterDropDownOpen(!characterDropDownOpen)
-                setCharacterQuery('')
-              }}>
-
-                {/* Character image */}
-                <img
-                  src={`./images/characters/${character.name}.webp`}
-                  alt={character.name}
+                {/* X button clear the selection */}
+                {selectedCharacter.length === 1 &&
+                <button
+                  className="clear-input"
+                  onClick={() => handleCharacterChange('clear selection')}>
+                  &#10006;
+                </button>}
+              </div>
+              </>
+            ) : (
+              <>
+              {/* Render search bar */}
+              <div className="search-bar">
+                <input
+                  className="search-input"
+                  ref={characterRef}
+                  value={characterQuery}
+                  onChange={handleCharacterQuery}
+                  placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to search"}
                 />
+              </div>
+    
+              {/* Render the filtered character data to list */}
+              <ul className="dropdown-menu">
+                {filteredCharacterData.map((character: Character) => (
+                  <li key={character.name + character.element} onClick={() => {
+                    handleCharacterChange(character.name)
+                    setCharacterDropDownOpen(!characterDropDownOpen)
+                    setCharacterQuery('')
+                  }}>
 
-                {/* Character name */}
-                {character.name}
-              </li>
-            ))}
-          </ul>
-        )}
+                    {/* Character image */}
+                    <img
+                      src={`./images/characters/${character.name}.webp`}
+                      alt={character.name}
+                    />
+
+                    {/* Character name */}
+                    {character.name}
+
+                  </li>
+                ))}
+              </ul>
+              </>
+            )
+          }
         </div>
       </div>
       
@@ -295,12 +280,6 @@ export default function Filter({
             className="dropdown-menu"
             style={{height:'500px'}}
           >
-            {selectedArtifactSet.length === 1 &&
-            <li onClick={() => {
-              handleArtifactSetChange('clear selection')
-              setArtifactSetDropDownOpen(!artifactSetDropDownOpen)
-            }}>Clear selection</li>}
-
             {filteredArtifacts.map((set: ArtifactSet) => (
               <li key={set.name} onClick={() => {
                 handleArtifactSetChange(set.name)
@@ -316,14 +295,14 @@ export default function Filter({
             ))}
           </ul>
         )}
-      </div>
+        </div>
       </div>
 
       {/* ARTIFACT TYPE - SANDS/GOBLET/CIRCLET */}
       <div className="filter-option">
         {artifactTypesAndStats.map((artifact: ArtifactType) => (
           <React.Fragment key={artifact.name}>
-            {/*<h2>{artifact.name}</h2>*/}
+            {/*<h3>{artifact.name}</h3>*/}
 
             {artifact.name === 'Sands' && 
               <div ref={sandsDropDownRef} >
@@ -341,7 +320,7 @@ export default function Filter({
                       alt={selectedArtifactSet}
                     />
                     <p>                
-                      {selectedSands.length > 0 ? selectedSands : 'Select a sands'}
+                      {selectedSands.length > 0 ? selectedSands : 'Select a sands stat'}
                     </p>
                   </div>
 
@@ -356,13 +335,6 @@ export default function Filter({
                 </div>
               {sandsDropDownOpen && artifact.name === 'Sands' && (
                 <ul className="dropdown-menu">
-
-                  {selectedSands.length > 0 &&
-                  <li onClick={() => {
-                    handleMainstatChange('clear selection', artifact.name);
-                    setSandsDropDownOpen(!sandsDropDownOpen);
-                  }}>Clear selection</li>}
-
                   {artifact.stats.map((stat: string) => (
                     <li key={stat} onClick={() => {
                       handleMainstatChange(stat, artifact.name);
@@ -391,7 +363,7 @@ export default function Filter({
                       alt={selectedArtifactSet}
                     />
                     <p>
-                      {selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet'}
+                      {selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet stat'}
                     </p>
                   </div>
 
@@ -406,13 +378,6 @@ export default function Filter({
                 </div>
               {gobletDropDownOpen && artifact.name === 'Goblet' && (
                 <ul className="dropdown-menu">
-
-                  {selectedGoblet.length > 0 &&
-                  <li onClick={() => {
-                    handleMainstatChange('clear selection', artifact.name);
-                    setGobletDropDownOpen(!gobletDropDownOpen);
-                  }}>Clear selection</li>}
-
                   {artifact.stats.map((stat: string) => (
                     <li key={stat} onClick={() => {
                       handleMainstatChange(stat, artifact.name);
@@ -441,7 +406,7 @@ export default function Filter({
                       alt={selectedArtifactSet}
                     />
                     <p>
-                      {selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet'}
+                      {selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet stat'}
                     </p>
                   </div>
 
@@ -456,13 +421,6 @@ export default function Filter({
                 </div>
               {circletDropDownOpen && artifact.name === 'Circlet' && (
                 <ul className="dropdown-menu">
-
-                  {selectedCirclet.length > 0 &&
-                  <li onClick={() => {
-                    handleMainstatChange('clear selection', artifact.name);
-                    setCircletDropDownOpen(!circletDropDownOpen);
-                  }}>Clear selection</li>}
-
                   {artifact.stats.map((stat: string) => (
                     <li key={stat} onClick={() => {
                       handleMainstatChange(stat, artifact.name);

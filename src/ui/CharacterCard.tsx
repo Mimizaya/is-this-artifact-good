@@ -152,7 +152,7 @@ export default function CharacterCard({
 	      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set +" Plume.webp"}/>
 	      		{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Tutorial.webp"}/>*/}
 	      		<div className="build-content-entry-content">
-		      		<h4>Description</h4>
+		      		<h4>About</h4>
 				      <p>{build.note ? build.note : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the'}</p>  
 			      </div>
 			  	</div>
@@ -166,11 +166,11 @@ export default function CharacterCard({
 	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
 	        	<div className="build-content-entry-content">
 			      	<h4>Sands</h4>
-			        <ul>
+			        <ol>
 			          {build.sands && <li className={selectedSands.includes(build.sands) ? 'highlighted' : ''}>{build.sands}</li>}
 			          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{build.sands_2}</li>}
 			          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{build.sands_3}</li>}
-			        </ul>
+			        </ol>
 			      </div>
 			     </div>
 
@@ -180,10 +180,10 @@ export default function CharacterCard({
 	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
 	        	<div className="build-content-entry-content">
 		      		<h4>Goblet</h4>
-		        	<ul>
+		        	<ol>
 		          	{build.goblet && <li className={selectedGoblet.includes(build.goblet) ? 'highlighted' : ''}>{build.goblet}</li>}
 		          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{build.goblet_2}</li>}
-		        	</ul>
+		        	</ol>
 			      </div>
 		      </div>
 
@@ -193,11 +193,11 @@ export default function CharacterCard({
 						{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
 			      <div className="build-content-entry-content">
 				      <h4>Circlet</h4>
-			        <ul>
+			        <ol>
 			          {build.circlet && <li className={selectedCirclet.includes(build.circlet) ? 'highlighted' : ''}>{build.circlet}</li>}
 			          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{build.circlet_2}</li>}
 			          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{build.circlet_3}</li>}
-			        </ul>
+			        </ol>
 			      </div>
 		      </div>
 	      </div>
@@ -209,14 +209,14 @@ export default function CharacterCard({
 	      		<img className="artifact-icon-simple"  src={"./images/artifacts/Icon Substats.webp"}/>
 		      	<div className="build-content-entry-content">
 			      <h4>Substats Priority</h4>
-			        <ul>
+			        <ol>
 			          {build.substats && <li className={selectedSubstats.includes(build.substats) ? 'highlighted' : ''}>{build.substats}</li>}
 			          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{build.substats_2}</li>}
 			          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{build.substats_3}</li>}
 			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{build.substats_4}</li>}
 			          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{build.substats_5}</li>}
 			          {build.substats_6 && <li className={selectedSubstats.includes(build.substats_6) ? 'highlighted' : ''}>{build.substats_6}</li>}
-			        </ul>
+			        </ol>
 			      </div>
 		      </div>
 		    </div>
