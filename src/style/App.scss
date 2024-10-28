@@ -1,3 +1,8 @@
+@import './Character.css';
+
+* {
+  box-sizing: border-box;
+}
 #root {
   margin: 0 auto;
   padding: 2rem;
@@ -13,19 +18,22 @@ ul, li {
   padding: 0;
   list-style-type: none;
 }
+.clear {
+  clear: both;
+}
 
 section#filter {
   box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: scroll;
+  overflow-y: hidden;
   scrollbar-width: thin;
   width: 20vw;
   height: 100%;
   padding: 20px;
 
-  .filter-card {
+  div.filter-option {
     margin-right: 30px;
 
     div.search-bar {
@@ -43,9 +51,46 @@ section#filter {
         width: 300px;
       }
     }
+  }
+  .filter-option .artifact-type {
+    margin-top: 10px;
+  }
+  .filter-option .artifact-type:first-of-type {
+    margin-top: 0;
+  }
+
+  div.dropdown-wrapper {
+    position: relative;
+    width: 300px;
+
+    div.dropdown {
+      cursor: pointer;
+      border: 1px solid #141414;
+      height: 44px;
+      width: 100%;
+      background-color: #222222;
+      position: relative;
+      padding: 10px;
+      overflow: hidden;
+    }
+    div.dropdown:hover {
+      background-color: lighten(#242424, 5%);
+    }
+    div.dropdown.active {
+      width: 256px;
+
+      p {
+        color: lightgreen;
+        font-weight: 700;
+        width: 500px; // ensure all on one line, overflow is hidden
+      }
+    }
     button.clear-input {
-      height: 46px;
-      width: 46px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 44px;
+      width: 44px;
       text-align: center;
       cursor: pointer;
       border: none;
@@ -53,40 +98,7 @@ section#filter {
       border-left: none;
     }
   }
-  .filter-card .artifact-type {
-    margin-top: 10px;
-  }
-  .filter-card .artifact-type:first-of-type {
-    margin-top: 0;
-  }
-
-  .dropdown.active {
-    width: 256px;
-
-    p {
-      color: lightgreen;
-      font-weight: 700;
-    }
-  }
-
-  .dropdown:hover {
-    background-color: lighten(#242424, 5%);
-  }
-  .dropdown {
-    cursor: pointer;
-    border: 1px solid #141414;;
-    width: 300px;
-    background-color: #222222;
-    position: relative;
-    float: left;
-
-    p {
-      padding: 10px;
-      display: flex;
-      align-items: center;
-    }
-  }
-  .dropdown-menu {
+  ul.dropdown-menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -98,26 +110,26 @@ section#filter {
     border: 1px solid #141414;
     overflow-y: scroll;
     scrollbar-width: thin;
-  }
-  .dropdown-menu li {
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
 
-  .dropdown-menu li:hover {
-    background-color: lighten(#242424, 5%);
+    li {
+      padding: 10px;
+      height: 44px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 100%;
+        margin-right: 10px;
+      }
+    }
+    li:hover {
+      background-color: lighten(#242424, 5%);
+    }
   }
 }
 
-
-section#results .highlighted {
-  color: lightgreen;
-  font-weight: 700 !important;
-}
 section#results {
-  box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 20vw;
@@ -127,7 +139,10 @@ section#results {
   height: 100vh;
   scrollbar-width: thin;
 
-  // Character rarity colors 
+  .highlighted {
+    color: lightgreen;
+    font-weight: 700 !important;
+  }
   .rarity-4 {
     border-bottom: 3px solid purple;
   }
@@ -137,11 +152,9 @@ section#results {
   .row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: left;
     padding: 0 4px;
   }
   .column {
-    flex: 33%;
     max-width: 33%;
     padding: 0 4px;
     box-sizing: border-box;
@@ -161,108 +174,5 @@ section#results {
 
   h3.results-header {
     margin-bottom: 30px;
-  }
-  div.character-card {
-    position: relative;
-    width: 400px;
-    height: 525px;
-    background-color: #222222;
-    margin-bottom: 30px;
-    box-shadow: 1px 3px 5px #191919;
-    border-radius: 5px;
-
-    div.build-header {
-      border-radius: 5px;
-      height: 100px;
-      width: 410px;
-      position: relative;
-      right: 5px;
-      background-color: darken(#222222, 1%);
-
-      img.character-portrait {
-        height: 103px;
-        width: 103px;
-        border-radius: 10px;
-        margin-left: 10px;
-        padding: 0;
-      }
-      img.character-element {
-        height: 50px;
-        width: 50px;
-        position: absolute;
-        top: -15px;
-        left: -20px;
-      }
-      div.character-title {
-        position: absolute;
-        left: 130px;
-        top: 15px;
-
-        h3.build-name {
-          margin: 0;
-          color: #BBB;
-          font-weight: 700;
-        }
-      }
-    }
-    div.build-content {
-      padding: 20px;
-
-      div.constellation {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        //opacity: 1;
-        opacity: 0.06;
-        pointer-events: none;
-
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      div.artifact-set {
-        margin-bottom: 10px;
-
-        .artifact-logic-and {
-          font-weight: 400;
-        }
-        .artifact-logic-or {
-          font-weight: 400;
-          color: rgba(255, 255, 255, 0.87);
-        }
-      }
-      div.artifact-types {
-        float: left;
-        width: 50%;
-        margin-bottom: 10px;
-
-        div.artifact-type {
-          margin-bottom: 5px;
-        }
-      }
-      div.substats {
-        float: left;
-        width: 50%;
-      }
-      div.er-requirements {
-        margin-bottom: 10px;
-        clear: both;
-      }
-      div.note {
-        li {
-          font-size: 0.9em;
-          font-weight: 600;
-        }
-      }
-      p {
-        font-size: 0.9em;
-        color: #BBB;
-      }
-      li {
-        font-weight: 600;
-      }
-    }
   }
 }

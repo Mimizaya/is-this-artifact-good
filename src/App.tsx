@@ -89,7 +89,7 @@ export default function App() {
     const [rawData, setRawData] = useState<string[]>([]);
 
     // Increment version when updating data to invalidate storage and parse new data
-    const VERSION = '1.2';
+    const VERSION = '1.1';
 
     useEffect(() => {
       // Check localstorage data exists, and which version

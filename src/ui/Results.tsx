@@ -64,12 +64,14 @@ export default function Results({
       // Check artifact set
       const isArtifactSetSelected = selectedArtifactSet.length === 0 || 
         selectedArtifactSet.includes(build.artifact_set) ||
-        selectedArtifactSet.includes(build.artifact_set_2);
+        selectedArtifactSet.includes(build.artifact_set_2) ||
+        selectedArtifactSet.includes(build.artifact_set_3);
 
       // Check sands
       const isSandsSelected = selectedSands.length === 0 || 
         selectedSands.includes(build.sands) ||
-        selectedSands.includes(build.sands_2);
+        selectedSands.includes(build.sands_2) ||
+        selectedSands.includes(build.sands_3);
 
       // Check goblet
       const isGobletSelected = selectedGoblet.length === 0 || 

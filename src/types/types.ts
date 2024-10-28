@@ -11,8 +11,11 @@ export interface Build {
 	artifact_set: string;
 	artifact_logic: string;
 	artifact_set_2: string;
+	artifact_logic_2: string;
+	artifact_set_3: string;
 	sands: string;
 	sands_2: string;
+	sands_3: string;
 	goblet: string;
 	goblet_2: string;
 	circlet: string;

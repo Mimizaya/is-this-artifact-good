@@ -47,25 +47,6 @@ export default function Filter({
     const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
     const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false);
 
-  // Handle menu behaviours
-    const handleDropDown = (menu: string) => {
-      if(menu === 'Character') {
-        setCharacterDropDownOpen(true);
-      }
-      if(menu === 'Artifact') {
-        setArtifactSetDropDownOpen(true);
-      }
-      if(menu === 'Sands') {
-        setSandsDropDownOpen(true);
-      }
-      if(menu === 'Goblet') {
-        setGobletDropDownOpen(true);
-      }
-      if(menu === 'Circlet') {
-        setCircletDropDownOpen(true);
-      }
-    }
-
   // Automatically focus the search inputs when opened
     const characterRef = useRef<HTMLInputElement>(null);
     const artifactRef = useRef<HTMLInputElement>(null);
@@ -108,55 +89,67 @@ export default function Filter({
       set.name.toLowerCase().includes(artifactQuery.toLowerCase())
     );
 
-
-  const characterDropDownRef = useRef<HTMLInputElement>(null);
-  const artifactDropDownRef = useRef<HTMLInputElement>(null);
-  const sandsDropDownRef = useRef<HTMLInputElement>(null);
-  const gobletDropDownRef = useRef<HTMLInputElement>(null);
-  const circletDropDownRef = useRef<HTMLInputElement>(null);
-
-  const handleClickOutside = (event) => {
-    // Check if the click was outside the dropdown and button
-    if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target)) {
-      setCharacterDropDownOpen(false);
-    }
-    if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target)) {
-      setArtifactSetDropDownOpen(false);
-    }
-    if (sandsDropDownRef.current && !sandsDropDownRef.current.contains(event.target)) {
-      setSandsDropDownOpen(false);
-    }
-    if (gobletDropDownRef.current && !gobletDropDownRef.current.contains(event.target)) {
-      setGobletDropDownOpen(false);
-    }
-    if (circletDropDownRef.current && !circletDropDownRef.current.contains(event.target)) {
-      setCircletDropDownOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    // Add the event listener when the dropdown is open
-    if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+  // Handle menu behaviours
+    const handleDropDown = (menu: string) => {
+      if(menu === 'Character') {
+        setCharacterDropDownOpen(true);
+      }
+      if(menu === 'Artifact') {
+        setArtifactSetDropDownOpen(true);
+      }
+      if(menu === 'Sands') {
+        setSandsDropDownOpen(true);
+      }
+      if(menu === 'Goblet') {
+        setGobletDropDownOpen(true);
+      }
+      if(menu === 'Circlet') {
+        setCircletDropDownOpen(true);
+      }
     }
 
-    // Cleanup the event listener on component unmount or when dropdown closes
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+    const characterDropDownRef = useRef<HTMLInputElement>(null);
+    const artifactDropDownRef = useRef<HTMLInputElement>(null);
+    const sandsDropDownRef = useRef<HTMLInputElement>(null);
+    const gobletDropDownRef = useRef<HTMLInputElement>(null);
+    const circletDropDownRef = useRef<HTMLInputElement>(null);
+
+    const handleClickOutside = (event: any) => {
+      // Check if the click was outside the dropdown and button
+      if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target)) {
+        setCharacterDropDownOpen(false);
+      }
+      if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target)) {
+        setArtifactSetDropDownOpen(false);
+      }
+      if (sandsDropDownRef.current && !sandsDropDownRef.current.contains(event.target)) {
+        setSandsDropDownOpen(false);
+      }
+      if (gobletDropDownRef.current && !gobletDropDownRef.current.contains(event.target)) {
+        setGobletDropDownOpen(false);
+      }
+      if (circletDropDownRef.current && !circletDropDownRef.current.contains(event.target)) {
+        setCircletDropDownOpen(false);
+      }
     };
-  }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
+    useEffect(() => {
+      // Add the event listener when the dropdown is open
+      if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+      }
 
-
-
-
-
+      // Cleanup the event listener on component unmount or when dropdown closes
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
   return (
     <section id="filter">
 
       {/* CHARACTER */}
-      <div className="filter-card">
+      <div className="filter-option">
         <h2>Character</h2>
           <div ref={characterDropDownRef}>
           {/* If menu is open, render search bar */}
@@ -169,13 +162,14 @@ export default function Filter({
                 ref={characterRef}
                 value={characterQuery}
                 onChange={handleCharacterQuery}
-                placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to begin searching"}
+                placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to search"}
               />
             </div>
             </>
           ) : (
             <>
             {/* Else if menu is closed, render the dropdown toggle */}
+            <div className="dropdown-wrapper">
             <div 
               onClick={() => handleDropDown('Character')} 
               className={selectedCharacter.length === 1 ? 'dropdown active' : 'dropdown'}>
@@ -193,6 +187,7 @@ export default function Filter({
                 {selectedCharacter.length === 1 ? selectedCharacter : "Select a character"}
               </p>
             </div>
+
             
             {/* X button clear the input, if any */}
             {selectedCharacter.length === 1 &&
@@ -201,6 +196,7 @@ export default function Filter({
               onClick={() => handleCharacterChange('clear selection')}>
               X
             </button>}
+            </div>
             </>
           )
         }
@@ -230,7 +226,6 @@ export default function Filter({
                 <img
                   src={`./images/characters/${character.name}.webp`}
                   alt={character.name}
-                  style={{ height: '64px', marginRight: '10px' }}
                 />
 
                 {/* Character name */}
@@ -243,7 +238,7 @@ export default function Filter({
       </div>
       
       {/* ARTIFACT SET */}
-      <div className="filter-card">
+      <div className="filter-option">
         <h2>Artifact Set</h2>
         <div ref={artifactDropDownRef}>
           {artifactSetDropDownOpen ? (
@@ -254,26 +249,27 @@ export default function Filter({
                 ref={artifactRef}
                 value={artifactQuery}
                 onChange={handleArtifactQuery}
-                placeholder={selectedArtifactSet.length === 1 ? selectedArtifactSet : "Type to begin searching"}
+                placeholder={selectedArtifactSet.length === 1 ? selectedArtifactSet : "Type to search"}
               />
             </div>
             </>
           ) : (
           <>
+          <div className="dropdown-wrapper">
             <div 
               onClick={() => handleDropDown('Artifact')} 
               className={selectedArtifactSet.length === 1 ? 'dropdown active' : 'dropdown'}
             >
-            <p>
-              {/* {selectedArtifactSet.length > 0 &&
-              <img
-                src={`/images/characters/${selectedArtifactSet}.webp`}
-                alt={selectedArtifactSet}
-                style={{ width: '20px', marginRight: '10px' }}
-              />}*/}
-              {selectedArtifactSet.length > 0 ? selectedArtifactSet : "Select an artifact set"}
-            </p>
-          </div>
+              <p>
+                {selectedArtifactSet.length > 0 &&
+                <img
+                  src={`./images/artifacts/flowers/${selectedArtifactSet} Flower.webp`}
+                  alt={selectedArtifactSet}
+                  style={{ width: '20px', marginRight: '10px' }}
+                />}
+                {selectedArtifactSet.length > 0 ? selectedArtifactSet : "Select an artifact set"}
+              </p>
+            </div>
 
             {/* X button clear the input, if any */}
             {selectedArtifactSet.length === 1 &&
@@ -282,12 +278,17 @@ export default function Filter({
               onClick={() => handleArtifactSetChange('clear selection')}>
               X
             </button>}
-            </>
 
+          </div>
+          </>
+          
           )
         }
         {artifactSetDropDownOpen && (
-          <ul className="dropdown-menu">
+          <ul 
+            className="dropdown-menu"
+            style={{height:'500px'}}
+          >
             {selectedArtifactSet.length === 1 &&
             <li onClick={() => {
               handleArtifactSetChange('clear selection')
@@ -300,12 +301,10 @@ export default function Filter({
                 setArtifactSetDropDownOpen(!artifactSetDropDownOpen)
                 setArtifactQuery('')
               }}>
-                {/* {selectedArtifactSet.length > 0 &&
                 <img
-                  src={`/images/characters/${selectedArtifactSet}.webp`}
+                  src={`./images/artifacts/flowers/${set.name} Flower.webp`}
                   alt={selectedArtifactSet}
-                  style={{ width: '20px', marginRight: '10px' }}
-                />}*/}
+                />
                 {set.name}
               </li>
             ))}
@@ -315,19 +314,30 @@ export default function Filter({
       </div>
 
       {/* ARTIFACT TYPE - SANDS/GOBLET/CIRCLET */}
-      <div className="filter-card">
+      <div className="filter-option">
         {artifactTypesAndStats.map((artifact: ArtifactType) => (
           <React.Fragment key={artifact.name}>
             <h2>{artifact.name}</h2>
 
             {artifact.name === 'Sands' && 
               <div ref={sandsDropDownRef} >
-              <div 
-                className={selectedSands.length > 0 ? 'dropdown active' : 'dropdown'}
-                onClick={() => handleDropDown('Sands')}
-              >
-                <p>{selectedSands.length > 0 ? selectedSands : 'Select a sands'}</p>
-              </div>
+                <div className="dropdown-wrapper">
+                  <div 
+                    className={selectedSands.length > 0 ? 'dropdown active' : 'dropdown'}
+                    onClick={() => handleDropDown('Sands')}
+                  >
+                    <p>{selectedSands.length > 0 ? selectedSands : 'Select a sands'}</p>
+                  </div>
+
+                  {/* X button clear the input, if any */}
+                  {selectedSands.length === 1 &&
+                  <button
+                    className="clear-input"
+                    onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                    X
+                  </button>}
+
+                </div>
               {sandsDropDownOpen && artifact.name === 'Sands' && (
                 <ul className="dropdown-menu">
 
@@ -351,12 +361,23 @@ export default function Filter({
 
             {artifact.name === 'Goblet' && 
               <div ref={gobletDropDownRef}>
-              <div 
-                className={selectedGoblet.length > 0 ? 'dropdown active' : 'dropdown'}
-                onClick={() => handleDropDown('Goblet')}
-              >
-                <p>{selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet'}</p>
-              </div>
+                <div className="dropdown-wrapper">
+                  <div 
+                    className={selectedGoblet.length > 0 ? 'dropdown active' : 'dropdown'}
+                    onClick={() => handleDropDown('Goblet')}
+                  >
+                    <p>{selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet'}</p>
+                  </div>
+
+                  {/* X button clear the input, if any */}
+                  {selectedGoblet.length === 1 &&
+                  <button
+                    className="clear-input"
+                    onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                    X
+                  </button>}
+
+                </div>
               {gobletDropDownOpen && artifact.name === 'Goblet' && (
                 <ul className="dropdown-menu">
 
@@ -380,12 +401,23 @@ export default function Filter({
 
             {artifact.name === 'Circlet' && 
               <div ref={circletDropDownRef}>
-              <div 
-                className={selectedCirclet.length > 0 ? 'dropdown active' : 'dropdown'}
-                onClick={() => handleDropDown('Circlet')}
-              >
-                <p>{selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet'}</p>
-              </div>
+                <div className="dropdown-wrapper">
+                  <div 
+                    className={selectedCirclet.length > 0 ? 'dropdown active' : 'dropdown'}
+                    onClick={() => handleDropDown('Circlet')}
+                  >
+                    <p>{selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet'}</p>
+                  </div>
+
+                  {/* X button clear the input, if any */}
+                  {selectedCirclet.length === 1 &&
+                  <button
+                    className="clear-input"
+                    onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                    X
+                  </button>}
+
+                </div>
               {circletDropDownOpen && artifact.name === 'Circlet' && (
                 <ul className="dropdown-menu">
 
@@ -412,7 +444,7 @@ export default function Filter({
       </div>
 
       {/* SUBSTATS */}
-      <div className="filter-card">
+      <div className="filter-option">
         <h2>Substats</h2>
         {substats.map((stat: string) => (
           <label key={stat}>
@@ -427,7 +459,7 @@ export default function Filter({
       </div>
 
       {/* ELEMENTS */}
-      <div className="filter-card">
+      <div className="filter-option">
         <h2>Element</h2>
         {elements.map((element: string) => (
           <label key={element}>
