@@ -9,8 +9,12 @@ export interface Build {
 	element: string;
 	build_name: string;
 	artifact_set: string;
+	artifact_set_two_piece: string;
+	artifact_set_four_piece: string;
 	artifact_logic: string;
 	artifact_set_2: string;
+	artifact_set_2_two_piece: string;
+	artifact_set_2_four_piece: string;
 	artifact_logic_2: string;
 	artifact_set_3: string;
 	sands: string;
@@ -33,6 +37,8 @@ export interface Build {
 }
 export interface ArtifactSet {
 	name: string;
+	two_piece: string;
+	four_piece: string;
 }
 export interface ArtifactType {
 	name: string;

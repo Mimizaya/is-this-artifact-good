@@ -1,5 +1,10 @@
 @import './Character.css';
 
+$filter-width: 250px;
+$filter-padding: 20px;
+$header-height: 110px;
+
+
 * {
   box-sizing: border-box;
 }
@@ -23,17 +28,12 @@ ul, li, ol {
 }
 .highlighted {
   color: lightgreen;
-  font-weight: 700 !important;
+  font-weight: 700;
 
   img {
     filter: grayscale(0%) !important;
   }
 }
-
-
-$filter-width: 250px;
-$filter-padding: 20px;
-$header-height: 50px;
 
 section#filter {
   background-color: #222222;
@@ -68,7 +68,7 @@ section#filter {
   }
 
   div.filter-option.character { 
-    margin-top: 40px;
+    margin-top: $header-height;
   }
   div.filter-option {
     h3 {
@@ -192,9 +192,7 @@ section#results {
     flex-wrap: wrap;
   }
   .column {
-    max-width: 33%;
     box-sizing: border-box;
-    margin: 30px;
   }
   @media screen and (max-width: 1750px) {
     .column {
@@ -215,13 +213,54 @@ section#results {
     height: $header-height;
     background-color: darken(#242424, 2%);
     width: 100%;
+    padding-left: 20px;
 
     h2 {
       color: #CCC;
       font-size: 1em;
       font-weight: 700;
       margin-top: 12px;
-      margin-left: 20px;
+    }
+
+    div#filter-build {
+      margin-top: 5px;
+      display: flex;
+
+      h3 {
+        color: #CCC;
+        font-size: 1em;
+        font-weight: 700;
+        margin-bottom: 3px;
+      }
+      button.highlighted {
+        background-color: lighten(#242424, 5%);
+        font-weight: 400;
+        color: #FFF;
+      }
+      button:hover {
+        background-color: lighten(#242424, 5%);
+        cursor: pointer;
+      }
+      button {
+        color: #CCC;
+        background-color: #242424;
+        font-family: inherit;
+        border: none;
+        padding: 8px 13px 8px 10px;
+        border-bottom: 1px solid #192019;
+        box-shadow: 1px 3px 5px #202020;
+        transition: all 0.3s ease-out;
+        border-radius: 50px;
+        margin-right: 5px;
+        display: flex;
+        float: left;
+
+        img {
+          margin-right: 2px;
+          height: 20px;
+        }
+      }
+      
     }
   }
 }

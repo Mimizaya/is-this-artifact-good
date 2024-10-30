@@ -3,7 +3,8 @@ $banner-size: 100px;
 $element-icon-size: 50px;
 $artifact-icon-simple-size: 45px;
 $artifact-icon-size: 55px;
-$card-width: 450px;
+$card-width-full: 450px;
+$card-width-small: 270px;
 
   .rarity-4 {
     border-bottom: 5px solid purple;
@@ -12,9 +13,119 @@ $card-width: 450px;
     border-bottom: 5px solid orange;
   }
 
-  div.character-card {
+
+
+
+
+  div.character-card.small {
+    width: $card-width-small;
+    margin: 15px 20px;
+
+    div.build-header {
+      width: $card-width-small;
+      height: $banner-size / 1.5;
+      left: 0;
+
+      img.character-portrait {
+        margin-left: 3px;
+        bottom: 0;
+        height: $banner-size / 1.5;
+      }
+      img.character-element {
+        height: $element-icon-size / 1.5;
+        width: $element-icon-size / 1.5;
+        position: absolute;
+        z-index: 2;
+        top: -12px;
+        left: -15px;
+      }
+
+      div.character-banner-wrapper {
+        height: 100%;
+        opacity: 0.4;
+
+        img.character-banner {
+          bottom: 0;
+        } 
+      }
+      div.character-title {
+        position: absolute;
+        left: $banner-size / 1.5 + 8px;
+        top: 10px;
+        text-shadow: 1px 1px 5px black;
+
+        h2 {
+          font-size: 1.1em;
+        }
+
+        h3.build-name {
+          font-size: 0.8em;
+          position: relative;
+          top: -5px;
+          margin: 0;
+          color: #BBB;
+          font-weight: 700;
+        }
+      }
+    }
+
+    div.build-content {
+      div.artifact-set {
+        position: relative;
+        width: 100%;
+      }
+      div.artifact-set.multiple {
+        float: none;
+        width: 100%;
+
+        div.build-content-entry-content {
+          ul {
+            li {
+              padding-right: 30px;
+            }
+          }
+        }
+      }
+      div.artifact-set-alternative {
+        width: 30px;
+        position: absolute;
+        top: 10px;
+        left: 220px;
+
+        div.build-content-entry:hover {
+          background: none !important;
+        }
+        div.build-content-entry {
+          background: none;
+          box-shadow: none;
+          border: none;
+
+          div.artifact-icon-wrapper {
+            img {
+              height: 40px;
+            }
+          }
+
+        }
+      }
+      div.artifact-types, div.note, div.substats, div.er-requirements {
+        width: 100%;
+      }
+    }
+  }
+
+
+
+
+
+
+  div.character-card.full {
+    width: $card-width-full;
+    margin: 30px;
+  }
+
+  div.character-card,  {
     position: relative;
-    width: $card-width;
     background-color: #222222;
     box-shadow: 1px 3px 5px #191919;
     border-radius: 5px;
@@ -22,13 +133,13 @@ $card-width: 450px;
     div.build-header {
       border-radius: 5px;
       height: $banner-size;
-      width: $card-width +10px;
+      width: $card-width-full +10px;
       position: relative;
       left: -5px;
       background-color: darken(#222222, 1%);
       margin-bottom: 10px;
 
-      img.character-portrait {
+      img.character-portrait, img.character-portrait-two {
         position: relative;
         z-index: 1;
         bottom:5px;
@@ -37,11 +148,14 @@ $card-width: 450px;
         padding: 0;
         margin-left: 15px;
       }
+      img.character-portrait-two {
+        left: 205px;
+      }
       img.character-element {
         height: $element-icon-size;
         width: $element-icon-size;
         position: absolute;
-        z-index: 1;
+        z-index: 2;
         top: -15px;
         left: -20px;
       }
@@ -80,6 +194,7 @@ $card-width: 450px;
     div.build-content {
       margin-left: 0;
       padding: 10px;
+      position: relative;
 
       div.constellation {
         position: absolute;
@@ -98,13 +213,13 @@ $card-width: 450px;
       // General rules for entries
       div.build-content-entry {
         display: flex;
+        position: relative;
         background-color: lighten(#222222, 1%);
         padding: 10px 6px 12px 6px;
         margin-bottom: 10px;
         border-bottom: 1px solid #192019;
         font-size: 0.95em;
         box-shadow: 1px 3px 5px #202020;
-        position: relative;
         border-radius: 5px;
 
         img.artifact-icon {
@@ -145,6 +260,7 @@ $card-width: 450px;
 
       // Specific rules for entries
       div.artifact-set {
+        position: relative;
         width: 100%;
       }
       div.artifact-set.multiple {
@@ -153,7 +269,8 @@ $card-width: 450px;
         width: 210px;
       }
       div.artifact-set-alternative {
-        float: left;
+        position: absolute;
+        left: 230px;
         width: 210px;
 
         div.build-content-entry {
@@ -189,3 +306,59 @@ $card-width: 450px;
       }
     }
   }
+
+
+
+
+div.tooltip-on-hover:hover + div.artifact-info.tooltip,
+div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
+  display: block;
+}
+
+div.build-content-entry:hover {
+  background-color: lighten(#222222, 3%);
+}
+
+div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
+  display: none;
+  position: absolute;
+  z-index: 60;
+  padding: 20px;
+  width: 350px;
+  border-bottom: 1px solid #192019;
+  font-size: 0.95em;
+  box-shadow: 5px 10px 10px #171717;
+  background-color: lighten(#222222, 3%);
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+  pointer-events: none;
+
+  h4 {
+    font-size: 1.1em;
+    font-weight: 700;
+  }
+  p {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+}
+div.artifact-info.tooltip { 
+  left: 0;
+}
+div.artifact-info.tooltip-alt { 
+  right: 0;
+}
+div.build-content {
+  div.artifact-set, div.artifact-set-alternative {
+    div.build-content-entry:hover {
+      background-color: lighten(#222222, 3%) !important;
+
+      div.build-content-entry-content {
+        opacity: 1 !important;
+      }
+    } 
+  }
+}

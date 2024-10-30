@@ -6,9 +6,91 @@
   border-bottom: 5px solid orange;
 }
 
+div.character-card.small {
+  width: 270px;
+  margin: 15px 20px;
+}
+div.character-card.small div.build-header {
+  width: 270px;
+  height: 66.6666666667px;
+  left: 0;
+}
+div.character-card.small div.build-header img.character-portrait {
+  margin-left: 3px;
+  bottom: 0;
+  height: 66.6666666667px;
+}
+div.character-card.small div.build-header img.character-element {
+  height: 33.3333333333px;
+  width: 33.3333333333px;
+  position: absolute;
+  z-index: 2;
+  top: -12px;
+  left: -15px;
+}
+div.character-card.small div.build-header div.character-banner-wrapper {
+  height: 100%;
+  opacity: 0.4;
+}
+div.character-card.small div.build-header div.character-banner-wrapper img.character-banner {
+  bottom: 0;
+}
+div.character-card.small div.build-header div.character-title {
+  position: absolute;
+  left: 74.6666666667px;
+  top: 10px;
+  text-shadow: 1px 1px 5px black;
+}
+div.character-card.small div.build-header div.character-title h2 {
+  font-size: 1.1em;
+}
+div.character-card.small div.build-header div.character-title h3.build-name {
+  font-size: 0.8em;
+  position: relative;
+  top: -5px;
+  margin: 0;
+  color: #BBB;
+  font-weight: 700;
+}
+div.character-card.small div.build-content div.artifact-set {
+  position: relative;
+  width: 100%;
+}
+div.character-card.small div.build-content div.artifact-set.multiple {
+  float: none;
+  width: 100%;
+}
+div.character-card.small div.build-content div.artifact-set.multiple div.build-content-entry-content ul li {
+  padding-right: 30px;
+}
+div.character-card.small div.build-content div.artifact-set-alternative {
+  width: 30px;
+  position: absolute;
+  top: 10px;
+  left: 220px;
+}
+div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry:hover {
+  background: none !important;
+}
+div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry {
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry div.artifact-icon-wrapper img {
+  height: 40px;
+}
+div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.note, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-requirements {
+  width: 100%;
+}
+
+div.character-card.full {
+  width: 450px;
+  margin: 30px;
+}
+
 div.character-card {
   position: relative;
-  width: 450px;
   background-color: #222222;
   box-shadow: 1px 3px 5px #191919;
   border-radius: 5px;
@@ -22,7 +104,7 @@ div.character-card div.build-header {
   background-color: #1f1f1f;
   margin-bottom: 10px;
 }
-div.character-card div.build-header img.character-portrait {
+div.character-card div.build-header img.character-portrait, div.character-card div.build-header img.character-portrait-two {
   position: relative;
   z-index: 1;
   bottom: 5px;
@@ -31,11 +113,14 @@ div.character-card div.build-header img.character-portrait {
   padding: 0;
   margin-left: 15px;
 }
+div.character-card div.build-header img.character-portrait-two {
+  left: 205px;
+}
 div.character-card div.build-header img.character-element {
   height: 50px;
   width: 50px;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: -15px;
   left: -20px;
 }
@@ -71,6 +156,7 @@ div.character-card div.build-header div.character-title h3.build-name {
 div.character-card div.build-content {
   margin-left: 0;
   padding: 10px;
+  position: relative;
 }
 div.character-card div.build-content div.constellation {
   position: absolute;
@@ -85,13 +171,13 @@ div.character-card div.build-content div.constellation img {
 }
 div.character-card div.build-content div.build-content-entry {
   display: flex;
+  position: relative;
   background-color: #252525;
   padding: 10px 6px 12px 6px;
   margin-bottom: 10px;
   border-bottom: 1px solid #192019;
   font-size: 0.95em;
   box-shadow: 1px 3px 5px #202020;
-  position: relative;
   border-radius: 5px;
 }
 div.character-card div.build-content div.build-content-entry img.artifact-icon {
@@ -123,6 +209,7 @@ div.character-card div.build-content .artifact-logic-and, div.character-card div
   color: rgba(255, 255, 255, 0.87);
 }
 div.character-card div.build-content div.artifact-set {
+  position: relative;
   width: 100%;
 }
 div.character-card div.build-content div.artifact-set.multiple {
@@ -131,7 +218,8 @@ div.character-card div.build-content div.artifact-set.multiple {
   width: 210px;
 }
 div.character-card div.build-content div.artifact-set-alternative {
-  float: left;
+  position: absolute;
+  left: 230px;
   width: 210px;
 }
 div.character-card div.build-content div.artifact-set-alternative div.build-content-entry {
@@ -161,6 +249,56 @@ div.character-card div.build-content div.note {
 div.character-card div.build-content div.note div.build-content-entry {
   padding-top: 10px;
   padding-bottom: 20px;
+}
+
+div.tooltip-on-hover:hover + div.artifact-info.tooltip,
+div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
+  display: block;
+}
+
+div.build-content-entry:hover {
+  background-color: #2a2a2a;
+}
+
+div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
+  display: none;
+  position: absolute;
+  z-index: 60;
+  padding: 20px;
+  width: 350px;
+  border-bottom: 1px solid #192019;
+  font-size: 0.95em;
+  box-shadow: 5px 10px 10px #171717;
+  background-color: #2a2a2a;
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+  pointer-events: none;
+}
+div.artifact-info.tooltip h4, div.artifact-info.tooltip-alt h4 {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+div.artifact-info.tooltip p, div.artifact-info.tooltip-alt p {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+div.artifact-info.tooltip p:last-of-type, div.artifact-info.tooltip-alt p:last-of-type {
+  margin-bottom: 0;
+}
+
+div.artifact-info.tooltip {
+  left: 0;
+}
+
+div.artifact-info.tooltip-alt {
+  right: 0;
+}
+
+div.build-content div.artifact-set div.build-content-entry:hover, div.build-content div.artifact-set-alternative div.build-content-entry:hover {
+  background-color: #2a2a2a !important;
+}
+div.build-content div.artifact-set div.build-content-entry:hover div.build-content-entry-content, div.build-content div.artifact-set-alternative div.build-content-entry:hover div.build-content-entry-content {
+  opacity: 1 !important;
 }
 
 /*# sourceMappingURL=Character.css.map */
