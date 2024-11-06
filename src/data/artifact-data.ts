@@ -1,24 +1,14 @@
+export const artifactSands = ['HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 'Energy Recharge'];
 
-export const artifactTypesAndStats = [
-	{
-		name: 'Sands',
-		stats: ['HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 'Energy Recharge'],
-	},
-	{
-		name: 'Goblet',
-		stats: [
+export const artifactGoblet = [
 			'HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 
 			'Physical DMG Bonus', 'Hydro DMG Bonus', 
 			'Pyro DMG Bonus', 'Cryo DMG Bonus', 
 			'Dendro DMG Bonus', 'Electro DMG Bonus',
 			'Anemo DMG Bonus', 'Geo DMG Bonus',
-		],
-	},
-	{
-		name: 'Circlet',
-		stats: ['HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 'CRIT Rate', 'CRIT DMG', 'Healing Bonus'],
-	},
-];
+		];
+
+export const artifactCirclet = ['HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 'CRIT Rate', 'CRIT DMG', 'Healing Bonus'];
 
 export const artifactSets = [
 	{
@@ -78,7 +68,7 @@ export const artifactSets = [
 	},
 	{
 		name: 'Desert Pavilion Chronicle',
-		two_piece: 'Anemo DMG Bonus +15%.',
+		two_piece: 'Anemo DMG Bonus +15%',
 		four_piece: 'When Charged Attacks hit opponents, the equipping character\'s Normal Attack SPD will increase by 10% while Normal, Charged, and Plunging Attack DMG will increase by 40% for 15s.',
 	},
 	{
@@ -93,17 +83,17 @@ export const artifactSets = [
 	},
 	{
 		name: 'Echoes of an Offering',
-		two_piece: 'ATK +18%.',
+		two_piece: 'ATK +18%',
 		four_piece: 'When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which will increase Normal Attack DMG by 70% of ATK. This effect will be dispelled 0.05s after a Normal Attack deals DMG. If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by 20%. This trigger can occur once every 0.2s.',
 	},
 	{
 		name: 'Vermillion Hereafter',
-		two_piece: 'ATK +18%.',
+		two_piece: 'ATK +18%',
 		four_piece: 'After using an Elemental Burst. this character will gain the Nascent Light effect, increasing their ATK by 8% for 16s. When the character\'s HP decreases, their ATK will further increase by 10%. This increase can occur this way maximum of 4 times. This effect can be triggered once every 0.8s. Nascent Light will be dispelled when the character leaves the field. If an Elemental Burst is used again during the duration of Nascent Light, the original Nascent Light will be dispelled.',
 	},
 	{
 		name: 'Ocean-Hued Clam',
-		two_piece: 'Healing Bonus +15%.',
+		two_piece: 'Healing Bonus +15%',
 		four_piece: 'When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This effect can still be triggered even when the character who is using this artifact set is not on the field.',
 	},
 	{
@@ -198,7 +188,7 @@ export const artifactSets = [
 	},
 	{
 		name: 'Gladiator\'s Finale',
-		two_piece: 'ATK +18%.',
+		two_piece: 'ATK +18%',
 		four_piece: 'If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their Normal Attack DMG by 35%.'
 	},
 ];

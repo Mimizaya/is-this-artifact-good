@@ -18,6 +18,8 @@ export interface Build {
 	artifact_set_2_four_piece: string;
 	artifact_logic_2: string;
 	artifact_set_3: string;
+	artifact_set_3_two_piece: string;
+	artifact_set_3_four_piece: string;
 	sands: string;
 	sands_2: string;
 	sands_3: string;
@@ -40,8 +42,4 @@ export interface ArtifactSet {
 	name: string;
 	two_piece: string;
 	four_piece: string;
-}
-export interface ArtifactType {
-	name: string;
-	stats: string[];
 }

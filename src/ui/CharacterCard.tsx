@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+
+// Type definitions
 import { Build } from '../types/types';
 
 export default function CharacterCard({
@@ -25,19 +27,21 @@ export default function CharacterCard({
   selectedSubstats: any;
 }) {
 
-	// REFS
+	// Refs 
 		const elementOneRef = useRef<HTMLInputElement>(null);
 	  const elementTwoRef = useRef<HTMLInputElement>(null);
 	  const elementThreeRef = useRef<HTMLInputElement>(null);
 
-	// Calculate and set tooltip positions
+	// Calculate and set tooltip positions 
  		const [artifactSetOneHeight, setArtifactSetOneHeight] = useState<number>();
  		const [artifactSetTwoHeight, setArtifactSetTwoHeight] = useState<number>();
+ 		const [artifactSetThreeHeight, setArtifactSetThreeHeight] = useState<number>();
 
 		useLayoutEffect(() => {
 			const offset = 5;
 			const artifactOne = elementOneRef.current;
 			const artifactTwo = elementTwoRef.current;
+			const artifactThree = elementThreeRef.current;
 
 			if(artifactOne) {
 				const artifactOneHeight = artifactOne.offsetHeight;
@@ -47,10 +51,14 @@ export default function CharacterCard({
 				const artifactTwoHeight = artifactTwo.offsetHeight;
 				setArtifactSetTwoHeight(artifactTwoHeight - offset);
 			}
+			if(artifactThree) {
+				const artifactThreeHeight = artifactThree.offsetHeight;
+				setArtifactSetThreeHeight(artifactThreeHeight - offset);
+			}
 			
 		}, []);
 
-	// Set up checks for filters for conditional rendering
+	// Check filters for conditional rendering of build sections 
 		const filterApplied = buildSectionsVisible.some(section => section !== 'All');
 		const showArtifactSets = buildSectionsVisible.includes('Artifact Sets') || buildSectionsVisible.includes('All');
 		const showAbout = buildSectionsVisible.includes('About') || buildSectionsVisible.includes('All');
@@ -60,7 +68,7 @@ export default function CharacterCard({
 		const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
 		const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
 
-	// Ensure equal heights on Artifact Set and Alternatives sections
+	// Ensure equal heights on Artifact Set and Alternatives sections 
 		useEffect(() => {
 	    const elementOne = elementOneRef.current;
 	    const elementTwo = elementTwoRef.current;
@@ -105,9 +113,8 @@ export default function CharacterCard({
 	return (
 		<div className={filterApplied ? 'character-card small' : 'character-card full'}>
 
-			{/* Start of Header wrapper */}
+		{/* Build header wrapper */}
       <div className={`rarity-${build.rarity} build-header`}>
-				{/*<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>*/}
 
       	{/* Character Element symbol */}
 				<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
@@ -138,11 +145,6 @@ export default function CharacterCard({
         	<h2 className={selectedCharacter.includes(build.character_name) ? 'character-name highlighted' : 'character-name'}>{build.character_name}</h2>
         	<h3 className="build-name">{build.build_name}</h3>
         </div>
-				{/*<div className="artifact-set-images">
-        	<img className="artifact-set-image" src={"./images/artifacts/" + build.artifact_set + " Flower.webp"} alt={build.artifact_set}/>
-        	<br />
-        	<img className="artifact-set-image-2" src={"./images/artifacts/" + build.artifact_set + " Flower.webp"} alt={build.artifact_set}/>
-        </div>*/}
 
         {/* Pin Build Button */}
         <div className="pin-build">
@@ -153,26 +155,28 @@ export default function CharacterCard({
         		</button>
         </div>
         
-      </div>
-      {/* End of Header wrapper */}
-
-
+    	</div>{/* End of Header wrapper */}
+      
+    {/* Build content wrapper */}
       <div className="build-content">
+
+      {/* Constellation - Background image - REMOVE? */}
       	<div className="constellation">
       		{/*<img src={"./images/constellations/" + build.character_name +" Constellation.webp"}/>*/}
       		{/*<img src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>*/}
       	</div>
 
-
+      {/* Artifact Sets */}
       	{showArtifactSets &&
       	<>
-				{/* BUILD ENTRY - ARTIFACT SET */}
+      	{/* Artifact Set 1 Wrapper */}
       	<div className={build.artifact_set_2 && build.artifact_logic === 'OR' ? 'artifact-set multiple' : 'artifact-set'}>
+
+      		{/* Artifact Set 1 */}
 					<div className="build-content-entry tooltip-on-hover" ref={elementOneRef}>
 						<div className="artifact-icon-wrapper">
 	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>
 			      </div>
-
 			      <div className="build-content-entry-content">
 				      <h4>Artifact Set{build.artifact_set_2 && build.artifact_logic === 'AND' && 's'}</h4>
 			        <ul>
@@ -186,87 +190,100 @@ export default function CharacterCard({
 		          	</li>}
 			        </ul>
 			      </div>
-		      </div>
+		      </div>{/* End Artifact Set 1 */}
+
+			    {/* Tooltip - Artifact Set 1 */}
 		 	 		<div className="artifact-info tooltip" style={{top: artifactSetOneHeight +'px'}}>
 		  			<h4>2-Piece Bonus</h4>
 		  			<p>{build.artifact_set_two_piece}</p>
 		  			<h4>4-Piece Bonus</h4>
 		  			<p>{build.artifact_set_four_piece}</p>
 		  		</div>
-		     </div>
 
-				{/* BUILD ENTRY - ALTERNATIVE ARTIFACT SETS - FULL INFO */}
-			    {build.artifact_set_2 && build.artifact_logic === 'OR' && !filterApplied &&
-	      	<div className="artifact-set-alternative">
-						<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
-							<div className="artifact-icon-wrapper">
-		        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-				      </div>
-				      <div className="build-content-entry-content">
-					      <h4>Alternative</h4>
-				        <ul>
-			          	{build.artifact_set_2 && 
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
-			          		{build.artifact_set_2}
-			          	</li>}
-				        </ul>
-				      </div>
+		     </div>{/* End Artifact Set 1 Wrapper */}
+
+				{/* Alternative Artifact Sets Wrapper - Full */}
+		    {build.artifact_set_2 && build.artifact_logic === 'OR' && !filterApplied &&
+      	<div className="artifact-set-alternative">
+
+      		{/* Artifact Set 2 - Full */}
+					<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
+						<div className="artifact-icon-wrapper">
+	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
 			      </div>
-			 	 		<div className="artifact-info tooltip-alt" style={{top: artifactSetTwoHeight +'px'}}>
-			  			<h4>2-Piece Bonus</h4>
-			  			<p>{build.artifact_set_2_two_piece}</p>
-			  			<h4>4-Piece Bonus</h4>
-			  			<p>{build.artifact_set_2_four_piece}</p>
-			  		</div>
-
-					{/* BUILD ENTRY - ALTERNATIVE ARTIFACT SETS */}
-			    {build.artifact_set_3 && build.artifact_logic_2 === 'OR' &&
-						<div className="build-content-entry" ref={elementThreeRef}>
-							<div className="artifact-icon-wrapper">
-		        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
-				      </div>
-				      <div className="build-content-entry-content">
-					      <h4>Alternative</h4>
-				        <ul>
-			          	{build.artifact_set_3 && 
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
-			          		{build.artifact_set_3}
-			          	</li>}
-				        </ul>
-				      </div>
-			      </div>}
-
-			    </div>}
-		     	</>
-		   		}
-
-				{/* BUILD ENTRY - ALTERNATIVE ARTIFACT SETS - PICTURES ONLY */}
-			    {build.artifact_set_2 && build.artifact_logic === 'OR' && filterApplied && showArtifactSets &&
-			    <>
-	      	<div className="artifact-set-alternative">
-
-						<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
-							<div className="artifact-icon-wrapper">
-		        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-				      </div>
+			      <div className="build-content-entry-content">
+				      <h4>Alternative</h4>
+			        <ul>
+		          	{build.artifact_set_2 && 
+		          	<li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
+		          		{build.artifact_set_2}
+		          	</li>}
+			        </ul>
 			      </div>
+		      </div>{/* End Artifact Set 2 - Full */}
 
-					{/* BUILD ENTRY - ALTERNATIVE ARTIFACT SETS */}
+			    {/* Tooltip - Artifact Set 2 - Full */}
+		 	 		<div className="artifact-info tooltip-alt" style={{top: artifactSetTwoHeight +'px'}}>
+		  			<h4>2-Piece Bonus</h4>
+		  			<p>{build.artifact_set_2_two_piece}</p>
+		  			<h4>4-Piece Bonus</h4>
+		  			<p>{build.artifact_set_2_four_piece}</p>
+		  		</div>
+
+					{/* Artifact Set 3 - Full */}
 			    {build.artifact_set_3 && build.artifact_logic_2 === 'OR' &&
-						<div className="build-content-entry" ref={elementThreeRef}>
-							<div className="artifact-icon-wrapper">
-		        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
-				      </div>
-			      </div>}
+					<div className="build-content-entry tooltip-on-hover" ref={elementThreeRef}>
+						<div className="artifact-icon-wrapper">
+	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
+			      </div>
+			      <div className="build-content-entry-content">
+				      <h4>Alternative</h4>
+			        <ul>
+		          	{build.artifact_set_3 && 
+		          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
+		          		{build.artifact_set_3}
+		          	</li>}
+			        </ul>
+			      </div>
+		      </div>}{/* End Artifact Set 3 - Full */}
 
-			    </div>
-		     	</>
-		   		}
+			    {/* Tooltip - Artifact Set 3 - Full */}
+		 	 		<div className="artifact-info tooltip-alt" style={{top: artifactSetThreeHeight +'px'}}>
+		  			<h4>2-Piece Bonus</h4>
+		  			<p>{build.artifact_set_3_two_piece}</p>
+		  			<h4>4-Piece Bonus</h4>
+		  			<p>{build.artifact_set_3_four_piece}</p>
+		  		</div>
 
+			    </div>}{/* End Alternative Artifact Sets Wrapper */}
+		    </>}
 
+				{/* Alternative Artifact Sets Wrapper - Minimal */}
+		    {build.artifact_set_2 && build.artifact_logic === 'OR' && filterApplied && showArtifactSets &&
+		    <>
+      	<div className="artifact-set-alternative">
+
+      		{/* Artifact Set 2 - Minimal */}
+					<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
+						<div className="artifact-icon-wrapper">
+	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
+			      </div>
+		      </div>{/* End Artifact Set 2 - Minimal */}
+
+					{/* Artifact Set 3 - Minimal */}
+		    	{build.artifact_set_3 && build.artifact_logic_2 === 'OR' &&
+					<div className="build-content-entry" ref={elementThreeRef}>
+						<div className="artifact-icon-wrapper">
+	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
+			      </div>
+		      </div>}{/* End Artifact Set 3 - Minimal */}
+
+		    </div>{/* End Alternative Artifact Sets Wrapper - Minimal */}
+	     	</>}
+
+	    {/* About / Description / Note */}
       	{showAbout && 
       	<>
-				{/* BUILD ENTRY - NOTE/DESCRIPTION */}
 				<div className="note">
 	      	<div className="build-content-entry">
 	      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set +" Plume.webp"}/>
@@ -277,14 +294,14 @@ export default function CharacterCard({
 			      </div>
 			  	</div>
 	      </div>
-		    </>
-		   	}
+		    </>}
 
+		  {/* Artifact Types */}
 	      <div className="artifact-types">
 
+	      	{/* Sands */}
 	      	{showSands &&
 	      	<>
-		      {/* BUILD ENTRY - SANDS */}
 		      <div className="build-content-entry">
 	        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set +" Sands.webp"}/>
 	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
@@ -297,13 +314,11 @@ export default function CharacterCard({
 			        </ol>
 			      </div>
 			     </div>
-			    </>
-			   	}
+			    </>}
 
-
+			  {/* Goblet */}
 	      	{showGoblet && 
 	      	<>
-		      {/* BUILD ENTRY - GOBLET */}
 		      <div className="build-content-entry">
 	        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set +" Goblet.webp"}/>
 	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
@@ -315,12 +330,11 @@ export default function CharacterCard({
 		        	</ol>
 			      </div>
 		      </div>
-			    </>
-			   	}
+			    </>}
 
+			  {/* Circlet */}
 	      	{showCirclet && 
 	      	<>
-					{/* BUILD ENTRY - CIRCLET */}
 					<div className="build-content-entry">
 	        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set +" Circlet.webp"}/>
 						{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
@@ -333,15 +347,13 @@ export default function CharacterCard({
 			        </ol>
 			      </div>
 		      </div>
-		      </>
-			   	}
+		      </>}
 
-	      </div>			    
+	      </div>{/* End Artifact Types */}	    
 
-
+	    {/* Substats */}
       	{showSubstats && 
       	<>
-	      {/* BUILD ENTRY - SUBSTATS */}
 	      <div className="substats">
 	      	<div className="build-content-entry">
 	      		<img className="artifact-icon-simple"  src={"./images/artifacts/Icon Substats.webp"}/>
@@ -361,10 +373,10 @@ export default function CharacterCard({
 	      </>
 		   	}
 
-
+		  {/* ER Recommendation */}
       	{showERRecommendation && 
       	<>
-	      <div className="er-requirements">
+	      <div className="er-recommendation">
 	      	<div className="build-content-entry">
 		      	<img className="artifact-icon-simple" src={"./images/artifacts/Icon Energy Recharge.webp"}/>
 		      	<div className="build-content-entry-content">
@@ -380,7 +392,7 @@ export default function CharacterCard({
 	      </>
 		   	}
 
-      </div>
+      </div>{/* End Build content wrapper */}
       <div className="clear"></div>
     </div>
 	);

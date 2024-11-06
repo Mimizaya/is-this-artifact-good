@@ -67,10 +67,16 @@ section#filter div#filter-artifact {
   margin-top: 30px;
 }
 section#filter div#filter-other {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 section#filter div#filter-artifact h2, section#filter div#filter-other h2 {
   font-size: 2em;
+}
+section#filter div.filter-artifact-mainstats div.filter-option {
+  margin: 0;
+}
+section#filter div.filter-artifact-mainstats div.filter-option:last-of-type {
+  margin-bottom: 15px;
 }
 section#filter div.filter-option {
   margin-bottom: 15px;
@@ -177,23 +183,10 @@ section#results {
   scrollbar-width: thin;
   height: 100vh;
 }
-section#results .row {
+section#results div#results-content {
   margin-top: 120px;
   display: flex;
   flex-wrap: wrap;
-}
-section#results .column {
-  box-sizing: border-box;
-}
-@media screen and (max-width: 1750px) {
-  section#results .column {
-    max-width: 50%;
-  }
-}
-@media screen and (max-width: 1275px) {
-  section#results .column {
-    max-width: 100%;
-  }
 }
 section#results div.results-header {
   position: fixed;
@@ -213,7 +206,6 @@ section#results div.results-header h2 {
 }
 section#results div.results-header div#filter-build {
   margin-top: 5px;
-  display: flex;
 }
 section#results div.results-header div#filter-build h3 {
   color: #CCC;
@@ -221,16 +213,16 @@ section#results div.results-header div#filter-build h3 {
   font-weight: 700;
   margin-bottom: 3px;
 }
-section#results div.results-header div#filter-build button.highlighted {
+section#results div.results-header div#filter-build div.filter-build-options button.highlighted {
   background-color: #313131;
   font-weight: 400;
   color: #FFF;
 }
-section#results div.results-header div#filter-build button:hover {
+section#results div.results-header div#filter-build div.filter-build-options button:hover {
   background-color: #313131;
   cursor: pointer;
 }
-section#results div.results-header div#filter-build button {
+section#results div.results-header div#filter-build div.filter-build-options button {
   color: #CCC;
   background-color: #242424;
   font-family: inherit;
@@ -244,7 +236,7 @@ section#results div.results-header div#filter-build button {
   display: flex;
   float: left;
 }
-section#results div.results-header div#filter-build button img {
+section#results div.results-header div#filter-build div.filter-build-options button img {
   margin-right: 2px;
   height: 20px;
 }

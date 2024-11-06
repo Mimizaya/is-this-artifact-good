@@ -70,7 +70,7 @@ section#filter {
     margin-top: 30px;
   }
   div#filter-other { 
-    margin-top: 50px;
+    margin-top: 30px;
   }
   div#filter-artifact, div#filter-other { 
     h2 {
@@ -78,6 +78,14 @@ section#filter {
     }
   }
 
+  div.filter-artifact-mainstats {
+    div.filter-option {
+      margin: 0;
+    }
+    div.filter-option:last-of-type {
+      margin-bottom: 15px;
+    }
+  }
   div.filter-option {
     margin-bottom: 15px;
 
@@ -192,23 +200,10 @@ section#results {
   scrollbar-width: thin;
   height: 100vh;
 
-  .row {
+  div#results-content {
     margin-top: $header-height + 10;
     display: flex;
     flex-wrap: wrap;
-  }
-  .column {
-    box-sizing: border-box;
-  }
-  @media screen and (max-width: 1750px) {
-    .column {
-      max-width: 50%;
-    }
-  }
-  @media screen and (max-width: 1275px) {
-    .column {
-      max-width: 100%;
-    }
   }
 
   div.results-header {
@@ -230,7 +225,6 @@ section#results {
 
     div#filter-build {
       margin-top: 5px;
-      display: flex;
 
       h3 {
         color: #CCC;
@@ -238,35 +232,37 @@ section#results {
         font-weight: 700;
         margin-bottom: 3px;
       }
-      button.highlighted {
-        background-color: lighten(#242424, 5%);
-        font-weight: 400;
-        color: #FFF;
-      }
-      button:hover {
-        background-color: lighten(#242424, 5%);
-        cursor: pointer;
-      }
-      button {
-        color: #CCC;
-        background-color: #242424;
-        font-family: inherit;
-        border: none;
-        padding: 8px 13px 8px 10px;
-        border-bottom: 1px solid #192019;
-        box-shadow: 1px 3px 5px #202020;
-        transition: all 0.3s ease-out;
-        border-radius: 50px;
-        margin-right: 5px;
-        display: flex;
-        float: left;
+      div.filter-build-options {
 
-        img {
-          margin-right: 2px;
-          height: 20px;
+        button.highlighted {
+          background-color: lighten(#242424, 5%);
+          font-weight: 400;
+          color: #FFF;
+        }
+        button:hover {
+          background-color: lighten(#242424, 5%);
+          cursor: pointer;
+        }
+        button {
+          color: #CCC;
+          background-color: #242424;
+          font-family: inherit;
+          border: none;
+          padding: 8px 13px 8px 10px;
+          border-bottom: 1px solid #192019;
+          box-shadow: 1px 3px 5px #202020;
+          transition: all 0.3s ease-out;
+          border-radius: 50px;
+          margin-right: 5px;
+          display: flex;
+          float: left;
+
+          img {
+            margin-right: 2px;
+            height: 20px;
+          }
         }
       }
-      
     }
   }
 }

@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
+
+// Stylesheet
 import './style/App.css';
+
+// CSV Parser
 import Papa from 'papaparse';
+
+// UI components
 import Filter from './ui/Filter.tsx';
 import Results from './ui/Results.tsx';
 
@@ -73,43 +79,42 @@ export default function App() {
       }
     };
 
-    const handleMainstatChange = (stat: string, type: string) => {
-
-      if(type === 'Sands') {
-        if(stat === 'clear selection') {
-          setSelectedSands([])
-        }
-        else if (stat === 'HP%') {
-          setSelectedSands(['HP%', 'HP% (C1)'])
-        }
-        else if (stat === 'Elemental Mastery') {
-          setSelectedSands(['Elemental Mastery', 'Elemental Mastery (Vape)'])
-        }
-        else {
-          setSelectedSands([stat])
-        }
+    const handleSandsChange = (stat: string) => {
+      if(stat === 'clear selection') {
+        setSelectedSands([])
       }
-      if(type === 'Goblet') {
-        if(stat === 'clear selection') {
-          setSelectedGoblet([])
-        }
-        if(stat !== 'clear selection') {
-          setSelectedGoblet([stat])
-        }
-      }      
-      if(type === 'Circlet') {
-        if(stat === 'clear selection') {
-          setSelectedCirclet([])
-        }
-        else if (stat === 'CRIT Rate') {
-          setSelectedCirclet(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])
-        }
-        else if (stat === 'CRIT DMG') {
-          setSelectedCirclet(['CRIT DMG', 'CRIT Rate/DMG'])
-        }
-        else {
-          setSelectedCirclet([stat])
-        }
+      else if (stat === 'HP%') {
+        setSelectedSands(['HP%', 'HP% (C1)'])
+      }
+      else if (stat === 'Elemental Mastery') {
+        setSelectedSands(['Elemental Mastery', 'Elemental Mastery (Vape)', 'Elemental Mastery (Quicken)'])
+      }
+      else {
+        setSelectedSands([stat])
+      }
+    }
+
+    const handleGobletChange = (stat: string) => {
+      if(stat === 'clear selection') {
+        setSelectedGoblet([])
+      }
+      if(stat !== 'clear selection') {
+        setSelectedGoblet([stat])
+      }
+    }
+
+    const handleCircletChange = (stat: string) => {
+      if(stat === 'clear selection') {
+        setSelectedCirclet([])
+      }
+      else if (stat === 'CRIT Rate') {
+        setSelectedCirclet(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])
+      }
+      else if (stat === 'CRIT DMG') {
+        setSelectedCirclet(['CRIT DMG', 'CRIT Rate/DMG'])
+      }
+      else {
+        setSelectedCirclet([stat])
       }
     }
 
@@ -217,7 +222,9 @@ export default function App() {
           resetFilters={resetFilters}
           handleCharacterChange={handleCharacterChange}
           handleArtifactSetChange={handleArtifactSetChange}
-          handleMainstatChange={handleMainstatChange}
+          handleSandsChange={handleSandsChange}
+          handleGobletChange={handleGobletChange}
+          handleCircletChange={handleCircletChange}
           handleSubstatsChange={handleSubstatsChange}
           handleElementsChange={handleElementsChange}
           selectedCharacter={selectedCharacter}

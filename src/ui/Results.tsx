@@ -1,8 +1,14 @@
 import { useState } from 'react';
-import CharacterCard from './CharacterCard.tsx'
+
+// Datasets
 import { characterData } from '../data/character-data.ts';
 import { artifactSets } from '../data/artifact-data.ts';
+
+// Type definitions
 import { Character, Build, ArtifactSet } from '../types/types.ts';
+
+// UI components
+import CharacterCard from './CharacterCard.tsx'
 
 export default function Results({
   buildsDataRaw,
@@ -26,11 +32,11 @@ export default function Results({
   resetFilters: any;
 }) {
 
-  // Save filter configurations - WIP
+  // Save filter configurations - WIP 
     //const [currentFilterTab, setCurrentFilterTab] = useState(1);
     //const [savedFilters, setSavedFilters] = useState([]);
 
-  // Handle pin builds
+  // Handle pin build 
     const [selectedPinned, setSelectedPinned] = useState<number[]>([]);
     const handleSelectedPinned = (id: number) => {
       setSelectedPinned((prev) =>
@@ -38,7 +44,7 @@ export default function Results({
       );
     }
 
-  // Add additional static data to builds
+  // Add additional static data to builds 
     const buildsDataEnriched = buildsDataRaw.map((build: Build) => {
 
       // Find the corresponding character data based on name
@@ -47,17 +53,19 @@ export default function Results({
       // Find the corresponding character data based on name
       const artifactSetOneInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set);
       const artifactSetTwoInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_2);
+      const artifactSetThreeInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_3);
 
       // If a match is found, merge the relevant data
       return {
         ...build,
         element: characterInfo ? characterInfo.element : null,
         rarity: characterInfo ? characterInfo.rarity : null,
-        pinned: false,
         artifact_set_two_piece: artifactSetOneInfo ? artifactSetOneInfo.two_piece : null,
         artifact_set_four_piece: artifactSetOneInfo ? artifactSetOneInfo.four_piece : null,
         artifact_set_2_two_piece: artifactSetTwoInfo ? artifactSetTwoInfo.two_piece : null,
         artifact_set_2_four_piece: artifactSetTwoInfo ? artifactSetTwoInfo.four_piece : null,
+        artifact_set_3_two_piece: artifactSetThreeInfo ? artifactSetThreeInfo.two_piece : null,
+        artifact_set_3_four_piece: artifactSetThreeInfo ? artifactSetThreeInfo.four_piece : null,
       };
     });
 
@@ -95,7 +103,7 @@ export default function Results({
         }
       });
 
-  // Apply user filters to data
+  // Apply user filters to data 
     const filteredResults = sortedBuilds.filter((build: Build) => {
       // Check pinned
       const isBuildPinned = selectedPinned.length === 0 || 
@@ -165,7 +173,7 @@ export default function Results({
       }
     });
 
-  // Sort filtered data by relevancy
+  // Sort filtered data by relevancy 
     const countMatchingSubstats = (item: any, selectedSubstats: any, maxSubstats = 6) => {
       let matchCount = 0;
 
@@ -239,10 +247,10 @@ export default function Results({
 
     const filteredAndSortedResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
 
-  // Are any filters applied? Compare raw data length vs final results.
+  // Are there actually any filters applied? 
     const noFilter = buildsDataRaw.length === filteredAndSortedResults.length; // returns true if same length
 
-  // Handle filter build components
+  // Handle filtering of build sections 
     const buildSectionsOptions = ['All', 'Artifact Sets', 'About', 'Sands', 'Goblet', 'Circlet', 'Substats', 'ER Recommendation'];
     const [buildSectionsVisible, setBuildSectionsVisible] = useState(['All']); 
 
@@ -287,7 +295,11 @@ export default function Results({
 
   return (
     <section id="results">
+
+      {/* Results Header */}
       <div className="results-header">
+
+        {/* Display number of found builds */}
         <h2>{
           noFilter ? 'Showing all builds' : 
           filteredAndSortedResults.length === 1 ? `Found ${filteredAndSortedResults.length} build matching filters` : 
@@ -295,10 +307,12 @@ export default function Results({
           'No builds matching current filters'}
         </h2>
 
-        {/* FILTER WHAT IS SHOWN IN THE BUILDS */}
+        {/* Builds Filter Menu: What sections are shown? */}
         <div id="filter-build">
-          <div className="filter-build-option">
-            <h3>Select visible build sections</h3>
+          <h3>Select visible build sections</h3>
+
+          {/* Filter Options */}
+          <div className="filter-build-options">
             {buildSectionsOptions.map((section: string) => (
               <button
                 key={section} 
@@ -318,25 +332,24 @@ export default function Results({
                 {section}
               </button>
             ))}
-          </div>
-        </div>
+          </div>{/* End Filter Options */}
+        </div>{/* End Builds Filter Menu */}
+      </div>{/* End Results Header */}
 
-      </div>
+      {/* Main Results Content */}
+      <div id="results-content">
 
+        {/* No results? Show error and reset button! */}
+        {filteredAndSortedResults.length === 0 &&
+          <div id="no-results">
+            <h3>These are not the builds you're looking for...</h3>
+            <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
+          </div>}
 
-      <div className="row">
-      {filteredAndSortedResults.length === 0 &&
-        <div id="no-results">
-          <h3>These are not the builds you're looking for...</h3>
-          <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
-        </div>}
-
-      {filteredAndSortedResults.map((build: Build) => (
-        <div 
-          key={build.ID} 
-          className="column"
-        >
+        {/* Show build(s) that match filter(s) */}
+        {filteredAndSortedResults.map((build: Build) => (
           <CharacterCard 
+            key={build.ID}
             build={build}
             handleSelectedPinned={handleSelectedPinned}
             buildSectionsVisible={buildSectionsVisible}
@@ -348,9 +361,9 @@ export default function Results({
             selectedCirclet={selectedCirclet}
             selectedSubstats={selectedSubstats}
           />
-        </div>
-      ))}
-      </div>
+        ))}
+
+      </div>{/* End Main Results Content */}
     </section>
   );
 }
