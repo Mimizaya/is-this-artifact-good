@@ -191,7 +191,16 @@ div.character-card div.build-content div.build-content-entry {
 }
 div.character-card div.build-content div.build-content-entry img.artifact-icon {
   position: absolute;
+  z-index: 3;
   top: 5px;
+  left: 2px;
+  height: 55px;
+  opacity: 1;
+}
+div.character-card div.build-content div.build-content-entry img.artifact-icon-2 {
+  position: absolute;
+  z-index: 4;
+  top: 35px;
   left: 2px;
   height: 55px;
   opacity: 1;

@@ -229,7 +229,17 @@ $card-width-small: 270px;
 
         img.artifact-icon {
           position: absolute;
+          z-index: 3;
           top: 5px;
+          left: 2px;
+          height: $artifact-icon-size;
+          //opacity: 0.6;
+          opacity: 1;
+        }
+        img.artifact-icon-2 {
+          position: absolute;
+          z-index: 4;
+          top: 35px;
           left: 2px;
           height: $artifact-icon-size;
           //opacity: 0.6;

@@ -348,19 +348,20 @@ export default function Results({
 
         {/* Show build(s) that match filter(s) */}
         {filteredAndSortedResults.map((build: Build) => (
-          <CharacterCard 
-            key={build.ID}
-            build={build}
-            handleSelectedPinned={handleSelectedPinned}
-            buildSectionsVisible={buildSectionsVisible}
-            selectedPinned={selectedPinned}
-            selectedCharacter={selectedCharacter}
-            selectedArtifactSet={selectedArtifactSet}
-            selectedSands={selectedSands}
-            selectedGoblet={selectedGoblet}
-            selectedCirclet={selectedCirclet}
-            selectedSubstats={selectedSubstats}
-          />
+          <div key={build.ID}>
+            <CharacterCard
+              build={build}
+              handleSelectedPinned={handleSelectedPinned}
+              buildSectionsVisible={buildSectionsVisible}
+              selectedPinned={selectedPinned}
+              selectedCharacter={selectedCharacter}
+              selectedArtifactSet={selectedArtifactSet}
+              selectedSands={selectedSands}
+              selectedGoblet={selectedGoblet}
+              selectedCirclet={selectedCirclet}
+              selectedSubstats={selectedSubstats}
+            />
+          </div>
         ))}
 
       </div>{/* End Main Results Content */}

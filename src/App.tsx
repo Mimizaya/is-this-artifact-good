@@ -13,7 +13,7 @@ import Results from './ui/Results.tsx';
 export default function App() {
 
   // Data version
-    const VERSION = '2.7';
+    const VERSION = '1.7';
 
   // Prepare data imported from CSV
     const [rawData, setRawData] = useState<string[]>([]);

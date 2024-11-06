@@ -176,6 +176,8 @@ export default function CharacterCard({
 					<div className="build-content-entry tooltip-on-hover" ref={elementOneRef}>
 						<div className="artifact-icon-wrapper">
 	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>
+	        		{build.artifact_set_2 && build.artifact_logic === 'AND' &&
+	        		<img className="artifact-icon-2"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>}
 			      </div>
 			      <div className="build-content-entry-content">
 				      <h4>Artifact Set{build.artifact_set_2 && build.artifact_logic === 'AND' && 's'}</h4>
@@ -212,11 +214,15 @@ export default function CharacterCard({
 	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
 			      </div>
 			      <div className="build-content-entry-content">
-				      <h4>Alternative</h4>
+							<h4>Artifact Set</h4>
 			        <ul>
 		          	{build.artifact_set_2 && 
 		          	<li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
-		          		{build.artifact_set_2}
+		          		{build.artifact_set_2}{build.artifact_logic_2 === 'AND' && ' ×2'}
+		          	</li>}
+		          	{build.artifact_set_3 && build.artifact_logic_2 === 'AND' &&
+		          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
+		          		{build.artifact_set_3} ×2
 		          	</li>}
 			        </ul>
 			      </div>

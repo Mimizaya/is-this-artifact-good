@@ -313,7 +313,7 @@ export default function Filter({
                 <img 
                   className="filter-icon"
                   src={
-                    selectedArtifactSet.length > 0 ? `./images/artifacts/sands/${selectedArtifactSet} Goblet.webp` : 
+                    selectedArtifactSet.length > 0 ? `./images/artifacts/goblets/${selectedArtifactSet} Goblet.webp` : 
                     selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Goblet.webp` : ''
                   }
                   alt={
@@ -370,7 +370,7 @@ export default function Filter({
                 <img 
                   className="filter-icon"
                   src={
-                    selectedArtifactSet.length > 0 ? `./images/artifacts/sands/${selectedArtifactSet} Circlet.webp` : 
+                    selectedArtifactSet.length > 0 ? `./images/artifacts/circlets/${selectedArtifactSet} Circlet.webp` : 
                     selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Circlet.webp` : ''
                   }
                   alt={
