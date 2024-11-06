@@ -53,7 +53,7 @@ section#filter {
     top: 0;
     left: 0;
     z-index: 10;
-    height: $header-height;
+    height: 50px;
     background-color: darken(#242424, 2%);
     width: $filter-width +40;
 
@@ -66,14 +66,20 @@ section#filter {
       margin-left: 20px;
     }
   }
-
-  div.filter-option.character { 
-    margin-top: $header-height;
+  div#filter-artifact { 
+    margin-top: 30px;
   }
-  div.filter-option {
-    h3 {
-      margin-top: 15px;
+  div#filter-other { 
+    margin-top: 50px;
+  }
+  div#filter-artifact, div#filter-other { 
+    h2 {
+      font-size: 2em;
     }
+  }
+
+  div.filter-option {
+    margin-bottom: 15px;
 
     img.filter-icon {
       height: 25px;

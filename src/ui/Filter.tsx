@@ -151,333 +151,344 @@ export default function Filter({
         <h2>Filter options</h2>
       </div>
 
-      {/* CHARACTER */}
-      <div className="filter-option character">
-        <h3>Character</h3>
-          <div ref={characterDropDownRef}>
 
-            {/* Render dropdown toggle */}
-            {!characterDropDownOpen ? (
+      <div id="filter-artifact">
+        <h2>Artifacts</h2>
+        {/* ARTIFACT SET */}
+        <div className="filter-option">
+          <h3>Select set</h3>
+          <div ref={artifactDropDownRef}>
+            {artifactSetDropDownOpen ? (
               <>
-              <div className="dropdown-wrapper">
-                <div 
-                  onClick={() => handleDropDown('Character')} 
-                  className={selectedCharacter.length === 1 ? 'dropdown highlighted' : 'dropdown'}>
-                  <img 
-                    className="filter-icon" 
-                    src={
-                      selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
-                      selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
-                    }
-                    alt={selectedCharacter}
-                  />
-                  <p>
-                    {/* If character is selected, display their name, otherwise placeholder text */}
-                    {selectedCharacter.length === 1 ? selectedCharacter : "Select a character"}
-                  </p>
-                </div>
-
-                {/* X button clear the selection */}
-                {selectedCharacter.length === 1 &&
-                <button
-                  className="clear-input"
-                  onClick={() => handleCharacterChange('clear selection')}>
-                  &#10006;
-                </button>}
-              </div>
-              </>
-            ) : (
-              <>
-              {/* Render search bar */}
               <div className="search-bar">
                 <input
                   className="search-input"
-                  ref={characterRef}
-                  value={characterQuery}
-                  onChange={handleCharacterQuery}
-                  placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to search"}
+                  ref={artifactRef}
+                  value={artifactQuery}
+                  onChange={handleArtifactQuery}
+                  placeholder={selectedArtifactSet.length === 1 ? selectedArtifactSet : "Type to search"}
                 />
               </div>
-    
-              {/* Render the filtered character data to list */}
-              <ul className="dropdown-menu">
-                {filteredCharacterData.map((character: Character) => (
-                  <li key={character.name + character.element} onClick={() => {
-                    handleCharacterChange(character.name)
-                    setCharacterDropDownOpen(!characterDropDownOpen)
-                    setCharacterQuery('')
-                  }}>
-
-                    {/* Character image */}
-                    <img
-                      src={`./images/characters/${character.name}.webp`}
-                      alt={character.name}
-                    />
-
-                    {/* Character name */}
-                    {character.name}
-
-                  </li>
-                ))}
-              </ul>
               </>
-            )
-          }
-        </div>
-      </div>
-      
-      {/* ARTIFACT SET */}
-      <div className="filter-option">
-        <h3>Artifact</h3>
-        <div ref={artifactDropDownRef}>
-          {artifactSetDropDownOpen ? (
+            ) : (
             <>
-            <div className="search-bar">
-              <input
-                className="search-input"
-                ref={artifactRef}
-                value={artifactQuery}
-                onChange={handleArtifactQuery}
-                placeholder={selectedArtifactSet.length === 1 ? selectedArtifactSet : "Type to search"}
-              />
+            <div className="dropdown-wrapper">
+              <div 
+                onClick={() => handleDropDown('Artifact')} 
+                className={selectedArtifactSet.length === 1 ? 'dropdown highlighted' : 'dropdown'}
+              >
+                <img
+                  className="filter-icon"  
+                  src={
+                    selectedArtifactSet.length > 0 ? `./images/artifacts/flowers/${selectedArtifactSet} Flower.webp` : 
+                    selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Artifact.webp` : ''
+                  }
+                  alt={selectedArtifactSet}
+                />
+                <p>
+                  {selectedArtifactSet.length > 0 ? selectedArtifactSet : "Artifact set"}
+                </p>
+              </div>
+
+              {/* X button clear the input, if any */}
+              {selectedArtifactSet.length === 1 &&
+              <button
+                className="clear-input"
+                onClick={() => handleArtifactSetChange('clear selection')}>
+                &#10006;
+              </button>}
+
             </div>
             </>
-          ) : (
-          <>
-          <div className="dropdown-wrapper">
-            <div 
-              onClick={() => handleDropDown('Artifact')} 
-              className={selectedArtifactSet.length === 1 ? 'dropdown highlighted' : 'dropdown'}
+            
+            )
+          }
+          {artifactSetDropDownOpen && (
+            <ul 
+              className="dropdown-menu"
+              style={{height:'500px'}}
             >
+              {filteredArtifacts.map((set: ArtifactSet) => (
+                <li key={set.name} onClick={() => {
+                  handleArtifactSetChange(set.name)
+                  setArtifactSetDropDownOpen(!artifactSetDropDownOpen)
+                  setArtifactQuery('')
+                }}>
+                  <img
+                    src={`./images/artifacts/flowers/${set.name} Flower.webp`}
+                    alt={selectedArtifactSet}
+                  />
+                  {set.name}
+                </li>
+              ))}
+            </ul>
+          )}
+          </div>
+        </div>
+
+        {/* ARTIFACT TYPE - SANDS/GOBLET/CIRCLET */}
+        <div className="filter-option">
+        <h3>Select mainstats</h3>
+          {artifactTypesAndStats.map((artifact: ArtifactType) => (
+            <React.Fragment key={artifact.name}>
+              {/*<h3>{artifact.name}</h3>*/}
+
+              {artifact.name === 'Sands' && 
+                <div ref={sandsDropDownRef} >
+                  <div className="dropdown-wrapper">
+                    <div 
+                      className={selectedSands.length > 0 ? 'dropdown highlighted' : 'dropdown'}
+                      onClick={() => handleDropDown('Sands')}
+                    >
+                      <img
+                        className="filter-icon"  
+                        src={
+                          selectedArtifactSet.length > 0 ? `./images/artifacts/sands/${selectedArtifactSet} ${artifact.name}.webp` : 
+                          selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                        }
+                        alt={selectedArtifactSet}
+                      />
+                      <p>                
+                        {selectedSands.length > 0 ? selectedSands[0] : 'Sands'}
+                      </p>
+                    </div>
+
+                    {/* X button clear the input, if any */}
+                    {selectedSands.length >= 1 &&
+                    <button
+                      className="clear-input"
+                      onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                      &#10006;
+                    </button>}
+
+                  </div>
+                {sandsDropDownOpen && artifact.name === 'Sands' && (
+                  <ul className="dropdown-menu">
+                    {artifact.stats.map((stat: string) => (
+                      <li key={stat} onClick={() => {
+                        handleMainstatChange(stat, artifact.name);
+                        setSandsDropDownOpen(!sandsDropDownOpen);
+                      }}>
+                        {stat}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                </div>}
+
+              {artifact.name === 'Goblet' && 
+                <div ref={gobletDropDownRef}>
+                  <div className="dropdown-wrapper">
+                    <div 
+                      className={selectedGoblet.length > 0 ? 'dropdown highlighted' : 'dropdown'}
+                      onClick={() => handleDropDown('Goblet')}
+                    >
+                      <img
+                        className="filter-icon"  
+                        src={
+                          selectedArtifactSet.length > 0 ? `./images/artifacts/goblets/${selectedArtifactSet} ${artifact.name}.webp` : 
+                          selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                        }
+                        alt={selectedArtifactSet}
+                      />
+                      <p>
+                        {selectedGoblet.length > 0 ? selectedGoblet[0] : 'Goblet'}
+                      </p>
+                    </div>
+
+                    {/* X button clear the input, if any */}
+                    {selectedGoblet.length >= 1 &&
+                    <button
+                      className="clear-input"
+                      onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                      &#10006;
+                    </button>}
+
+                  </div>
+                {gobletDropDownOpen && artifact.name === 'Goblet' && (
+                  <ul className="dropdown-menu">
+                    {artifact.stats.map((stat: string) => (
+                      <li key={stat} onClick={() => {
+                        handleMainstatChange(stat, artifact.name);
+                        setGobletDropDownOpen(!gobletDropDownOpen);
+                      }}>
+                        {stat}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                </div>}
+
+              {artifact.name === 'Circlet' && 
+                <div ref={circletDropDownRef}>
+                  <div className="dropdown-wrapper">
+                    <div 
+                      className={selectedCirclet.length > 0 ? 'dropdown highlighted' : 'dropdown'}
+                      onClick={() => handleDropDown('Circlet')}
+                    >
+                      <img 
+                        className="filter-icon"
+                        src={
+                          selectedArtifactSet.length > 0 ? `./images/artifacts/circlets/${selectedArtifactSet} ${artifact.name}.webp` : 
+                          selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                        }
+                        alt={selectedArtifactSet}
+                      />
+                      <p>
+                        {selectedCirclet.length > 0 ? selectedCirclet[0] : 'Circlet'}                
+                      </p>
+                    </div>
+
+                    {/* X button clear the input, if any */}
+                    {selectedCirclet.length >= 1 &&
+                    <button
+                      className="clear-input"
+                      onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                      &#10006;
+                    </button>}
+
+                  </div>
+                {circletDropDownOpen && artifact.name === 'Circlet' && (
+                  <ul className="dropdown-menu">
+                    {artifact.stats.map((stat: string) => (
+                      <li key={stat} onClick={() => {
+                        handleMainstatChange(stat, artifact.name);
+                        setCircletDropDownOpen(!circletDropDownOpen);
+                      }}>
+                        {stat}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                </div>}
+
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* SUBSTATS */}
+        <div className="filter-option">
+          <h3>Select substats</h3>
+          {substats.map((stat: string) => (
+            <label key={stat} className={selectedSubstats.includes(stat) > 0 ? 'highlighted' : ''}>
+              <input
+                type="checkbox"
+                checked={selectedSubstats.includes(stat)}
+                onChange={() => handleSubstatsChange(stat)}
+              />
               <img
                 className="filter-icon"  
                 src={
-                  selectedArtifactSet.length > 0 ? `./images/artifacts/flowers/${selectedArtifactSet} Flower.webp` : 
-                  selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Flower.webp` : ''
-                }
-                alt={selectedArtifactSet}
+                  stat === 'HP%' ? `./images/artifacts/Icon HP.webp` :
+                  stat === 'ATK%' ? `./images/artifacts/Icon ATK.webp` :
+                  stat === 'DEF%' ? `./images/artifacts/Icon DEF.webp` :
+                  stat === 'CRIT DMG' ? `./images/artifacts/Icon CRIT Rate.webp` :
+                  `./images/artifacts/Icon ${stat}.webp`} 
               />
-              <p>
-                {selectedArtifactSet.length > 0 ? selectedArtifactSet : "Select an artifact set"}
-              </p>
-            </div>
-
-            {/* X button clear the input, if any */}
-            {selectedArtifactSet.length === 1 &&
-            <button
-              className="clear-input"
-              onClick={() => handleArtifactSetChange('clear selection')}>
-              &#10006;
-            </button>}
-
-          </div>
-          </>
-          
-          )
-        }
-        {artifactSetDropDownOpen && (
-          <ul 
-            className="dropdown-menu"
-            style={{height:'500px'}}
-          >
-            {filteredArtifacts.map((set: ArtifactSet) => (
-              <li key={set.name} onClick={() => {
-                handleArtifactSetChange(set.name)
-                setArtifactSetDropDownOpen(!artifactSetDropDownOpen)
-                setArtifactQuery('')
-              }}>
-                <img
-                  src={`./images/artifacts/flowers/${set.name} Flower.webp`}
-                  alt={selectedArtifactSet}
-                />
-                {set.name}
-              </li>
-            ))}
-          </ul>
-        )}
+              {stat}
+            </label>
+          ))}
         </div>
       </div>
 
-      {/* ARTIFACT TYPE - SANDS/GOBLET/CIRCLET */}
-      <div className="filter-option">
-        {artifactTypesAndStats.map((artifact: ArtifactType) => (
-          <React.Fragment key={artifact.name}>
-            {/*<h3>{artifact.name}</h3>*/}
+      <div id="filter-other">
+        <h2>Other</h2>
 
-            {artifact.name === 'Sands' && 
-              <div ref={sandsDropDownRef} >
+        {/* CHARACTER */}
+        <div className="filter-option">
+          <h3>Select character</h3>
+            <div ref={characterDropDownRef}>
+
+              {/* Render dropdown toggle */}
+              {!characterDropDownOpen ? (
+                <>
                 <div className="dropdown-wrapper">
                   <div 
-                    className={selectedSands.length > 0 ? 'dropdown highlighted' : 'dropdown'}
-                    onClick={() => handleDropDown('Sands')}
-                  >
-                    <img
-                      className="filter-icon"  
-                      src={
-                        selectedArtifactSet.length > 0 ? `./images/artifacts/sands/${selectedArtifactSet} ${artifact.name}.webp` : 
-                        selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
-                      }
-                      alt={selectedArtifactSet}
-                    />
-                    <p>                
-                      {selectedSands.length > 0 ? selectedSands : 'Select a sands stat'}
-                    </p>
-                  </div>
-
-                  {/* X button clear the input, if any */}
-                  {selectedSands.length === 1 &&
-                  <button
-                    className="clear-input"
-                    onClick={() => handleMainstatChange('clear selection', artifact.name)}>
-                    &#10006;
-                  </button>}
-
-                </div>
-              {sandsDropDownOpen && artifact.name === 'Sands' && (
-                <ul className="dropdown-menu">
-                  {artifact.stats.map((stat: string) => (
-                    <li key={stat} onClick={() => {
-                      handleMainstatChange(stat, artifact.name);
-                      setSandsDropDownOpen(!sandsDropDownOpen);
-                    }}>
-                      {stat}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              </div>}
-
-            {artifact.name === 'Goblet' && 
-              <div ref={gobletDropDownRef}>
-                <div className="dropdown-wrapper">
-                  <div 
-                    className={selectedGoblet.length > 0 ? 'dropdown highlighted' : 'dropdown'}
-                    onClick={() => handleDropDown('Goblet')}
-                  >
-                    <img
-                      className="filter-icon"  
-                      src={
-                        selectedArtifactSet.length > 0 ? `./images/artifacts/goblets/${selectedArtifactSet} ${artifact.name}.webp` : 
-                        selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
-                      }
-                      alt={selectedArtifactSet}
-                    />
-                    <p>
-                      {selectedGoblet.length > 0 ? selectedGoblet : 'Select a goblet stat'}
-                    </p>
-                  </div>
-
-                  {/* X button clear the input, if any */}
-                  {selectedGoblet.length === 1 &&
-                  <button
-                    className="clear-input"
-                    onClick={() => handleMainstatChange('clear selection', artifact.name)}>
-                    &#10006;
-                  </button>}
-
-                </div>
-              {gobletDropDownOpen && artifact.name === 'Goblet' && (
-                <ul className="dropdown-menu">
-                  {artifact.stats.map((stat: string) => (
-                    <li key={stat} onClick={() => {
-                      handleMainstatChange(stat, artifact.name);
-                      setGobletDropDownOpen(!gobletDropDownOpen);
-                    }}>
-                      {stat}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              </div>}
-
-            {artifact.name === 'Circlet' && 
-              <div ref={circletDropDownRef}>
-                <div className="dropdown-wrapper">
-                  <div 
-                    className={selectedCirclet.length > 0 ? 'dropdown highlighted' : 'dropdown'}
-                    onClick={() => handleDropDown('Circlet')}
-                  >
+                    onClick={() => handleDropDown('Character')} 
+                    className={selectedCharacter.length === 1 ? 'dropdown highlighted' : 'dropdown'}>
                     <img 
-                      className="filter-icon"
+                      className="filter-icon" 
                       src={
-                        selectedArtifactSet.length > 0 ? `./images/artifacts/circlets/${selectedArtifactSet} ${artifact.name}.webp` : 
-                        selectedArtifactSet.length === 0 ? `./images/artifacts/Icon ${artifact.name}.webp` : ''
+                        selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
+                        selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
                       }
-                      alt={selectedArtifactSet}
+                      alt={selectedCharacter}
                     />
                     <p>
-                      {selectedCirclet.length > 0 ? selectedCirclet : 'Select a circlet stat'}
+                      {/* If character is selected, display their name, otherwise placeholder text */}
+                      {selectedCharacter.length === 1 ? selectedCharacter : "Select character"}
                     </p>
                   </div>
 
-                  {/* X button clear the input, if any */}
-                  {selectedCirclet.length === 1 &&
+                  {/* X button clear the selection */}
+                  {selectedCharacter.length === 1 &&
                   <button
                     className="clear-input"
-                    onClick={() => handleMainstatChange('clear selection', artifact.name)}>
+                    onClick={() => handleCharacterChange('clear selection')}>
                     &#10006;
                   </button>}
-
                 </div>
-              {circletDropDownOpen && artifact.name === 'Circlet' && (
+                </>
+              ) : (
+                <>
+                {/* Render search bar */}
+                <div className="search-bar">
+                  <input
+                    className="search-input"
+                    ref={characterRef}
+                    value={characterQuery}
+                    onChange={handleCharacterQuery}
+                    placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to search"}
+                  />
+                </div>
+      
+                {/* Render the filtered character data to list */}
                 <ul className="dropdown-menu">
-                  {artifact.stats.map((stat: string) => (
-                    <li key={stat} onClick={() => {
-                      handleMainstatChange(stat, artifact.name);
-                      setCircletDropDownOpen(!circletDropDownOpen);
+                  {filteredCharacterData.map((character: Character) => (
+                    <li key={character.name + character.element} onClick={() => {
+                      handleCharacterChange(character.name)
+                      setCharacterDropDownOpen(!characterDropDownOpen)
+                      setCharacterQuery('')
                     }}>
-                      {stat}
+
+                      {/* Character image */}
+                      <img
+                        src={`./images/characters/${character.name}.webp`}
+                        alt={character.name}
+                      />
+
+                      {/* Character name */}
+                      {character.name}
+
                     </li>
                   ))}
                 </ul>
-              )}
-              </div>}
+                </>
+              )
+            }
+          </div>
+        </div>
 
-          </React.Fragment>
-        ))}
+        {/* ELEMENTS */}
+        <div className="filter-option">
+          <h3>Select element</h3>
+          {elements.map((element: string) => (
+            <label key={element} className={selectedElements.includes(element) > 0 ? 'highlighted' : ''}>
+              <input
+                type="checkbox"
+                checked={selectedElements.includes(element)}
+                onChange={() => handleElementsChange(element)}
+              />
+              <img
+                className="filter-icon"   
+                src={`./images/elements/${element}.webp`} />
+              {element}
+            </label>
+          ))}
+        </div>
       </div>
 
-      {/* SUBSTATS */}
-      <div className="filter-option">
-        <h3>Substats</h3>
-        {substats.map((stat: string) => (
-          <label key={stat} className={selectedSubstats.includes(stat) > 0 ? 'highlighted' : ''}>
-            <input
-              type="checkbox"
-              checked={selectedSubstats.includes(stat)}
-              onChange={() => handleSubstatsChange(stat)}
-            />
-            <img
-              className="filter-icon"  
-              src={
-                stat === 'HP%' ? `./images/artifacts/Icon HP.webp` :
-                stat === 'ATK%' ? `./images/artifacts/Icon ATK.webp` :
-                stat === 'DEF%' ? `./images/artifacts/Icon DEF.webp` :
-                stat === 'CRIT DMG' ? `./images/artifacts/Icon CRIT Rate.webp` :
-                `./images/artifacts/Icon ${stat}.webp`} 
-            />
-            {stat}
-          </label>
-        ))}
-      </div>
 
-      {/* ELEMENTS */}
-      <div className="filter-option">
-        <h3>Element</h3>
-        {elements.map((element: string) => (
-          <label key={element} className={selectedElements.includes(element) > 0 ? 'highlighted' : ''}>
-            <input
-              type="checkbox"
-              checked={selectedElements.includes(element)}
-              onChange={() => handleElementsChange(element)}
-            />
-            <img
-              className="filter-icon"   
-              src={`./images/elements/${element}.webp`} />
-            {element}
-          </label>
-        ))}
-      </div>
       <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
     </section>
   );

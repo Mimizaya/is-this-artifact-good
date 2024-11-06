@@ -4,6 +4,7 @@ export interface Character {
 	element: string;
 }
 export interface Build {
+	ID: number;
 	character_name: string;
 	rarity: string;
 	element: string;

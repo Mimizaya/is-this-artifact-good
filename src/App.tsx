@@ -7,7 +7,7 @@ import Results from './ui/Results.tsx';
 export default function App() {
 
   // Data version
-    const VERSION = '2.3';
+    const VERSION = '2.7';
 
   // Prepare data imported from CSV
     const [rawData, setRawData] = useState<string[]>([]);
@@ -74,13 +74,19 @@ export default function App() {
     };
 
     const handleMainstatChange = (stat: string, type: string) => {
+
       if(type === 'Sands') {
         if(stat === 'clear selection') {
           setSelectedSands([])
         }
-        if(stat !== 'clear selection') {
+        else if (stat === 'HP%') {
+          setSelectedSands(['HP%', 'HP% (C1)'])
+        }
+        else if (stat === 'Elemental Mastery') {
+          setSelectedSands(['Elemental Mastery', 'Elemental Mastery (Vape)'])
+        }
+        else {
           setSelectedSands([stat])
-          console.log(selectedSands)
         }
       }
       if(type === 'Goblet') {
@@ -95,16 +101,96 @@ export default function App() {
         if(stat === 'clear selection') {
           setSelectedCirclet([])
         }
-        if(stat !== 'clear selection') {
+        else if (stat === 'CRIT Rate') {
+          setSelectedCirclet(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])
+        }
+        else if (stat === 'CRIT DMG') {
+          setSelectedCirclet(['CRIT DMG', 'CRIT Rate/DMG'])
+        }
+        else {
           setSelectedCirclet([stat])
         }
       }
     }
 
     const handleSubstatsChange = (stat: string) => {
-      setSelectedSubstats((prev) =>
-        prev.includes(stat) ? prev.filter((n) => n !== stat) : [...prev, stat]
-      );
+
+      // If filtering for 'CRIT Rate' or 'CRIT DMG', also add the consolidated 'CRIT Rate/DMG'
+      if (stat === 'CRIT Rate' || stat === 'CRIT DMG') {
+        setSelectedSubstats((prev) => {
+
+          // Check if the stat is already selected
+          const isSelected = prev.includes(stat);
+          const isCritIncluded = prev.includes('CRIT Rate/DMG');
+          const isCritRateFavoniusIncluded = prev.includes('CRIT Rate (Favonius)');
+
+          // Create a new selection based on the current state
+          let newSelection = isSelected
+            ? prev.filter((n) => n !== stat) // Remove the stat if it's already selected
+            : [...prev, stat]; // Add the stat if it's not already selected
+
+          // If "CRIT Rate" is selected and "CRIT Rate (Favonius)" is not already included, add it
+          if (stat === 'CRIT Rate' && !isSelected && !isCritRateFavoniusIncluded) {
+            newSelection.push('CRIT Rate (Favonius)');
+          }
+
+          // Add "CRIT Rate/DMG" if either "CRIT Rate" or "CRIT DMG" is selected, and "CRIT Rate/DMG" was not already included
+          if (!isSelected && !isCritIncluded) {
+            newSelection.push('CRIT Rate/DMG');
+          }
+
+          // Remove "CRIT" if neither "CRIT Rate" nor "CRIT DMG" is selected anymore
+          if (!newSelection.includes('CRIT Rate') && !newSelection.includes('CRIT DMG')) {
+            newSelection = newSelection.filter((n) => n !== 'CRIT Rate/DMG');
+          }
+
+          // Remove "CRIT Rate (Favonius)" if "CRIT Rate" is not selected anymore
+          if (!newSelection.includes('CRIT Rate')) {
+            newSelection = newSelection.filter((n) => n !== 'CRIT Rate (Favonius)');
+          }
+
+          return newSelection;
+        });
+      }
+
+      else if (stat === 'Elemental Mastery') {
+        setSelectedSubstats((prev) => {
+
+          // Check if the stat is already selected
+          const isSelected = prev.includes(stat);
+          const isVapeIncluded = prev.includes('Elemental Mastery (Vape)');
+          const isQuickenIncluded = prev.includes('Elemental Mastery (Quicken)');
+          const isMeltIncluded = prev.includes('Elemental Mastery (Melt)');
+
+          // Create a new selection based on the current state
+          let newSelection = isSelected
+            ? prev.filter((n) => n !== stat) // Remove the stat if it's already selected
+            : [...prev, stat]; // Add the stat if it's not already selected
+
+          // Add to selection
+          if (!isSelected && !isVapeIncluded && !isQuickenIncluded && !isMeltIncluded) {
+            newSelection.push('Elemental Mastery (Vape)');
+            newSelection.push('Elemental Mastery (Quicken)');
+            newSelection.push('Elemental Mastery (Melt)');
+          }
+
+          // Remove from selection
+          if (!newSelection.includes('Elemental Mastery')) {
+            newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Vape)');
+            newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Quicken)');
+            newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Melt)');
+          }
+
+          return newSelection;
+        });
+      }
+
+      // All other stats
+      else {
+        setSelectedSubstats((prev) =>
+          prev.includes(stat) ? prev.filter((n) => n !== stat) : [...prev, stat]
+        );
+      }
     }
 
     const handleElementsChange = (element: string) => {
@@ -115,12 +201,12 @@ export default function App() {
 
   // Reset all filters
     const resetFilters = () => {
-      setSelectedCharacter([]);
       setSelectedArtifactSet([]);
       setSelectedSands([]);
       setSelectedGoblet([]);
       setSelectedCirclet([]);
       setSelectedSubstats([]);
+      setSelectedCharacter([]);
       setSelectedElements([]);
     }
 
@@ -144,7 +230,7 @@ export default function App() {
         />
         <Results 
           resetFilters={resetFilters}
-          characterDataCSV={rawData}
+          buildsDataRaw={rawData}
           selectedCharacter={selectedCharacter}
           selectedArtifactSet={selectedArtifactSet}
           selectedSands={selectedSands}

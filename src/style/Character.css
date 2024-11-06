@@ -49,7 +49,6 @@ div.character-card.small div.build-header div.character-title h3.build-name {
   position: relative;
   top: -5px;
   margin: 0;
-  color: #BBB;
   font-weight: 700;
 }
 div.character-card.small div.build-content div.artifact-set {
@@ -148,10 +147,20 @@ div.character-card div.build-header div.character-title {
   top: 15px;
   text-shadow: 1px 1px 5px black;
 }
+div.character-card div.build-header div.character-title h2.character-name {
+  color: #FFF;
+}
 div.character-card div.build-header div.character-title h3.build-name {
+  position: relative;
+  top: -5px;
   margin: 0;
-  color: #BBB;
+  color: #DDD;
   font-weight: 700;
+}
+div.character-card div.build-header div.pin-build {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 div.character-card div.build-content {
   margin-left: 0;

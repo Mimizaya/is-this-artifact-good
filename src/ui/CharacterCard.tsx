@@ -4,6 +4,8 @@ import { Build } from '../types/types';
 export default function CharacterCard({
   build,
   buildSectionsVisible,
+  handleSelectedPinned,
+  selectedPinned,
   selectedCharacter,
   selectedArtifactSet,
   selectedSands,
@@ -13,6 +15,8 @@ export default function CharacterCard({
 } : {
   build: Build;
   buildSectionsVisible: string[];
+  handleSelectedPinned: any;
+  selectedPinned: any;
   selectedCharacter: any;
   selectedArtifactSet: any;
   selectedSands: any;
@@ -54,7 +58,7 @@ export default function CharacterCard({
 		const showGoblet = buildSectionsVisible.includes('Goblet') || buildSectionsVisible.includes('All');
 		const showCirclet = buildSectionsVisible.includes('Circlet') || buildSectionsVisible.includes('All');
 		const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
-		const showERRequirement = buildSectionsVisible.includes('ER Requirement') || buildSectionsVisible.includes('All');
+		const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
 
 	// Ensure equal heights on Artifact Set and Alternatives sections
 		useEffect(() => {
@@ -98,39 +102,59 @@ export default function CharacterCard({
 	  }, [filterApplied]);
 
 
-
 	return (
 		<div className={filterApplied ? 'character-card small' : 'character-card full'}>
+
+			{/* Start of Header wrapper */}
       <div className={`rarity-${build.rarity} build-header`}>
 				{/*<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>*/}
 
+      	{/* Character Element symbol */}
 				<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
 
+				{/* Character Banner */}
 				<div className="character-banner-wrapper">
 					<img className="character-banner" src={"./images/characters/" + build.character_name + " Banner.webp"} alt={build.element}/>
 				</div>
 
+				{/* Character Profile Pictures */}
+				{/* Traveler build and no filters (i.e. big format display) */}
 				{build.character_name.includes('Traveler') && !filterApplied
 					?
 					<>
+						{/* Specific images for Traveler to include both of them */}
 						<img className="character-portrait" src={"./images/characters/Aether.webp"} alt={build.character_name}/>
 						<img className="character-portrait-two" src={"./images/characters/Lumine.webp"} alt={build.character_name}/>
 					</>
 					:
-					<img className="character-portrait" src={"./images/characters/" + build.character_name + ".webp"} alt={build.character_name}/>
+					<>
+						{/* Single picture for everyone else (also for traveler in small format display) */}
+						<img className="character-portrait" src={"./images/characters/" + build.character_name + ".webp"} alt={build.character_name}/>
+					</>
 				}
         
+        {/* Character titles - Name and Build */}
         <div className="character-title">
-        	<h2 className={selectedCharacter.includes(build.character_name) ? 'highlighted' : ''}>{build.character_name}</h2>
+        	<h2 className={selectedCharacter.includes(build.character_name) ? 'character-name highlighted' : 'character-name'}>{build.character_name}</h2>
         	<h3 className="build-name">{build.build_name}</h3>
         </div>
-{/*        <div className="artifact-set-images">
+				{/*<div className="artifact-set-images">
         	<img className="artifact-set-image" src={"./images/artifacts/" + build.artifact_set + " Flower.webp"} alt={build.artifact_set}/>
         	<br />
         	<img className="artifact-set-image-2" src={"./images/artifacts/" + build.artifact_set + " Flower.webp"} alt={build.artifact_set}/>
         </div>*/}
-      </div>
 
+        {/* Pin Build Button */}
+        <div className="pin-build">
+        	<button 
+        		className="pin-build-button"
+        		onClick={() => handleSelectedPinned(build.ID)}
+        		>{selectedPinned.includes(build.ID) ? 'Pinned' : 'Pin'}
+        		</button>
+        </div>
+        
+      </div>
+      {/* End of Header wrapper */}
 
 
       <div className="build-content">
@@ -338,13 +362,13 @@ export default function CharacterCard({
 		   	}
 
 
-      	{showERRequirement && 
+      	{showERRecommendation && 
       	<>
 	      <div className="er-requirements">
 	      	<div className="build-content-entry">
 		      	<img className="artifact-icon-simple" src={"./images/artifacts/Icon Energy Recharge.webp"}/>
 		      	<div className="build-content-entry-content">
-				      <h4>ER Requirement</h4>
+				      <h4>ER Recommendation</h4>
 				        <ul>
 				        	{build.er_min === '' && build.er_max === '' && <li>No data</li>}
 				          {build.er_min === 'n/a' && build.er_max === 'n/a' && <li>No requirement</li>}

@@ -63,7 +63,6 @@ $card-width-small: 270px;
           position: relative;
           top: -5px;
           margin: 0;
-          color: #BBB;
           font-weight: 700;
         }
       }
@@ -115,16 +114,12 @@ $card-width-small: 270px;
   }
 
 
-
-
-
-
   div.character-card.full {
     width: $card-width-full;
     margin: 30px;
   }
 
-  div.character-card,  {
+  div.character-card {
     position: relative;
     background-color: #222222;
     box-shadow: 1px 3px 5px #191919;
@@ -184,11 +179,21 @@ $card-width-small: 270px;
         top: 15px;
         text-shadow: 1px 1px 5px black;
 
+        h2.character-name {
+          color: #FFF;
+        }
         h3.build-name {
+          position: relative;
+          top: -5px;
           margin: 0;
-          color: #BBB;
+          color: #DDD;
           font-weight: 700;
         }
+      }
+      div.pin-build {
+        position: absolute;
+        top: 0;
+        right: 0;
       }
     }
     div.build-content {
