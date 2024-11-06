@@ -14,4 +14,5 @@ export default defineConfig({
       "@": "/src",
     },
   },
+  assetsInclude: ['**/*.csv'],  // CSV files as assets
 })

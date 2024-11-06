@@ -3,39 +3,31 @@ import { useState } from 'react';
 // Datasets
 import { characterData } from '../data/character-data.ts';
 import { artifactSets } from '../data/artifact-data.ts';
+import { elements } from '../data/elements.ts';
 
 // Type definitions
-import { Character, Build, ArtifactSet } from '../types/types.ts';
+import { Character, RawBuild, FullBuild, ArtifactSet, SelectedFilters } from '../types/types.ts';
 
 // UI components
 import CharacterCard from './CharacterCard.tsx'
 
 export default function Results({
   buildsDataRaw,
-  selectedCharacter,
-  selectedArtifactSet,
-  selectedSands,
-  selectedGoblet,
-  selectedCirclet,
-  selectedSubstats,
-  selectedElements,
+  selectedFilters,
   resetFilters,
 }: {
-  buildsDataRaw: any;
-  selectedCharacter: any;
-  selectedArtifactSet: any;
-  selectedSands: any;
-  selectedGoblet: any;
-  selectedCirclet: any;
-  selectedSubstats: any;
-  selectedElements: any;
-  resetFilters: any;
+  buildsDataRaw: RawBuild[];
+  selectedFilters: SelectedFilters;
+  resetFilters: () => void;
 }) {
 
   // Save filter configurations - WIP 
     //const [currentFilterTab, setCurrentFilterTab] = useState(1);
     //const [savedFilters, setSavedFilters] = useState([]);
 
+  // Destructure the selected filters object
+      const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
+  
   // Handle pin build 
     const [selectedPinned, setSelectedPinned] = useState<number[]>([]);
     const handleSelectedPinned = (id: number) => {
@@ -45,7 +37,7 @@ export default function Results({
     }
 
   // Add additional static data to builds 
-    const buildsDataEnriched = buildsDataRaw.map((build: Build) => {
+    const buildsDataEnriched = buildsDataRaw.map((build: RawBuild) => {
 
       // Find the corresponding character data based on name
       const characterInfo = characterData.find((character: Character) => character.name === build.character_name);
@@ -56,12 +48,13 @@ export default function Results({
       const artifactSetThreeInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_3);
 
       // If a match is found, merge the relevant data
+      // Use `!` to assert that result is not null/undefined
       return {
         ...build,
-        element: characterInfo ? characterInfo.element : null,
-        rarity: characterInfo ? characterInfo.rarity : null,
-        artifact_set_two_piece: artifactSetOneInfo ? artifactSetOneInfo.two_piece : null,
-        artifact_set_four_piece: artifactSetOneInfo ? artifactSetOneInfo.four_piece : null,
+        element: characterInfo!.element,
+        rarity: characterInfo!.rarity,
+        artifact_set_two_piece: artifactSetOneInfo!.two_piece,
+        artifact_set_four_piece: artifactSetOneInfo!.four_piece,
         artifact_set_2_two_piece: artifactSetTwoInfo ? artifactSetTwoInfo.two_piece : null,
         artifact_set_2_four_piece: artifactSetTwoInfo ? artifactSetTwoInfo.four_piece : null,
         artifact_set_3_two_piece: artifactSetThreeInfo ? artifactSetThreeInfo.two_piece : null,
@@ -75,16 +68,23 @@ export default function Results({
 
   // Apply default sorting order 
       const artifactOrder = artifactSets.map(artifact => artifact.name);
-      const elementOrder = ['Pyro', 'Hydro', 'Anemo', 'Electro', 'Dendro', 'Cryo', 'Geo'];
+      const elementOrder = elements;
 
-      const sortedBuilds = buildsDataEnriched.sort((a: Build, b: Build) => {
-        // If a character is selected, sort by internal build IDs
+      const sortedBuilds = buildsDataEnriched.sort((a: FullBuild, b: FullBuild) => {
+
+        // If a character filter is checked, sort builds by Internal build IDs
         if(selectedCharacter.length > 0) {
-          return a.ID - b.ID;  // Ascending order
+          return a.ID - b.ID;
         }
-        // If no character is selected, sort builds by:
-        // Selected Artifact Set > Artifact Sets > Element > Character Name
-        if(selectedCharacter.length <= 0) {
+
+        // If a element filter is checked, sort builds by Character name
+        if(selectedElements.length > 0) {
+          return a.character_name.localeCompare(b.character_name);
+        }
+
+        // If no character type filters are checked, sort builds by:
+        // Artifact Sets > Element > Character Name
+        else {
           const indexAArtifact = artifactOrder.indexOf(a.artifact_set);
           const indexBArtifact = artifactOrder.indexOf(b.artifact_set);
           const indexAElement = elementOrder.indexOf(a.element);
@@ -104,7 +104,7 @@ export default function Results({
       });
 
   // Apply user filters to data 
-    const filteredResults = sortedBuilds.filter((build: Build) => {
+    const filteredResults = sortedBuilds.filter((build: FullBuild) => {
       // Check pinned
       const isBuildPinned = selectedPinned.length === 0 || 
         selectedPinned.includes(build.ID);
@@ -234,7 +234,7 @@ export default function Results({
     };
 
     sortedResults = sortByMultipleKeys(sortedResults, keyValueMapOne);
-    sortedResults.sort((a: Build, b: Build) => {
+    sortedResults.sort((a: FullBuild, b: FullBuild) => {
       const aCount = countMatchingSubstats(a, selectedSubstats);
       const bCount = countMatchingSubstats(b, selectedSubstats);
       return bCount - aCount;
@@ -242,8 +242,8 @@ export default function Results({
     sortedResults = sortByMultipleKeys(sortedResults, keyValueMapTwo);
 
 
-    const pinnedBuilds = sortedResults.filter((pinned: Build) => selectedPinned.includes(pinned.ID));
-    const otherBuilds = sortedResults.filter((pinned: Build) => !selectedPinned.includes(pinned.ID));
+    const pinnedBuilds = sortedResults.filter((pinned: FullBuild) => selectedPinned.includes(pinned.ID));
+    const otherBuilds = sortedResults.filter((pinned: FullBuild) => !selectedPinned.includes(pinned.ID));
 
     const filteredAndSortedResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
 
@@ -347,19 +347,14 @@ export default function Results({
           </div>}
 
         {/* Show build(s) that match filter(s) */}
-        {filteredAndSortedResults.map((build: Build) => (
+        {filteredAndSortedResults.map((build: FullBuild) => (
           <div key={build.ID}>
             <CharacterCard
               build={build}
               handleSelectedPinned={handleSelectedPinned}
               buildSectionsVisible={buildSectionsVisible}
               selectedPinned={selectedPinned}
-              selectedCharacter={selectedCharacter}
-              selectedArtifactSet={selectedArtifactSet}
-              selectedSands={selectedSands}
-              selectedGoblet={selectedGoblet}
-              selectedCirclet={selectedCirclet}
-              selectedSubstats={selectedSubstats}
+              selectedFilters={selectedFilters}
             />
           </div>
         ))}

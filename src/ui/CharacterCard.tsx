@@ -1,31 +1,24 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 // Type definitions
-import { Build } from '../types/types';
+import { FullBuild, SelectedFilters } from '../types/types';
 
 export default function CharacterCard({
   build,
   buildSectionsVisible,
   handleSelectedPinned,
   selectedPinned,
-  selectedCharacter,
-  selectedArtifactSet,
-  selectedSands,
-  selectedGoblet,
-  selectedCirclet,
-  selectedSubstats,
+  selectedFilters,
 } : {
-  build: Build;
+  build: FullBuild;
   buildSectionsVisible: string[];
-  handleSelectedPinned: any;
-  selectedPinned: any;
-  selectedCharacter: any;
-  selectedArtifactSet: any;
-  selectedSands: any;
-  selectedGoblet: any;
-  selectedCirclet: any;
-  selectedSubstats: any;
+  handleSelectedPinned: (id: number) => void;
+  selectedPinned: number[];
+  selectedFilters: SelectedFilters;
 }) {
+
+	// Destructure the selected filters object
+    const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats } = selectedFilters;
 
 	// Refs 
 		const elementOneRef = useRef<HTMLInputElement>(null);

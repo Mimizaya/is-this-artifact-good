@@ -1,25 +1,12 @@
-export interface Character {
-	name: string;
-	rarity: number;
-	element: string;
-}
-export interface Build {
+export interface RawBuild {
 	ID: number;
 	character_name: string;
-	rarity: string;
-	element: string;
 	build_name: string;
 	artifact_set: string;
-	artifact_set_two_piece: string;
-	artifact_set_four_piece: string;
 	artifact_logic: string;
 	artifact_set_2: string;
-	artifact_set_2_two_piece: string;
-	artifact_set_2_four_piece: string;
 	artifact_logic_2: string;
 	artifact_set_3: string;
-	artifact_set_3_two_piece: string;
-	artifact_set_3_four_piece: string;
 	sands: string;
 	sands_2: string;
 	sands_3: string;
@@ -38,8 +25,34 @@ export interface Build {
 	er_max: string;
 	note: string;
 }
+interface EnrichedBuild {
+	rarity: number;
+	element: string;
+	artifact_set_two_piece: string;
+	artifact_set_four_piece: string;
+	artifact_set_2_two_piece: string | null;
+	artifact_set_2_four_piece: string | null;
+	artifact_set_3_two_piece: string | null;
+	artifact_set_3_four_piece: string | null;
+}
+export interface FullBuild extends RawBuild, EnrichedBuild {}
+
+export interface Character {
+	name: string;
+	rarity: number;
+	element: string;
+}
 export interface ArtifactSet {
 	name: string;
 	two_piece: string;
 	four_piece: string;
 }
+export interface SelectedFilters {
+  selectedCharacter: string[];
+  selectedArtifactSet: string[];
+  selectedSands: string[];
+  selectedGoblet: string[];
+  selectedCirclet: string[];
+  selectedSubstats: string[];
+  selectedElements: string[];
+};

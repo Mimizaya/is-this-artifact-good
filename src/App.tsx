@@ -3,31 +3,42 @@ import { useState, useEffect } from 'react';
 // Stylesheet
 import './style/App.css';
 
-// CSV Parser
+// CSV Parser and raw data
 import Papa from 'papaparse';
+import buildData from './data/builds-data.csv';
 
 // UI components
 import Filter from './ui/Filter.tsx';
 import Results from './ui/Results.tsx';
 
+// Filter Functions
+import { 
+  updateFiltersSingleSelect,
+  updateFiltersMultiSelect,
+} from './functions/filters.ts'
+
+// Type definitions
+import { RawBuild } from './types/types.ts';
+
 export default function App() {
 
-  // Data version
-    const VERSION = '1.7';
+  // Data version 
+    const VERSION = '1.5';
 
-  // Prepare data imported from CSV
-    const [rawData, setRawData] = useState<string[]>([]);
+  // Prepare data imported from CSV 
+    const [rawData, setRawData] = useState<RawBuild[]>([]);
     useEffect(() => {
-      // Check localstorage data exists, and which version
+      // Check if localstorage data exists
       const storedData = localStorage.getItem('csvData');
       const storedVersion = localStorage.getItem('csvDataVersion');
 
+      // If local data exists, parse from storage
       if (storedData && storedVersion === VERSION) {
         setRawData(JSON.parse(storedData));
       } 
+      // Else fetch CSV, parse and store
       else {
-        // Fetch the CSV file from the public folder
-        fetch('./builds-data.csv')
+        fetch(buildData)
           .then((response) => response.text())
           .then((text) => {
             Papa.parse(text, {
@@ -51,7 +62,7 @@ export default function App() {
       }
     }, []);
 
-  // Filter selection states
+  // Filter selection states 
     const [selectedCharacter, setSelectedCharacter] = useState<string[]>([]);
     const [selectedArtifactSet, setSelectedArtifactSet] = useState<string[]>([]);
     const [selectedSands, setSelectedSands] = useState<string[]>([]);
@@ -60,151 +71,47 @@ export default function App() {
     const [selectedSubstats, setSelectedSubstats] = useState<string[]>([]);
     const [selectedElements, setSelectedElements] = useState<string[]>([]);
 
-  // Handle filter selections
+    const selectedFilters = {
+      selectedCharacter,
+      selectedArtifactSet,
+      selectedSands,
+      selectedGoblet,
+      selectedCirclet,
+      selectedSubstats,
+      selectedElements
+    };
+
+  // Handle filter selections 
+
     const handleCharacterChange = (name: string) => {
-      if(name === 'clear selection') {
-        setSelectedCharacter([]);
-      }
-      else {
-        setSelectedCharacter([name]);
-      }
+      updateFiltersSingleSelect(name, setSelectedCharacter);
     };
 
     const handleArtifactSetChange = (set: string) => {
-      if(set === 'clear selection') {
-        setSelectedArtifactSet([]);
-      }
-      else {
-        setSelectedArtifactSet([set]);
-      }
+      updateFiltersSingleSelect(set, setSelectedArtifactSet);
     };
 
     const handleSandsChange = (stat: string) => {
-      if(stat === 'clear selection') {
-        setSelectedSands([])
-      }
-      else if (stat === 'HP%') {
-        setSelectedSands(['HP%', 'HP% (C1)'])
-      }
-      else if (stat === 'Elemental Mastery') {
-        setSelectedSands(['Elemental Mastery', 'Elemental Mastery (Vape)', 'Elemental Mastery (Quicken)'])
-      }
-      else {
-        setSelectedSands([stat])
-      }
+      updateFiltersSingleSelect(stat, setSelectedSands);
     }
 
     const handleGobletChange = (stat: string) => {
-      if(stat === 'clear selection') {
-        setSelectedGoblet([])
-      }
-      if(stat !== 'clear selection') {
-        setSelectedGoblet([stat])
-      }
+      updateFiltersSingleSelect(stat, setSelectedGoblet);
     }
 
     const handleCircletChange = (stat: string) => {
-      if(stat === 'clear selection') {
-        setSelectedCirclet([])
-      }
-      else if (stat === 'CRIT Rate') {
-        setSelectedCirclet(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])
-      }
-      else if (stat === 'CRIT DMG') {
-        setSelectedCirclet(['CRIT DMG', 'CRIT Rate/DMG'])
-      }
-      else {
-        setSelectedCirclet([stat])
-      }
+      updateFiltersSingleSelect(stat, setSelectedCirclet);
     }
 
     const handleSubstatsChange = (stat: string) => {
-
-      // If filtering for 'CRIT Rate' or 'CRIT DMG', also add the consolidated 'CRIT Rate/DMG'
-      if (stat === 'CRIT Rate' || stat === 'CRIT DMG') {
-        setSelectedSubstats((prev) => {
-
-          // Check if the stat is already selected
-          const isSelected = prev.includes(stat);
-          const isCritIncluded = prev.includes('CRIT Rate/DMG');
-          const isCritRateFavoniusIncluded = prev.includes('CRIT Rate (Favonius)');
-
-          // Create a new selection based on the current state
-          let newSelection = isSelected
-            ? prev.filter((n) => n !== stat) // Remove the stat if it's already selected
-            : [...prev, stat]; // Add the stat if it's not already selected
-
-          // If "CRIT Rate" is selected and "CRIT Rate (Favonius)" is not already included, add it
-          if (stat === 'CRIT Rate' && !isSelected && !isCritRateFavoniusIncluded) {
-            newSelection.push('CRIT Rate (Favonius)');
-          }
-
-          // Add "CRIT Rate/DMG" if either "CRIT Rate" or "CRIT DMG" is selected, and "CRIT Rate/DMG" was not already included
-          if (!isSelected && !isCritIncluded) {
-            newSelection.push('CRIT Rate/DMG');
-          }
-
-          // Remove "CRIT" if neither "CRIT Rate" nor "CRIT DMG" is selected anymore
-          if (!newSelection.includes('CRIT Rate') && !newSelection.includes('CRIT DMG')) {
-            newSelection = newSelection.filter((n) => n !== 'CRIT Rate/DMG');
-          }
-
-          // Remove "CRIT Rate (Favonius)" if "CRIT Rate" is not selected anymore
-          if (!newSelection.includes('CRIT Rate')) {
-            newSelection = newSelection.filter((n) => n !== 'CRIT Rate (Favonius)');
-          }
-
-          return newSelection;
-        });
-      }
-
-      else if (stat === 'Elemental Mastery') {
-        setSelectedSubstats((prev) => {
-
-          // Check if the stat is already selected
-          const isSelected = prev.includes(stat);
-          const isVapeIncluded = prev.includes('Elemental Mastery (Vape)');
-          const isQuickenIncluded = prev.includes('Elemental Mastery (Quicken)');
-          const isMeltIncluded = prev.includes('Elemental Mastery (Melt)');
-
-          // Create a new selection based on the current state
-          let newSelection = isSelected
-            ? prev.filter((n) => n !== stat) // Remove the stat if it's already selected
-            : [...prev, stat]; // Add the stat if it's not already selected
-
-          // Add to selection
-          if (!isSelected && !isVapeIncluded && !isQuickenIncluded && !isMeltIncluded) {
-            newSelection.push('Elemental Mastery (Vape)');
-            newSelection.push('Elemental Mastery (Quicken)');
-            newSelection.push('Elemental Mastery (Melt)');
-          }
-
-          // Remove from selection
-          if (!newSelection.includes('Elemental Mastery')) {
-            newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Vape)');
-            newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Quicken)');
-            newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Melt)');
-          }
-
-          return newSelection;
-        });
-      }
-
-      // All other stats
-      else {
-        setSelectedSubstats((prev) =>
-          prev.includes(stat) ? prev.filter((n) => n !== stat) : [...prev, stat]
-        );
-      }
+      updateFiltersMultiSelect(stat, setSelectedSubstats);
     }
 
     const handleElementsChange = (element: string) => {
-      setSelectedElements((prev) =>
-        prev.includes(element) ? prev.filter((n) => n !== element) : [...prev, element]
-      );
+      updateFiltersMultiSelect(element, setSelectedElements);
     };
 
-  // Reset all filters
+  // Reset all filters 
     const resetFilters = () => {
       setSelectedArtifactSet([]);
       setSelectedSands([]);
@@ -220,6 +127,9 @@ export default function App() {
       <main>
         <Filter 
           resetFilters={resetFilters}
+          selectedFilters={selectedFilters}
+
+          // Change filter values
           handleCharacterChange={handleCharacterChange}
           handleArtifactSetChange={handleArtifactSetChange}
           handleSandsChange={handleSandsChange}
@@ -227,28 +137,14 @@ export default function App() {
           handleCircletChange={handleCircletChange}
           handleSubstatsChange={handleSubstatsChange}
           handleElementsChange={handleElementsChange}
-          selectedCharacter={selectedCharacter}
-          selectedArtifactSet={selectedArtifactSet}
-          selectedSands={selectedSands}
-          selectedGoblet={selectedGoblet}
-          selectedCirclet={selectedCirclet}
-          selectedSubstats={selectedSubstats}
-          selectedElements={selectedElements}
         />
         <Results 
           resetFilters={resetFilters}
+          selectedFilters={selectedFilters}
           buildsDataRaw={rawData}
-          selectedCharacter={selectedCharacter}
-          selectedArtifactSet={selectedArtifactSet}
-          selectedSands={selectedSands}
-          selectedGoblet={selectedGoblet}
-          selectedCirclet={selectedCirclet}
-          selectedSubstats={selectedSubstats}
-          selectedElements={selectedElements}
         />
 
     {/* UNCOMMENT TO VIEW ALL CSV DATA
-
     <div>
       <h1>Parsed CSV Data</h1>
       <table>

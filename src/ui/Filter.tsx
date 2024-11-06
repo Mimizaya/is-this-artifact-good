@@ -8,10 +8,11 @@ import { substats } from '../data/substats.ts';
 import { elements } from '../data/elements.ts';
 
 // Type definitions
-import { Character, ArtifactSet } from '../types/types.ts';
+import { Character, ArtifactSet, SelectedFilters } from '../types/types.ts';
 
 export default function Filter({
   resetFilters,
+  selectedFilters,
   handleCharacterChange,
   handleArtifactSetChange,
   handleSandsChange,
@@ -19,30 +20,20 @@ export default function Filter({
   handleCircletChange,
   handleSubstatsChange,
   handleElementsChange,
-  selectedCharacter,
-  selectedArtifactSet,
-  selectedSands,
-  selectedGoblet,
-  selectedCirclet,
-  selectedSubstats,
-  selectedElements
 } : {
-  resetFilters: any;
-  handleCharacterChange: any;
-  handleArtifactSetChange: any;
-  handleSandsChange: any;
-  handleGobletChange: any;
-  handleCircletChange: any;
-  handleSubstatsChange: any;
-  handleElementsChange: any;
-  selectedCharacter: any;
-  selectedArtifactSet: any;
-  selectedSands: any;
-  selectedGoblet: any;
-  selectedCirclet: any;
-  selectedSubstats: any;
-  selectedElements: any;
+  resetFilters: () => void;
+  selectedFilters: SelectedFilters;
+  handleCharacterChange: (name: string) => void;
+  handleArtifactSetChange: (set: string) => void;
+  handleSandsChange: (stat: string) => void;
+  handleGobletChange: (stat: string) => void;
+  handleCircletChange: (stat: string) => void;
+  handleSubstatsChange: (stat: string) => void;
+  handleElementsChange: (element: string) => void;
 }) {
+
+  // Destructure the selected filters object
+    const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
 
   // States
     const [characterQuery, setCharacterQuery] = useState<string>('');
@@ -181,7 +172,7 @@ export default function Filter({
                     selectedArtifactSet.length > 0 ? `./images/artifacts/flowers/${selectedArtifactSet} Flower.webp` : 
                     selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Artifact.webp` : ''
                   }
-                  alt={selectedArtifactSet}
+                  alt={selectedArtifactSet[0]}
                 />
                 <p>
                   {selectedArtifactSet.length > 0 ? selectedArtifactSet : "Artifact set"}
@@ -206,7 +197,7 @@ export default function Filter({
                   ref={artifactRef}
                   value={artifactQuery}
                   onChange={handleArtifactQuery}
-                  placeholder={selectedArtifactSet.length === 1 ? selectedArtifactSet : "Type to search"}
+                  placeholder={selectedArtifactSet.length === 1 ? selectedArtifactSet[0] : "Type to search"}
                 />
               </div>
               <ul 
@@ -221,7 +212,7 @@ export default function Filter({
                   }}>
                     <img
                       src={`./images/artifacts/flowers/${set.name} Flower.webp`}
-                      alt={selectedArtifactSet}
+                      alt={selectedArtifactSet[0]}
                     />
                     {set.name}
                   </li>
@@ -414,7 +405,7 @@ export default function Filter({
         <div className="filter-option">
           <h3>Select substats</h3>
           {substats.map((stat: string) => (
-            <label key={stat} className={selectedSubstats.includes(stat) > 0 ? 'highlighted' : ''}>
+            <label key={stat} className={selectedSubstats.includes(stat) ? 'highlighted' : ''}>
               <input
                 type="checkbox"
                 checked={selectedSubstats.includes(stat)}
@@ -463,7 +454,7 @@ export default function Filter({
                     selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
                     selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
                   }
-                  alt={selectedCharacter}
+                  alt={selectedCharacter[0]}
                 />
                 <p>
                   {/* Text */}
@@ -491,7 +482,7 @@ export default function Filter({
                 ref={characterRef}
                 value={characterQuery}
                 onChange={handleCharacterQuery}
-                placeholder={selectedCharacter.length === 1 ? selectedCharacter : "Type to search"}
+                placeholder={selectedCharacter.length === 1 ? selectedCharacter[0] : "Type to search"}
               />
             </div>
   
@@ -525,7 +516,7 @@ export default function Filter({
         <div className="filter-option">
           <h3>Select element</h3>
           {elements.map((element: string) => (
-            <label key={element} className={selectedElements.includes(element) > 0 ? 'highlighted' : ''}>
+            <label key={element} className={selectedElements.includes(element) ? 'highlighted' : ''}>
               <input
                 type="checkbox"
                 checked={selectedElements.includes(element)}
