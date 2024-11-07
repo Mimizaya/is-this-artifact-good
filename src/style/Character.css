@@ -79,7 +79,7 @@ div.character-card.small div.build-content div.artifact-set-alternative div.buil
 div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry div.artifact-icon-wrapper img {
   height: 40px;
 }
-div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.note, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-requirements {
+div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.note, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-recommendation {
   width: 100%;
 }
 
@@ -197,13 +197,29 @@ div.character-card div.build-content div.build-content-entry img.artifact-icon {
   height: 55px;
   opacity: 1;
 }
-div.character-card div.build-content div.build-content-entry img.artifact-icon-2 {
+div.character-card div.build-content div.build-content-entry div.obstruction-top,
+div.character-card div.build-content div.build-content-entry div.obstruction-bottom {
   position: absolute;
   z-index: 4;
-  top: 35px;
-  left: 2px;
   height: 55px;
-  opacity: 1;
+  width: 55px;
+  overflow: hidden;
+}
+div.character-card div.build-content div.build-content-entry div.obstruction-top {
+  top: 5px;
+  left: 2px;
+  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+}
+div.character-card div.build-content div.build-content-entry div.obstruction-bottom {
+  top: 6px;
+  left: 3px;
+  clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+}
+div.character-card div.build-content div.build-content-entry div.obstruction-top img,
+div.character-card div.build-content div.build-content-entry div.obstruction-bottom img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 div.character-card div.build-content div.build-content-entry img.artifact-icon-simple {
   position: absolute;

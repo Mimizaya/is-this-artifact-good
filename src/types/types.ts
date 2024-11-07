@@ -27,7 +27,8 @@ export interface RawBuild {
 	er_max: string;
 	note: string;
 }
-interface EnrichedBuild {
+
+export interface FullBuild extends RawBuild {
 	rarity: number;
 	element: string;
 	artifact_set_two_piece: string;
@@ -37,7 +38,6 @@ interface EnrichedBuild {
 	artifact_set_3_two_piece: string | null;
 	artifact_set_3_four_piece: string | null;
 }
-export interface FullBuild extends RawBuild, EnrichedBuild {}
 
 export interface Character {
 	name: string;

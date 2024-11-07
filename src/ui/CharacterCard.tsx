@@ -176,9 +176,22 @@ export default function CharacterCard({
       		{/* Artifact Set 1 */}
 					<div className="build-content-entry tooltip-on-hover" ref={elementOneRef}>
 						<div className="artifact-icon-wrapper">
-	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>
-	        		{build.artifact_set_2 && build.artifact_logic === 'AND' &&
-	        		<img className="artifact-icon-2"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>}
+
+							{/* Artifact Set Single Image */}
+							{build.artifact_set && build.artifact_logic !== 'AND' &&
+	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>}
+
+	        		{/* Artifact Set Split Multi Image */}
+							{build.artifact_set && build.artifact_logic === 'AND' &&
+							<>
+							<div className="obstruction-top">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>
+	        		</div>
+	        		<div className="obstruction-bottom">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
+	        		</div>
+	        		</>}
+
 			      </div>
 			      <div className="build-content-entry-content">
 				      <h4>Artifact Set{build.artifact_set_2 && build.artifact_logic === 'AND' && 's'}</h4>
@@ -212,7 +225,22 @@ export default function CharacterCard({
       		{/* Artifact Set 2 - Full */}
 					<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
 						<div className="artifact-icon-wrapper">
-	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
+
+							{/* Artifact Set Single Image */}
+							{build.artifact_set_2 && build.artifact_logic_2 !== 'AND' &&
+	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>}
+
+	        		{/* Artifact Set Split Multi Image */}
+							{build.artifact_set_2 && build.artifact_logic_2 === 'AND' &&
+							<>
+							<div className="obstruction-top">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
+	        		</div>
+	        		<div className="obstruction-bottom">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
+	        		</div>
+	        		</>}
+
 			      </div>
 			      <div className="build-content-entry-content">
 							<h4>Artifact Set</h4>
@@ -241,7 +269,22 @@ export default function CharacterCard({
 			    {build.artifact_set_3 && build.artifact_logic_2 === 'OR' &&
 					<div className="build-content-entry tooltip-on-hover" ref={elementThreeRef}>
 						<div className="artifact-icon-wrapper">
-	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
+
+							{/* Artifact Set Single Image */}
+							{build.artifact_set_3 && build.artifact_logic_3 !== 'AND' &&
+	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
+
+	        		{/* Artifact Set Split Multi Image */}
+							{build.artifact_set_3 && build.artifact_logic_3 === 'AND' &&
+							<>
+							<div className="obstruction-top">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
+	        		</div>
+	        		<div className="obstruction-bottom">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_4 +" Flower.webp"}/>
+	        		</div>
+	        		</>}
+
 			      </div>
 			      <div className="build-content-entry-content">
 				      <h4>Alternative</h4>

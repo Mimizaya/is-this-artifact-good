@@ -110,9 +110,14 @@ export default function Results({
   // --------------------------------------------
 
   // SORT: Apply default sorting order 
+
+      // Get artifact order from data
       const artifactOrder = artifactSets.map(artifact => artifact.name);
+
+      // Get element order from data
       const elementOrder = elements;
 
+      // Apply default sorting
       const sortedBuilds = buildsDataEnriched.sort((a: FullBuild, b: FullBuild) => {
 
         // If a character filter is checked, sort builds by Internal build IDs
@@ -216,8 +221,12 @@ export default function Results({
       }
     });
 
-  // ADD DATA: Find matching 2-piece boni 
+  // ADD DATA: Find matching 2-Piece Set Boni 
+
+    // Get selected artifact
     const selectedArtifact = artifactSets.find((set) => set.name === selectedArtifactSet[0]);
+
+    // Get the 2-Piece Bonus of selected artifact
     const selectedBonus = selectedArtifact ? selectedArtifact.two_piece : null;
 
     // Get sets that match the selected bonus
@@ -228,15 +237,19 @@ export default function Results({
     // Filter builds based on matching artifact set and logic
     const matchingBuilds = sortedBuilds.filter((build: FullBuild) => {
 
+      // Get artifact name matches
       const artifactSet1 = matchingSets.some((set) => set.name === build.artifact_set);
       const artifactSet2 = matchingSets.some((set) => set.name === build.artifact_set_2);
       const artifactSet3 = matchingSets.some((set) => set.name === build.artifact_set_3);
       const artifactSet4 = matchingSets.some((set) => set.name === build.artifact_set_4);
 
+      // Get artifact logic matches for AND
       const artifactLogic1 = build.artifact_logic === 'AND';
       const artifactLogic2 = build.artifact_logic_2 === 'AND';
       const artifactLogic3 = build.artifact_logic_3 === 'AND';
 
+      // Match artifact set and logic operator 
+      // (ensure AND, used for 2*2 set pieces)
       const match1 = artifactSet1 && artifactLogic1;
       const match2 = artifactSet2 && artifactLogic1;
 
@@ -249,15 +262,14 @@ export default function Results({
       return match1 || match2 || match3 || match4 || match5 || match6;
     });
 
-    // Filter out results that are already included in main results
+    // Get IDs of all builds in the main dataset
     const mainBuildsIDs = filteredResults.map((build: FullBuild) => build.ID)
+
+    // Remove any builds that are already present the in main dataset
     const matchingBuildsFiltered = matchingBuilds.filter((build: FullBuild) => !mainBuildsIDs.includes(build.ID));
     
-  // FILTER: Apply user filters to additional data (same criteria as main except no artifact set filter) 
+  // FILTER: Apply user filters to additional data 
     const filteredAdditionalResults = matchingBuildsFiltered.filter((build: FullBuild) => {
-      // Check pinned
-      const isBuildPinned = selectedPinned.length === 0 || 
-        selectedPinned.includes(build.ID);
 
       // Check character
       const isCharacterSelected = selectedCharacter.length === 0 || 
@@ -292,27 +304,14 @@ export default function Results({
       const isElementSelected = selectedElements.length === 0 || 
         selectedElements.includes(build.element);
 
-      // Always return pinned builds, plus any that match all filter criteria
-      if (selectedPinned.length > 0) {
-        return isBuildPinned || (
-          isCharacterSelected &&
-          isSandsSelected &&
-          isGobletSelected &&
-          isCircletSelected &&
-          isSubstatsSelected &&
-          isElementSelected
-        );
-      } else {
-        // If no builds are pinned, only return those that match all other criteria
-        return (
-          isCharacterSelected &&
-          isSandsSelected &&
-          isGobletSelected &&
-          isCircletSelected &&
-          isSubstatsSelected &&
-          isElementSelected
-        );
-      }
+      return (
+        isCharacterSelected &&
+        isSandsSelected &&
+        isGobletSelected &&
+        isCircletSelected &&
+        isSubstatsSelected &&
+        isElementSelected
+      );
     });
 
   // SORT: Sort both sets of data by relevancy 
@@ -332,7 +331,6 @@ export default function Results({
     const sortByMultipleKeys = (data: any, keyValueMap:  Record<string, string | string[]>) => {
       return Object.entries(keyValueMap).reduce((acc, [key, selectedValue]) => {
         const isMain = acc.filter((item: any) => {
-          // Check if the key is for substats and handle multi-select
           if (selectedValue) {
             return selectedValue.includes(item[key]);
           }
@@ -411,7 +409,7 @@ export default function Results({
       {/* Results Header */}
       <div className="results-header">
 
-        {/* Display number of found builds */}
+        {/* Display number of builds found */}
         <h2>{
           noFilter ? 'Showing all builds' : 
           sortedMainResults.length === 1 ? `Found ${sortedMainResults.length} build matching filters` : 
@@ -451,8 +449,10 @@ export default function Results({
       {/* Main Results Content */}
       <div id="results-content">
 
+
+
         {/* No results? Show error and reset button! */}
-        {sortedMainResults.length === 0 &&
+        {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 &&
           <div id="no-results">
             <h3>These are not the builds you're looking for...</h3>
             <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
@@ -477,12 +477,12 @@ export default function Results({
       {sortedAdditionalResults.length > 0 &&
       <div id="additional-results-wrapper">
         <h3 className="additional-results-content-header">
-          Additional results: Matching 2&ndash;Piece Bonus
+          {sortedAdditionalResults.length} Partial match{sortedAdditionalResults.length > 1 && 'es'}: Matching 2&ndash;Piece Set Bonus
         </h3>
         <p>{selectedArtifact?.name}</p>
-        <p>2&ndash;Piece Bonus: {selectedArtifact?.two_piece}.</p>
+        <p>2&ndash;Piece Set Bonus: {selectedArtifact?.two_piece}.</p>
         <br />
-        <p>The builds listed below use the same 2&ndash;Piece Bonus and their listed set can be freely exchanged for any other set with the same bonus.</p>
+        <p>The builds listed below use the same 2&ndash;Piece Set Bonus and their listed set can be freely exchanged for any other set with the same bonus.</p>
         <div id="additional-results-content">
           {/* Show build(s) that match filter(s) */}
           {sortedAdditionalResults.map((build: FullBuild) => (
