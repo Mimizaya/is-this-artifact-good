@@ -18,7 +18,15 @@ export default function CharacterCard({
 }) {
 
 	// Destructure the selected filters object
-    const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats } = selectedFilters;
+    const { 
+    	selectedCharacter, 
+    	selectedArtifactSet, 
+    	selectedSands, 
+    	selectedGoblet, 
+    	selectedCirclet, 
+    	selectedSubstats,
+    	//selectedElements, // Part of the object, but not used.
+    } = selectedFilters;
 
 	// Refs 
 		const elementOneRef = useRef<HTMLInputElement>(null);
@@ -240,7 +248,11 @@ export default function CharacterCard({
 			        <ul>
 		          	{build.artifact_set_3 && 
 		          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
-		          		{build.artifact_set_3}
+		          		{build.artifact_set_3}{build.artifact_logic_3 === 'AND' && ' ×2'}
+		          	</li>}
+		          	{build.artifact_set_4 && build.artifact_logic_3 === 'AND' &&
+		          	<li className={selectedArtifactSet.includes(build.artifact_set_4) ? 'highlighted' : ''}>
+		          		{build.artifact_set_4} ×2
 		          	</li>}
 			        </ul>
 			      </div>

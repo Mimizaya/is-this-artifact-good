@@ -25,7 +25,7 @@ export default function Results({
     //const [currentFilterTab, setCurrentFilterTab] = useState(1);
     //const [savedFilters, setSavedFilters] = useState([]);
 
-  // Destructure the selected filters object
+  // Destructure the selected filters object 
       const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
   
   // Handle pin build 
@@ -34,6 +34,48 @@ export default function Results({
       setSelectedPinned((prev) =>
         prev.includes(id) ? prev.filter((n) => n !== id) : [...prev, id]
       );
+    }
+
+  // Handle filtering of build sections 
+    const buildSectionsOptions = ['All', 'Artifact Sets', 'About', 'Sands', 'Goblet', 'Circlet', 'Substats', 'ER Recommendation'];
+    const [buildSectionsVisible, setBuildSectionsVisible] = useState(['All']); 
+
+    const handleBuildSectionsVisibleChange = (section: string, event: React.MouseEvent) => {
+      const shiftModifier = event.shiftKey;
+
+      // If shift modifier is held, set to only clicked section
+      if(shiftModifier){
+        setBuildSectionsVisible((prev) => {
+
+          // New selection with 'All' removed
+          const allRemoved = prev?.filter(n => n !== 'All'); 
+
+          let newSections;
+
+          // If section was already selected, remove it and 'All'
+          if (prev?.includes(section)) {
+            newSections = allRemoved.filter(n => n !== section);
+          } 
+
+          // If section was not already selected, add it
+          else {
+            newSections = [...allRemoved, section];
+          }
+
+          // If all sections -1 are selected, add 'All'
+          if (newSections.length === buildSectionsOptions.length - 1) {
+            newSections = ['All'];
+          }
+
+          // Return the updated sections
+          return newSections; 
+        });
+      }
+
+      // If no shift modifier
+      else {
+        setBuildSectionsVisible([section])
+      }
     }
 
   // Add additional static data to builds 
@@ -63,10 +105,11 @@ export default function Results({
     });
 
 
+
   // SORTING / FILTERING 
   // --------------------------------------------
 
-  // Apply default sorting order 
+  // SORT: Apply default sorting order 
       const artifactOrder = artifactSets.map(artifact => artifact.name);
       const elementOrder = elements;
 
@@ -103,7 +146,7 @@ export default function Results({
         }
       });
 
-  // Apply user filters to data 
+  // FILTER: Apply user filters to main data 
     const filteredResults = sortedBuilds.filter((build: FullBuild) => {
       // Check pinned
       const isBuildPinned = selectedPinned.length === 0 || 
@@ -173,7 +216,106 @@ export default function Results({
       }
     });
 
-  // Sort filtered data by relevancy 
+  // ADD DATA: Find matching 2-piece boni 
+    const selectedArtifact = artifactSets.find((set) => set.name === selectedArtifactSet[0]);
+    const selectedBonus = selectedArtifact ? selectedArtifact.two_piece : null;
+
+    // Get sets that match the selected bonus
+    const matchingSets = artifactSets
+      .filter((set) => set.two_piece === selectedBonus) // Filter sets with the same bonus
+      .filter((set) => set.name !== selectedArtifact?.name); // Exclude the selected set
+
+    // Filter builds based on matching artifact set and logic
+    const matchingBuilds = sortedBuilds.filter((build: FullBuild) => {
+
+      const artifactSet1 = matchingSets.some((set) => set.name === build.artifact_set);
+      const artifactSet2 = matchingSets.some((set) => set.name === build.artifact_set_2);
+      const artifactSet3 = matchingSets.some((set) => set.name === build.artifact_set_3);
+      const artifactSet4 = matchingSets.some((set) => set.name === build.artifact_set_4);
+
+      const artifactLogic1 = build.artifact_logic === 'AND';
+      const artifactLogic2 = build.artifact_logic_2 === 'AND';
+      const artifactLogic3 = build.artifact_logic_3 === 'AND';
+
+      const match1 = artifactSet1 && artifactLogic1;
+      const match2 = artifactSet2 && artifactLogic1;
+
+      const match3 = artifactSet2 && artifactLogic2;
+      const match4 = artifactSet3 && artifactLogic2;
+
+      const match5 = artifactSet3 && artifactLogic3;
+      const match6 = artifactSet4 && artifactLogic3;
+
+      return match1 || match2 || match3 || match4 || match5 || match6;
+    });
+
+    // Filter out results that are already included in main results
+    const mainBuildsIDs = filteredResults.map((build: FullBuild) => build.ID)
+    const matchingBuildsFiltered = matchingBuilds.filter((build: FullBuild) => !mainBuildsIDs.includes(build.ID));
+    
+  // FILTER: Apply user filters to additional data (same criteria as main except no artifact set filter) 
+    const filteredAdditionalResults = matchingBuildsFiltered.filter((build: FullBuild) => {
+      // Check pinned
+      const isBuildPinned = selectedPinned.length === 0 || 
+        selectedPinned.includes(build.ID);
+
+      // Check character
+      const isCharacterSelected = selectedCharacter.length === 0 || 
+        selectedCharacter.includes(build.character_name);
+
+      // Check sands
+      const isSandsSelected = selectedSands.length === 0 || 
+        selectedSands.includes(build.sands) ||
+        selectedSands.includes(build.sands_2) ||
+        selectedSands.includes(build.sands_3);
+
+      // Check goblet
+      const isGobletSelected = selectedGoblet.length === 0 || 
+        selectedGoblet.includes(build.goblet) ||
+        selectedGoblet.includes(build.goblet_2);
+
+      // Check circlet
+      const isCircletSelected = selectedCirclet.length === 0 || 
+        selectedCirclet.includes(build.circlet) ||
+        selectedCirclet.includes(build.circlet_2);
+
+      // Check substats
+      const isSubstatsSelected = selectedSubstats.length === 0 || 
+        selectedSubstats.includes(build.substats) ||
+        selectedSubstats.includes(build.substats_2) ||
+        selectedSubstats.includes(build.substats_3) ||
+        selectedSubstats.includes(build.substats_4) ||
+        selectedSubstats.includes(build.substats_5) ||
+        selectedSubstats.includes(build.substats_6);
+
+      // Check element
+      const isElementSelected = selectedElements.length === 0 || 
+        selectedElements.includes(build.element);
+
+      // Always return pinned builds, plus any that match all filter criteria
+      if (selectedPinned.length > 0) {
+        return isBuildPinned || (
+          isCharacterSelected &&
+          isSandsSelected &&
+          isGobletSelected &&
+          isCircletSelected &&
+          isSubstatsSelected &&
+          isElementSelected
+        );
+      } else {
+        // If no builds are pinned, only return those that match all other criteria
+        return (
+          isCharacterSelected &&
+          isSandsSelected &&
+          isGobletSelected &&
+          isCircletSelected &&
+          isSubstatsSelected &&
+          isElementSelected
+        );
+      }
+    });
+
+  // SORT: Sort both sets of data by relevancy 
     const countMatchingSubstats = (item: any, selectedSubstats: any, maxSubstats = 6) => {
       let matchCount = 0;
 
@@ -208,6 +350,7 @@ export default function Results({
     };
 
     let sortedResults = filteredResults;
+    let sortedAdditionalResults = filteredAdditionalResults;
 
     // Map keys to their corresponding selected values
     const keyValueMapOne = {
@@ -233,6 +376,7 @@ export default function Results({
       artifact_set: selectedArtifactSet,
     };
 
+    // Relevancy sort main results
     sortedResults = sortByMultipleKeys(sortedResults, keyValueMapOne);
     sortedResults.sort((a: FullBuild, b: FullBuild) => {
       const aCount = countMatchingSubstats(a, selectedSubstats);
@@ -241,56 +385,24 @@ export default function Results({
     });
     sortedResults = sortByMultipleKeys(sortedResults, keyValueMapTwo);
 
-
+    // Account for pinned builds in main results
     const pinnedBuilds = sortedResults.filter((pinned: FullBuild) => selectedPinned.includes(pinned.ID));
     const otherBuilds = sortedResults.filter((pinned: FullBuild) => !selectedPinned.includes(pinned.ID));
+    const sortedMainResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
 
-    const filteredAndSortedResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
+    // Relevancy sort additional results
+    sortedAdditionalResults = sortByMultipleKeys(sortedAdditionalResults, keyValueMapOne);
+    sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
+      const aCount = countMatchingSubstats(a, selectedSubstats);
+      const bCount = countMatchingSubstats(b, selectedSubstats);
+      return bCount - aCount;
+    });
+    sortedAdditionalResults = sortByMultipleKeys(sortedAdditionalResults, keyValueMapTwo);
 
-  // Are there actually any filters applied? 
-    const noFilter = buildsDataRaw.length === filteredAndSortedResults.length; // returns true if same length
+  // CHECK: Are there actually any filters applied? 
+    const noFilter = buildsDataRaw.length === sortedMainResults.length; // returns true if same length
 
-  // Handle filtering of build sections 
-    const buildSectionsOptions = ['All', 'Artifact Sets', 'About', 'Sands', 'Goblet', 'Circlet', 'Substats', 'ER Recommendation'];
-    const [buildSectionsVisible, setBuildSectionsVisible] = useState(['All']); 
 
-    const handleBuildSectionsVisibleChange = (section: string, event: React.MouseEvent) => {
-      const shiftModifier = event.shiftKey;
-
-      // If shift modifier is held, set to only clicked section
-      if(shiftModifier){
-        setBuildSectionsVisible((prev) => {
-
-          // New selection with 'All' removed
-          const allRemoved = prev?.filter(n => n !== 'All'); 
-
-          let newSections;
-
-          // If section was already selected, remove it and 'All'
-          if (prev?.includes(section)) {
-            newSections = allRemoved.filter(n => n !== section);
-          } 
-
-          // If section was not already selected, add it
-          else {
-            newSections = [...allRemoved, section];
-          }
-
-          // If all sections -1 are selected, add 'All'
-          if (newSections.length === buildSectionsOptions.length - 1) {
-            newSections = ['All'];
-          }
-
-          // Return the updated sections
-          return newSections; 
-        });
-      }
-
-      // If no shift modifier
-      else {
-        setBuildSectionsVisible([section])
-      }
-    }
     
 
   return (
@@ -302,8 +414,8 @@ export default function Results({
         {/* Display number of found builds */}
         <h2>{
           noFilter ? 'Showing all builds' : 
-          filteredAndSortedResults.length === 1 ? `Found ${filteredAndSortedResults.length} build matching filters` : 
-          filteredAndSortedResults.length > 1 ? `Found ${filteredAndSortedResults.length} builds matching filters` : 
+          sortedMainResults.length === 1 ? `Found ${sortedMainResults.length} build matching filters` : 
+          sortedMainResults.length > 1 ? `Found ${sortedMainResults.length} builds matching filters` : 
           'No builds matching current filters'}
         </h2>
 
@@ -340,14 +452,14 @@ export default function Results({
       <div id="results-content">
 
         {/* No results? Show error and reset button! */}
-        {filteredAndSortedResults.length === 0 &&
+        {sortedMainResults.length === 0 &&
           <div id="no-results">
             <h3>These are not the builds you're looking for...</h3>
             <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
           </div>}
 
         {/* Show build(s) that match filter(s) */}
-        {filteredAndSortedResults.map((build: FullBuild) => (
+        {sortedMainResults.map((build: FullBuild) => (
           <div key={build.ID}>
             <CharacterCard
               build={build}
@@ -360,6 +472,33 @@ export default function Results({
         ))}
 
       </div>{/* End Main Results Content */}
+
+      {/* Additional results */}
+      {sortedAdditionalResults.length > 0 &&
+      <div id="additional-results-wrapper">
+        <h3 className="additional-results-content-header">
+          Additional results: Matching 2&ndash;Piece Bonus
+        </h3>
+        <p>{selectedArtifact?.name}</p>
+        <p>2&ndash;Piece Bonus: {selectedArtifact?.two_piece}.</p>
+        <br />
+        <p>The builds listed below use the same 2&ndash;Piece Bonus and their listed set can be freely exchanged for any other set with the same bonus.</p>
+        <div id="additional-results-content">
+          {/* Show build(s) that match filter(s) */}
+          {sortedAdditionalResults.map((build: FullBuild) => (
+            <div key={build.ID}>
+              <CharacterCard
+                build={build}
+                handleSelectedPinned={handleSelectedPinned}
+                buildSectionsVisible={buildSectionsVisible}
+                selectedPinned={selectedPinned}
+                selectedFilters={selectedFilters}
+              />
+            </div>
+          ))}
+        </div>
+      </div>}{/* End Additional results */}
+
     </section>
   );
 }

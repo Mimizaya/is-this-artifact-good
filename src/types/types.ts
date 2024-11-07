@@ -7,6 +7,8 @@ export interface RawBuild {
 	artifact_set_2: string;
 	artifact_logic_2: string;
 	artifact_set_3: string;
+	artifact_logic_3: string;
+	artifact_set_4: string;
 	sands: string;
 	sands_2: string;
 	sands_3: string;

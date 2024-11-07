@@ -23,7 +23,7 @@ import { RawBuild } from './types/types.ts';
 export default function App() {
 
   // Data version 
-    const VERSION = '1.5';
+    const VERSION = '1.6';
 
   // Prepare data imported from CSV 
     const [rawData, setRawData] = useState<RawBuild[]>([]);

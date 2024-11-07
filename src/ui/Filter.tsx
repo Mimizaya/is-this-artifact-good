@@ -214,7 +214,7 @@ export default function Filter({
                       src={`./images/artifacts/flowers/${set.name} Flower.webp`}
                       alt={selectedArtifactSet[0]}
                     />
-                    {set.name}
+                    <p>{set.name}</p>
                   </li>
                 ))}
               </ul>
@@ -504,7 +504,7 @@ export default function Filter({
                   />
 
                   {/* Text */}
-                  {character.name}
+                  <p>{character.name}</p>
                 </li>
               ))}
             </ul>
