@@ -2,22 +2,21 @@ export interface RawBuild {
 	ID: number;
 	character_name: string;
 	build_name: string;
-	artifact_set: string;
-	artifact_logic: string;
+	artifact_set_1: string;
 	artifact_set_2: string;
-	artifact_logic_2: string;
 	artifact_set_3: string;
-	artifact_logic_3: string;
 	artifact_set_4: string;
-	sands: string;
+	artifact_set_5: string;
+	artifact_set_6: string;
+	sands_1: string;
 	sands_2: string;
 	sands_3: string;
-	goblet: string;
+	goblet_1: string;
 	goblet_2: string;
-	circlet: string;
+	circlet_1: string;
 	circlet_2: string;
 	circlet_3: string;
-	substats: string;
+	substats_1: string;
 	substats_2: string;
 	substats_3: string;
 	substats_4: string;
@@ -31,12 +30,18 @@ export interface RawBuild {
 export interface FullBuild extends RawBuild {
 	rarity: number;
 	element: string;
-	artifact_set_two_piece: string;
-	artifact_set_four_piece: string;
+	artifact_set_1_two_piece: string;
+	artifact_set_1_four_piece: string;
 	artifact_set_2_two_piece: string | null;
 	artifact_set_2_four_piece: string | null;
 	artifact_set_3_two_piece: string | null;
 	artifact_set_3_four_piece: string | null;
+	artifact_set_4_two_piece: string | null;
+	artifact_set_4_four_piece: string | null;
+	artifact_set_5_two_piece: string | null;
+	artifact_set_5_four_piece: string | null;
+	artifact_set_6_two_piece: string | null;
+	artifact_set_6_four_piece: string | null;
 }
 
 export interface Character {

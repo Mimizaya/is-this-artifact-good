@@ -6,6 +6,52 @@
   border-bottom: 5px solid orange;
 }
 
+div.tooltip-on-hover:hover + div.artifact-info.tooltip,
+div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
+  display: block;
+}
+
+div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
+  display: none;
+  position: absolute;
+  z-index: 60;
+  padding: 20px;
+  width: 350px;
+  border-bottom: 1px solid #192019;
+  font-size: 0.95em;
+  box-shadow: 5px 10px 10px #171717;
+  background-color: #2a2a2a;
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+  pointer-events: none;
+}
+div.artifact-info.tooltip h4, div.artifact-info.tooltip-alt h4 {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+div.artifact-info.tooltip p, div.artifact-info.tooltip-alt p {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+div.artifact-info.tooltip p:last-of-type, div.artifact-info.tooltip-alt p:last-of-type {
+  margin-bottom: 0;
+}
+
+div.artifact-info.tooltip {
+  left: 0;
+}
+
+div.artifact-info.tooltip-alt {
+  right: 0;
+}
+
+div.build-section div.artifact-set div.build-section-text:hover, div.build-section div.artifact-set-alternative div.build-section-text:hover {
+  background-color: #2a2a2a !important;
+}
+div.build-section div.artifact-set div.build-section-text:hover div.build-section-text, div.build-section div.artifact-set-alternative div.build-section-text:hover div.build-section-text {
+  opacity: 1 !important;
+}
+
 div.character-card.small {
   width: 270px;
   margin: 15px 20px;
@@ -59,7 +105,7 @@ div.character-card.small div.build-content div.artifact-set.multiple {
   float: none;
   width: 100%;
 }
-div.character-card.small div.build-content div.artifact-set.multiple div.build-content-entry-content ul li {
+div.character-card.small div.build-content div.artifact-set.multiple div.build-section-text ul li {
   padding-right: 30px;
 }
 div.character-card.small div.build-content div.artifact-set-alternative {
@@ -68,24 +114,16 @@ div.character-card.small div.build-content div.artifact-set-alternative {
   top: 10px;
   left: 220px;
 }
-div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry:hover {
-  background: none !important;
-}
-div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry {
-  background: none;
-  box-shadow: none;
-  border: none;
-}
-div.character-card.small div.build-content div.artifact-set-alternative div.build-content-entry div.artifact-icon-wrapper img {
-  height: 40px;
+div.character-card.small div.build-content div.artifact-set-alternative img.artifact-icon-alt-small {
+  height: 35px;
 }
 div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.note, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-recommendation {
   width: 100%;
 }
 
 div.character-card.full {
-  width: 450px;
-  margin: 30px;
+  width: 480px;
+  margin: 25px;
 }
 
 div.character-card {
@@ -97,7 +135,7 @@ div.character-card {
 div.character-card div.build-header {
   border-radius: 5px;
   height: 100px;
-  width: 460px;
+  width: 490px;
   position: relative;
   left: -5px;
   background-color: #1f1f1f;
@@ -167,6 +205,88 @@ div.character-card div.build-content {
   padding: 10px;
   position: relative;
 }
+div.character-card div.build-content div.build-section {
+  display: flex;
+  position: relative;
+  background-color: #252525;
+  padding: 10px 6px 12px 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #192019;
+  font-size: 0.95em;
+  box-shadow: 1px 3px 5px #202020;
+  border-radius: 5px;
+}
+div.character-card div.build-content div.build-section img.artifact-icon {
+  position: absolute;
+  z-index: 3;
+  top: 5px;
+  left: 2px;
+  height: 55px;
+  width: 55px;
+  opacity: 1;
+}
+div.character-card div.build-content div.build-section img.artifact-icon-top,
+div.character-card div.build-content div.build-section img.artifact-icon-bottom {
+  height: 42.3076923077px;
+  width: 42.3076923077px;
+}
+div.character-card div.build-content div.build-section img.artifact-icon-top {
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+  left: 3px;
+}
+div.character-card div.build-content div.build-section img.artifact-icon-bottom {
+  position: absolute;
+  z-index: 4;
+  top: 30px;
+  left: 17px;
+}
+div.character-card div.build-content div.build-section div.clipping-mask-top,
+div.character-card div.build-content div.build-section div.clipping-mask-bottom {
+  position: absolute;
+  z-index: 4;
+  height: 55px;
+  width: 55px;
+  overflow: hidden;
+}
+div.character-card div.build-content div.build-section div.clipping-mask-top img.artifact-icon-split,
+div.character-card div.build-content div.build-section div.clipping-mask-bottom img.artifact-icon-split {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+div.character-card div.build-content div.build-section div.clipping-mask-top {
+  top: 5px;
+  left: 2px;
+  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+}
+div.character-card div.build-content div.build-section div.clipping-mask-bottom {
+  top: 7px;
+  left: 3px;
+  clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+}
+div.character-card div.build-content div.build-section img.artifact-icon-simple {
+  position: absolute;
+  opacity: 0.7;
+  height: 45px;
+  width: 45px;
+}
+div.character-card div.build-content div.build-section div.build-section-text {
+  margin-left: 55px;
+}
+div.character-card div.build-content div.build-section div.build-section-text h4 {
+  font-size: 0.9em;
+  font-weight: 400;
+  color: #BBB;
+}
+div.character-card div.build-content div.build-section div.build-section-text li {
+  font-weight: 600;
+}
+div.character-card div.build-content div.build-section div.build-section-text span.artifact-logic {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
+}
 div.character-card div.build-content div.constellation {
   position: absolute;
   bottom: 0;
@@ -178,101 +298,36 @@ div.character-card div.build-content div.constellation img {
   width: 100%;
   height: 100%;
 }
-div.character-card div.build-content div.build-content-entry {
-  display: flex;
-  position: relative;
-  background-color: #252525;
-  padding: 10px 6px 12px 6px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #192019;
-  font-size: 0.95em;
-  box-shadow: 1px 3px 5px #202020;
-  border-radius: 5px;
-}
-div.character-card div.build-content div.build-content-entry img.artifact-icon {
-  position: absolute;
-  z-index: 3;
-  top: 5px;
-  left: 2px;
-  height: 55px;
-  opacity: 1;
-}
-div.character-card div.build-content div.build-content-entry div.obstruction-top,
-div.character-card div.build-content div.build-content-entry div.obstruction-bottom {
-  position: absolute;
-  z-index: 4;
-  height: 55px;
-  width: 55px;
-  overflow: hidden;
-}
-div.character-card div.build-content div.build-content-entry div.obstruction-top {
-  top: 5px;
-  left: 2px;
-  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
-}
-div.character-card div.build-content div.build-content-entry div.obstruction-bottom {
-  top: 6px;
-  left: 3px;
-  clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
-}
-div.character-card div.build-content div.build-content-entry div.obstruction-top img,
-div.character-card div.build-content div.build-content-entry div.obstruction-bottom img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-div.character-card div.build-content div.build-content-entry img.artifact-icon-simple {
-  position: absolute;
-  opacity: 0.7;
-  height: 45px;
-  width: 45px;
-}
-div.character-card div.build-content div.build-content-entry div.build-content-entry-content {
-  margin-left: 55px;
-}
-div.character-card div.build-content div.build-content-entry div.build-content-entry-content h4 {
-  font-size: 0.9em;
-  font-weight: 400;
-  color: #BBB;
-}
-div.character-card div.build-content div.build-content-entry div.build-content-entry-content li {
-  font-weight: 600;
-}
-div.character-card div.build-content .artifact-logic-and, div.character-card div.build-content .artifact-logic-or {
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
-}
 div.character-card div.build-content div.artifact-set {
   position: relative;
   width: 100%;
 }
 div.character-card div.build-content div.artifact-set.multiple {
   float: left;
-  margin-right: 10px;
-  width: 210px;
+  width: 225px;
 }
 div.character-card div.build-content div.artifact-set-alternative {
   position: absolute;
-  left: 230px;
-  width: 210px;
+  width: 225px;
+  left: 245px;
 }
-div.character-card div.build-content div.artifact-set-alternative div.build-content-entry {
+div.character-card div.build-content div.artifact-set-alternative div.build-section {
   background: none;
 }
-div.character-card div.build-content div.artifact-set-alternative div.build-content-entry div.build-content-entry-content {
+div.character-card div.build-content div.artifact-set-alternative div.build-section div.build-section-text {
   opacity: 0.8;
 }
 div.character-card div.build-content div.artifact-types {
   float: left;
   margin-right: 10px;
-  width: 210px;
+  width: 225px;
 }
 div.character-card div.build-content div.substats {
-  width: 210px;
   float: left;
+  width: 225px;
 }
 div.character-card div.build-content div.er-recommendation {
-  width: 210px;
+  width: 225px;
   float: left;
 }
 div.character-card div.build-content div.note {
@@ -280,59 +335,9 @@ div.character-card div.build-content div.note {
   line-height: 1.35;
   clear: both;
 }
-div.character-card div.build-content div.note div.build-content-entry {
+div.character-card div.build-content div.note div.build-section {
   padding-top: 10px;
   padding-bottom: 20px;
-}
-
-div.tooltip-on-hover:hover + div.artifact-info.tooltip,
-div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
-  display: block;
-}
-
-div.build-content-entry:hover {
-  background-color: #2a2a2a;
-}
-
-div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
-  display: none;
-  position: absolute;
-  z-index: 60;
-  padding: 20px;
-  width: 350px;
-  border-bottom: 1px solid #192019;
-  font-size: 0.95em;
-  box-shadow: 5px 10px 10px #171717;
-  background-color: #2a2a2a;
-  color: rgba(255, 255, 255, 0.87);
-  border-radius: 5px;
-  pointer-events: none;
-}
-div.artifact-info.tooltip h4, div.artifact-info.tooltip-alt h4 {
-  font-size: 1.1em;
-  font-weight: 700;
-}
-div.artifact-info.tooltip p, div.artifact-info.tooltip-alt p {
-  font-size: 0.9em;
-  margin-bottom: 10px;
-}
-div.artifact-info.tooltip p:last-of-type, div.artifact-info.tooltip-alt p:last-of-type {
-  margin-bottom: 0;
-}
-
-div.artifact-info.tooltip {
-  left: 0;
-}
-
-div.artifact-info.tooltip-alt {
-  right: 0;
-}
-
-div.build-content div.artifact-set div.build-content-entry:hover, div.build-content div.artifact-set-alternative div.build-content-entry:hover {
-  background-color: #2a2a2a !important;
-}
-div.build-content div.artifact-set div.build-content-entry:hover div.build-content-entry-content, div.build-content div.artifact-set-alternative div.build-content-entry:hover div.build-content-entry-content {
-  opacity: 1 !important;
 }
 
 /*# sourceMappingURL=Character.css.map */

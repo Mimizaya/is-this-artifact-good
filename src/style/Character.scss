@@ -1,22 +1,93 @@
 
+// VARIABLES
+// ------------------------------------------
+// Sizes
 $banner-size: 100px;
 $element-icon-size: 50px;
 $artifact-icon-simple-size: 45px;
 $artifact-icon-size: 55px;
-$card-width-full: 450px;
+$card-width-full: 480px;
 $card-width-small: 270px;
 
-  .rarity-4 {
-    border-bottom: 5px solid purple;
+// Colors
+$primary-color: #242424;
+
+
+// MISC
+// ------------------------------------------
+// Character rarity colors
+.rarity-4 {
+  border-bottom: 5px solid purple;
+}
+.rarity-5 {
+  border-bottom: 5px solid orange;
+}
+
+
+// TOOLTIP
+// ------------------------------------------
+
+// Tooltip display logic 
+  div.tooltip-on-hover:hover + div.artifact-info.tooltip,
+  div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
+    display: block;
   }
-  .rarity-5 {
-    border-bottom: 5px solid orange;
+
+// General rules 
+  div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
+    display: none;
+    position: absolute;
+    z-index: 60;
+    padding: 20px;
+    width: 350px;
+    border-bottom: 1px solid #192019;
+    font-size: 0.95em;
+    box-shadow: 5px 10px 10px #171717;
+    background-color: lighten(#222222, 3%);
+    color: rgba(255, 255, 255, 0.87);
+    border-radius: 5px;
+    pointer-events: none;
+
+    h4 {
+      font-size: 1.1em;
+      font-weight: 700;
+    }
+    p {
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+    p:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+// Specific for main style tooltip 
+  div.artifact-info.tooltip { 
+    left: 0;
+  }
+
+// Specific for main style tooltip 
+  div.artifact-info.tooltip-alt { 
+    right: 0;
+  }
+
+// Corresponding build section 
+  div.build-section {
+    div.artifact-set, div.artifact-set-alternative {
+      div.build-section-text:hover {
+        background-color: lighten(#222222, 3%) !important;
+
+        div.build-section-text {
+          opacity: 1 !important;
+        }
+      } 
+    }
   }
 
 
-
-
-
+// MAIN
+// ------------------------------------------
+// Character Card - Small size 
   div.character-card.small {
     width: $card-width-small;
     margin: 15px 20px;
@@ -77,7 +148,7 @@ $card-width-small: 270px;
         float: none;
         width: 100%;
 
-        div.build-content-entry-content {
+        div.build-section-text {
           ul {
             li {
               padding-right: 30px;
@@ -91,20 +162,8 @@ $card-width-small: 270px;
         top: 10px;
         left: 220px;
 
-        div.build-content-entry:hover {
-          background: none !important;
-        }
-        div.build-content-entry {
-          background: none;
-          box-shadow: none;
-          border: none;
-
-          div.artifact-icon-wrapper {
-            img {
-              height: 40px;
-            }
-          }
-
+        img.artifact-icon-alt-small {
+          height: 35px;
         }
       }
       div.artifact-types, div.note, div.substats, div.er-recommendation {
@@ -113,18 +172,20 @@ $card-width-small: 270px;
     }
   }
 
-
+// Character Card - Full size 
   div.character-card.full {
     width: $card-width-full;
-    margin: 30px;
+    margin: 25px;
   }
 
+// Character Card - All sizes 
   div.character-card {
     position: relative;
     background-color: #222222;
     box-shadow: 1px 3px 5px #191919;
     border-radius: 5px;
 
+  // Header wrapper 
     div.build-header {
       border-radius: 5px;
       height: $banner-size;
@@ -134,6 +195,7 @@ $card-width-small: 270px;
       background-color: darken(#222222, 1%);
       margin-bottom: 10px;
 
+    // Portraits 
       img.character-portrait, img.character-portrait-two {
         position: relative;
         z-index: 1;
@@ -146,6 +208,8 @@ $card-width-small: 270px;
       img.character-portrait-two {
         left: 205px;
       }
+
+    // Element 
       img.character-element {
         height: $element-icon-size;
         width: $element-icon-size;
@@ -154,6 +218,8 @@ $card-width-small: 270px;
         top: -15px;
         left: -20px;
       }
+
+    // Banner 
       div.character-banner-wrapper {
         width: 100%;
         height: $banner-size;
@@ -173,6 +239,8 @@ $card-width-small: 270px;
           bottom: 60px;
         }  
       }
+
+    // Titles - Name + Build 
       div.character-title {
         position: absolute;
         left: $banner-size + 25px;
@@ -190,33 +258,23 @@ $card-width-small: 270px;
           font-weight: 700;
         }
       }
+
+    // Pin build button 
       div.pin-build {
         position: absolute;
         top: 0;
         right: 0;
       }
     }
+
+  // Content wrapper 
     div.build-content {
       margin-left: 0;
       padding: 10px;
       position: relative;
 
-      div.constellation {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        //opacity: 1;
-        opacity: 0.02;
-        pointer-events: none;
-
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      // General rules for entries
-      div.build-content-entry {
+    // Applies to multiple sections 
+      div.build-section {
         display: flex;
         position: relative;
         background-color: lighten(#222222, 1%);
@@ -227,47 +285,64 @@ $card-width-small: 270px;
         box-shadow: 1px 3px 5px #202020;
         border-radius: 5px;
 
+      // Single artifact icons 
         img.artifact-icon {
           position: absolute;
           z-index: 3;
           top: 5px;
           left: 2px;
           height: $artifact-icon-size;
+          width: $artifact-icon-size;
           //opacity: 0.6;
           opacity: 1;
         }
 
+      // Multi set artifact icons (show both)
+        img.artifact-icon-top,
+        img.artifact-icon-bottom {
+          height: $artifact-icon-size / 1.3;
+          width: $artifact-icon-size / 1.3;
+        }
+        img.artifact-icon-top {
+          position: absolute;
+          z-index: 5;
+          top: 10px;
+          left: 3px;
+        }
+        img.artifact-icon-bottom {
+          position: absolute;
+          z-index: 4;
+          top: 30px;
+          left: 17px;
+        }
 
-div.obstruction-top,
-div.obstruction-bottom {
-  position: absolute;
-  z-index: 4;
-  height: $artifact-icon-size ;
-  width: $artifact-icon-size;
-  overflow: hidden;
-}
+      // Multi set artifact icons (split style) 
+        div.clipping-mask-top,
+        div.clipping-mask-bottom {
+          position: absolute;
+          z-index: 4;
+          height: $artifact-icon-size;
+          width: $artifact-icon-size;
+          overflow: hidden;
 
-div.obstruction-top {
-  top: 5px;
-  left: 2px;
-  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
-}
+          img.artifact-icon-split {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        div.clipping-mask-top {
+          top: 5px;
+          left: 2px;
+          clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+        }
+        div.clipping-mask-bottom {
+          top: 7px;
+          left: 3px;
+          clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+        }
 
-div.obstruction-bottom {
-  top: 6px;
-  left: 3px;
-  clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
-}
-
-div.obstruction-top img,
-div.obstruction-bottom img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-
-
+      // Generic icons (substats, ER) 
         img.artifact-icon-simple {
           position: absolute;
           opacity: 0.7;
@@ -276,8 +351,10 @@ div.obstruction-bottom img {
           height: $artifact-icon-simple-size;
           width: $artifact-icon-simple-size;
         }
-        div.build-content-entry-content {
-          margin-left: 55px;
+
+      // Text blocks 
+        div.build-section-text {
+          margin-left: $artifact-icon-size;
 
           h4 {
             font-size: 0.9em;
@@ -287,115 +364,89 @@ div.obstruction-bottom img {
           li {
             font-weight: 600;
           }
-        }
-      }
-
-      .artifact-logic-and, .artifact-logic-or {
-        font-weight: 400;
-        color: rgba(255, 255, 255, 0.87);
-      }
-
-      // Specific rules for entries
-      div.artifact-set {
-        position: relative;
-        width: 100%;
-      }
-      div.artifact-set.multiple {
-        float: left;
-        margin-right: 10px;
-        width: 210px;
-      }
-      div.artifact-set-alternative {
-        position: absolute;
-        left: 230px;
-        width: 210px;
-
-        div.build-content-entry {
-          background: none;
-
-          div.build-content-entry-content {
-            opacity: 0.8;
+          span.artifact-logic {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.87);
           }
         }
       }
-      div.artifact-types {
-        float: left;
-        margin-right: 10px;
-        width: 210px;
-      }
-      div.substats {
-        width: 210px;
-        float: left;
-      }
-      div.er-recommendation {
-        width: 210px;
-        float: left;
-      }
-      div.note {
-        font-weight: 600;
-        line-height: 1.35;
-        clear: both;
 
-        div.build-content-entry {
-          padding-top: 10px;
-          padding-bottom: 20px;
+    // Applies to specific sections
+
+      // Background element 
+        div.constellation {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          //opacity: 1;
+          opacity: 0.02;
+          pointer-events: none;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
-      }
+
+      // Main artifact set - Single 
+        div.artifact-set {
+          position: relative;
+          width: 100%;
+        }
+
+      // Main artifact set - Multiple 
+        div.artifact-set.multiple {
+          float: left;
+          width: ($card-width-full / 2) - 15px;
+        }
+
+      // Alternative artifact sets 
+        div.artifact-set-alternative {
+          position: absolute;
+          width: $card-width-full / 2 - 15px;
+          left: ($card-width-full / 2 + 5px);
+
+          div.build-section {
+            background: none;
+
+            div.build-section-text {
+              opacity: 0.8;
+            }
+          }
+        }
+
+      // Artifact types - Sands, Goblet, Circlet 
+        div.artifact-types {
+          float: left;
+          margin-right: 10px;
+          width: ($card-width-full / 2) - 15px;
+        }
+
+      // Substats 
+        div.substats {
+          float: left;
+          width: ($card-width-full / 2) - 15px;
+        }
+
+      // ER Recommendation 
+        div.er-recommendation {
+          width: ($card-width-full / 2) - 15px;
+          float: left;
+        }
+
+      // About 
+        div.note {
+          font-weight: 600;
+          line-height: 1.35;
+          clear: both;
+
+          div.build-section {
+            padding-top: 10px;
+            padding-bottom: 20px;
+          }
+        }
+    
     }
   }
 
 
-
-
-div.tooltip-on-hover:hover + div.artifact-info.tooltip,
-div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
-  display: block;
-}
-
-div.build-content-entry:hover {
-  background-color: lighten(#222222, 3%);
-}
-
-div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
-  display: none;
-  position: absolute;
-  z-index: 60;
-  padding: 20px;
-  width: 350px;
-  border-bottom: 1px solid #192019;
-  font-size: 0.95em;
-  box-shadow: 5px 10px 10px #171717;
-  background-color: lighten(#222222, 3%);
-  color: rgba(255, 255, 255, 0.87);
-  border-radius: 5px;
-  pointer-events: none;
-
-  h4 {
-    font-size: 1.1em;
-    font-weight: 700;
-  }
-  p {
-    font-size: 0.9em;
-    margin-bottom: 10px;
-  }
-  p:last-of-type {
-    margin-bottom: 0;
-  }
-}
-div.artifact-info.tooltip { 
-  left: 0;
-}
-div.artifact-info.tooltip-alt { 
-  right: 0;
-}
-div.build-content {
-  div.artifact-set, div.artifact-set-alternative {
-    div.build-content-entry:hover {
-      background-color: lighten(#222222, 3%) !important;
-
-      div.build-content-entry-content {
-        opacity: 1 !important;
-      }
-    } 
-  }
-}

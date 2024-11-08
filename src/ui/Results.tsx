@@ -85,9 +85,12 @@ export default function Results({
       const characterInfo = characterData.find((character: Character) => character.name === build.character_name);
 
       // Find the corresponding character data based on name
-      const artifactSetOneInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set);
-      const artifactSetTwoInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_2);
-      const artifactSetThreeInfo = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_3);
+      const artifactSet1Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_1);
+      const artifactSet2Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_2);
+      const artifactSet3Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_3);
+      const artifactSet4Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_4);
+      const artifactSet5Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_5);
+      const artifactSet6Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_6);
 
       // If a match is found, merge the relevant data
       // Use `!` to assert that result is not null/undefined
@@ -95,12 +98,24 @@ export default function Results({
         ...build,
         element: characterInfo!.element,
         rarity: characterInfo!.rarity,
-        artifact_set_two_piece: artifactSetOneInfo!.two_piece,
-        artifact_set_four_piece: artifactSetOneInfo!.four_piece,
-        artifact_set_2_two_piece: artifactSetTwoInfo ? artifactSetTwoInfo.two_piece : null,
-        artifact_set_2_four_piece: artifactSetTwoInfo ? artifactSetTwoInfo.four_piece : null,
-        artifact_set_3_two_piece: artifactSetThreeInfo ? artifactSetThreeInfo.two_piece : null,
-        artifact_set_3_four_piece: artifactSetThreeInfo ? artifactSetThreeInfo.four_piece : null,
+
+        artifact_set_1_two_piece: artifactSet1Info!.two_piece,
+        artifact_set_1_four_piece: artifactSet1Info!.four_piece,
+
+        artifact_set_2_two_piece: artifactSet2Info ? artifactSet2Info.two_piece : null,
+        artifact_set_2_four_piece: artifactSet2Info ? artifactSet2Info.four_piece : null,
+
+        artifact_set_3_two_piece: artifactSet3Info ? artifactSet3Info.two_piece : null,
+        artifact_set_3_four_piece: artifactSet3Info ? artifactSet3Info.four_piece : null,
+
+        artifact_set_4_two_piece: artifactSet4Info ? artifactSet4Info.two_piece : null,
+        artifact_set_4_four_piece: artifactSet4Info ? artifactSet4Info.four_piece : null,
+        
+        artifact_set_5_two_piece: artifactSet5Info ? artifactSet5Info.two_piece : null,
+        artifact_set_5_four_piece: artifactSet5Info ? artifactSet5Info.four_piece : null,
+        
+        artifact_set_6_two_piece: artifactSet6Info ? artifactSet6Info.two_piece : null,
+        artifact_set_6_four_piece: artifactSet6Info ? artifactSet6Info.four_piece : null,
       };
     });
 
@@ -133,8 +148,8 @@ export default function Results({
         // If no character type filters are checked, sort builds by:
         // Artifact Sets > Element > Character Name
         else {
-          const indexAArtifact = artifactOrder.indexOf(a.artifact_set);
-          const indexBArtifact = artifactOrder.indexOf(b.artifact_set);
+          const indexAArtifact = artifactOrder.indexOf(a.artifact_set_1);
+          const indexBArtifact = artifactOrder.indexOf(b.artifact_set_1);
           const indexAElement = elementOrder.indexOf(a.element);
           const indexBElement = elementOrder.indexOf(b.element);
 
@@ -163,29 +178,32 @@ export default function Results({
 
       // Check artifact set
       const isArtifactSetSelected = selectedArtifactSet.length === 0 || 
-        selectedArtifactSet.includes(build.artifact_set) ||
+        selectedArtifactSet.includes(build.artifact_set_1) ||
         selectedArtifactSet.includes(build.artifact_set_2) ||
-        selectedArtifactSet.includes(build.artifact_set_3);
+        selectedArtifactSet.includes(build.artifact_set_3) ||
+        selectedArtifactSet.includes(build.artifact_set_4) ||
+        selectedArtifactSet.includes(build.artifact_set_5) ||
+        selectedArtifactSet.includes(build.artifact_set_6);
 
       // Check sands
       const isSandsSelected = selectedSands.length === 0 || 
-        selectedSands.includes(build.sands) ||
+        selectedSands.includes(build.sands_1) ||
         selectedSands.includes(build.sands_2) ||
         selectedSands.includes(build.sands_3);
 
       // Check goblet
       const isGobletSelected = selectedGoblet.length === 0 || 
-        selectedGoblet.includes(build.goblet) ||
+        selectedGoblet.includes(build.goblet_1) ||
         selectedGoblet.includes(build.goblet_2);
 
       // Check circlet
       const isCircletSelected = selectedCirclet.length === 0 || 
-        selectedCirclet.includes(build.circlet) ||
+        selectedCirclet.includes(build.circlet_1) ||
         selectedCirclet.includes(build.circlet_2);
 
       // Check substats
       const isSubstatsSelected = selectedSubstats.length === 0 || 
-        selectedSubstats.includes(build.substats) ||
+        selectedSubstats.includes(build.substats_1) ||
         selectedSubstats.includes(build.substats_2) ||
         selectedSubstats.includes(build.substats_3) ||
         selectedSubstats.includes(build.substats_4) ||
@@ -234,32 +252,24 @@ export default function Results({
       .filter((set) => set.two_piece === selectedBonus) // Filter sets with the same bonus
       .filter((set) => set.name !== selectedArtifact?.name); // Exclude the selected set
 
-    // Filter builds based on matching artifact set and logic
+    // Get all builds that use a combination option with the selected bonus
     const matchingBuilds = sortedBuilds.filter((build: FullBuild) => {
-
-      // Get artifact name matches
-      const artifactSet1 = matchingSets.some((set) => set.name === build.artifact_set);
+      const artifactSet1 = matchingSets.some((set) => set.name === build.artifact_set_1);
       const artifactSet2 = matchingSets.some((set) => set.name === build.artifact_set_2);
       const artifactSet3 = matchingSets.some((set) => set.name === build.artifact_set_3);
       const artifactSet4 = matchingSets.some((set) => set.name === build.artifact_set_4);
+      const artifactSet5 = matchingSets.some((set) => set.name === build.artifact_set_5);
+      const artifactSet6 = matchingSets.some((set) => set.name === build.artifact_set_6);
 
-      // Get artifact logic matches for AND
-      const artifactLogic1 = build.artifact_logic === 'AND';
-      const artifactLogic2 = build.artifact_logic_2 === 'AND';
-      const artifactLogic3 = build.artifact_logic_3 === 'AND';
+      const option1Combo = build.artifact_set_2;
+      const option2Combo = build.artifact_set_4;
+      const option3Combo = build.artifact_set_6;
 
-      // Match artifact set and logic operator 
-      // (ensure AND, used for 2*2 set pieces)
-      const match1 = artifactSet1 && artifactLogic1;
-      const match2 = artifactSet2 && artifactLogic1;
+      const match1 = option1Combo && (artifactSet1 || artifactSet2)
+      const match2 = option2Combo && (artifactSet3 || artifactSet4)
+      const match3 = option3Combo && (artifactSet5 || artifactSet6)
 
-      const match3 = artifactSet2 && artifactLogic2;
-      const match4 = artifactSet3 && artifactLogic2;
-
-      const match5 = artifactSet3 && artifactLogic3;
-      const match6 = artifactSet4 && artifactLogic3;
-
-      return match1 || match2 || match3 || match4 || match5 || match6;
+      return match1 || match2 || match3
     });
 
     // Get IDs of all builds in the main dataset
@@ -277,23 +287,23 @@ export default function Results({
 
       // Check sands
       const isSandsSelected = selectedSands.length === 0 || 
-        selectedSands.includes(build.sands) ||
+        selectedSands.includes(build.sands_1) ||
         selectedSands.includes(build.sands_2) ||
         selectedSands.includes(build.sands_3);
 
       // Check goblet
       const isGobletSelected = selectedGoblet.length === 0 || 
-        selectedGoblet.includes(build.goblet) ||
+        selectedGoblet.includes(build.goblet_1) ||
         selectedGoblet.includes(build.goblet_2);
 
       // Check circlet
       const isCircletSelected = selectedCirclet.length === 0 || 
-        selectedCirclet.includes(build.circlet) ||
+        selectedCirclet.includes(build.circlet_1) ||
         selectedCirclet.includes(build.circlet_2);
 
       // Check substats
       const isSubstatsSelected = selectedSubstats.length === 0 || 
-        selectedSubstats.includes(build.substats) ||
+        selectedSubstats.includes(build.substats_1) ||
         selectedSubstats.includes(build.substats_2) ||
         selectedSubstats.includes(build.substats_3) ||
         selectedSubstats.includes(build.substats_4) ||
@@ -320,7 +330,7 @@ export default function Results({
 
       // Check for matches in each substats property
       for (let i = 1; i <= maxSubstats; i++) {
-        const key = i === 1 ? 'substats' : `substats_${i}`;
+        const key = `substats_${i}`;
         if (item[key]) {
           matchCount += selectedSubstats.filter((stat: string) => item[key] === stat).length;
         }
@@ -357,21 +367,24 @@ export default function Results({
       substats_4: selectedSubstats,
       substats_3: selectedSubstats,
       substats_2: selectedSubstats,
-      substats: selectedSubstats,
+      substats_1: selectedSubstats,
     };
 
     const keyValueMapTwo = {
       circlet_3: selectedCirclet,
       circlet_2: selectedCirclet,
-      circlet: selectedCirclet,
+      circlet_1: selectedCirclet,
       goblet_2: selectedGoblet,
-      goblet: selectedGoblet,
+      goblet_1: selectedGoblet,
       sands_3: selectedSands,
       sands_2: selectedSands,
-      sands: selectedSands,
+      sands_1: selectedSands,
+      artifact_set_6: selectedArtifactSet,
+      artifact_set_5: selectedArtifactSet,
+      artifact_set_4: selectedArtifactSet,
       artifact_set_3: selectedArtifactSet,
       artifact_set_2: selectedArtifactSet,
-      artifact_set: selectedArtifactSet,
+      artifact_set_1: selectedArtifactSet,
     };
 
     // Relevancy sort main results

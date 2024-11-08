@@ -164,185 +164,228 @@ export default function CharacterCard({
       {/* Constellation - Background image - REMOVE? */}
       	<div className="constellation">
       		{/*<img src={"./images/constellations/" + build.character_name +" Constellation.webp"}/>*/}
-      		{/*<img src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>*/}
+      		{/*<img src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>*/}
       	</div>
 
       {/* Artifact Sets */}
       	{showArtifactSets &&
       	<>
-      	{/* Artifact Set 1 Wrapper */}
-      	<div className={build.artifact_set_2 && build.artifact_logic === 'OR' ? 'artifact-set multiple' : 'artifact-set'}>
+	      {/* Main Artifact Combination - Wrapper (Images, Text & Tooltip) */}
+	      	<div className={build.artifact_set_3 ? 'artifact-set multiple' : 'artifact-set'}>
 
-      		{/* Artifact Set 1 */}
-					<div className="build-content-entry tooltip-on-hover" ref={elementOneRef}>
-						<div className="artifact-icon-wrapper">
+	      		{/* Artifact Combination 1 */}
+						<div className="build-section tooltip-on-hover" ref={elementOneRef}>
 
 							{/* Artifact Set Single Image */}
-							{build.artifact_set && build.artifact_logic !== 'AND' &&
-	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>}
+							{build.artifact_set_1 && !build.artifact_set_2 &&
+	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>}
 
-	        		{/* Artifact Set Split Multi Image */}
-							{build.artifact_set && build.artifact_logic === 'AND' &&
+	        		{/* Artifact Set Split Multi Image (double) */}
+							{build.artifact_set_1 && build.artifact_set_2 &&
 							<>
-							<div className="obstruction-top">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set +" Flower.webp"}/>
-	        		</div>
-	        		<div className="obstruction-bottom">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-	        		</div>
+	        			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
+	        			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
 	        		</>}
 
-			      </div>
-			      <div className="build-content-entry-content">
-				      <h4>Artifact Set{build.artifact_set_2 && build.artifact_logic === 'AND' && 's'}</h4>
-			        <ul>
-		          	{build.artifact_set && 
-		          	<li className={selectedArtifactSet.includes(build.artifact_set) ? 'highlighted' : ''}>
-		          		{build.artifact_set}{build.artifact_logic === 'AND' && ' ×2'}
-		          	</li>}
-		          	{build.artifact_set_2 && build.artifact_logic === 'AND' &&
-		          	<li className={selectedArtifactSet.includes(build.artifact_set) ? 'highlighted' : ''}>
-		          		{build.artifact_set_2} ×2
-		          	</li>}
-			        </ul>
-			      </div>
-		      </div>{/* End Artifact Set 1 */}
-
-			    {/* Tooltip - Artifact Set 1 */}
-		 	 		<div className="artifact-info tooltip" style={{top: artifactSetOneHeight +'px'}}>
-		  			<h4>2-Piece Bonus</h4>
-		  			<p>{build.artifact_set_two_piece}</p>
-		  			<h4>4-Piece Bonus</h4>
-		  			<p>{build.artifact_set_four_piece}</p>
-		  		</div>
-
-		     </div>{/* End Artifact Set 1 Wrapper */}
-
-				{/* Alternative Artifact Sets Wrapper - Full */}
-		    {build.artifact_set_2 && build.artifact_logic === 'OR' && !filterApplied &&
-      	<div className="artifact-set-alternative">
-
-      		{/* Artifact Set 2 - Full */}
-					<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
-						<div className="artifact-icon-wrapper">
-
-							{/* Artifact Set Single Image */}
-							{build.artifact_set_2 && build.artifact_logic_2 !== 'AND' &&
-	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>}
-
-	        		{/* Artifact Set Split Multi Image */}
-							{build.artifact_set_2 && build.artifact_logic_2 === 'AND' &&
+	        		{/* Artifact Set Split Multi Image (split) */}
+							{/*	{build.artifact_set_1 && build.artifact_logic === 'AND' &&
 							<>
-							<div className="obstruction-top">
+							<div className="clipping-mask-top">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
+	        		</div>
+	        		<div className="clipping-mask-bottom">
 	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
 	        		</div>
-	        		<div className="obstruction-bottom">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
-	        		</div>
-	        		</>}
+	        		</>}*/}
 
-			      </div>
-			      <div className="build-content-entry-content">
-							<h4>Artifact Set</h4>
-			        <ul>
-		          	{build.artifact_set_2 && 
-		          	<li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
-		          		{build.artifact_set_2}{build.artifact_logic_2 === 'AND' && ' ×2'}
-		          	</li>}
-		          	{build.artifact_set_3 && build.artifact_logic_2 === 'AND' &&
-		          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
-		          		{build.artifact_set_3} ×2
-		          	</li>}
-			        </ul>
-			      </div>
-		      </div>{/* End Artifact Set 2 - Full */}
+				      <div className="build-section-text">
+					      <h4>Artifact Set{build.artifact_set_2 && 's'}</h4>
+				        <ul>
+			          	{build.artifact_set_1 && 
+			          	<li className={selectedArtifactSet.includes(build.artifact_set_1) ? 'highlighted' : ''}>
+			          		{build.artifact_set_1}{build.artifact_set_2 && <span className="artifact-logic"> ×2</span>}
+			          	</li>}
+			          	{build.artifact_set_2 && build.artifact_set_2 &&
+			          	<li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
+			          		{build.artifact_set_2}<span className="artifact-logic"> ×2</span>
+			          	</li>}
+				        </ul>
+				      </div>
+			      </div>{/* End Artifact Set 1 */}
 
-			    {/* Tooltip - Artifact Set 2 - Full */}
-		 	 		<div className="artifact-info tooltip-alt" style={{top: artifactSetTwoHeight +'px'}}>
-		  			<h4>2-Piece Bonus</h4>
-		  			<p>{build.artifact_set_2_two_piece}</p>
-		  			<h4>4-Piece Bonus</h4>
-		  			<p>{build.artifact_set_2_four_piece}</p>
-		  		</div>
+				    {/* Tooltip - Artifact Set 1 */}
 
-					{/* Artifact Set 3 - Full */}
-			    {build.artifact_set_3 && build.artifact_logic_2 === 'OR' &&
-					<div className="build-content-entry tooltip-on-hover" ref={elementThreeRef}>
-						<div className="artifact-icon-wrapper">
+				    {/* Single set */}
+				    {!build.artifact_set_2 &&
+			 	 		<div className="artifact-info tooltip" style={{top: artifactSetOneHeight +'px'}}>
+			  			<h4>2-Piece Bonus</h4>
+			  			<p>{build.artifact_set_1_two_piece}</p>
+			  			<h4>4-Piece Bonus</h4>
+			  			<p>{build.artifact_set_1_four_piece}</p>
+			  		</div>}
 
-							{/* Artifact Set Single Image */}
-							{build.artifact_set_3 && build.artifact_logic_3 !== 'AND' &&
+				    {/* Split set */}
+				    {build.artifact_set_2 &&
+			 	 		<div className="artifact-info tooltip" style={{top: artifactSetOneHeight +'px'}}>
+			  			<h4>{build.artifact_set_1}</h4>
+			  			<p>{build.artifact_set_1_two_piece}</p>
+			  			<h4>{build.artifact_set_2}</h4>
+			  			<p>{build.artifact_set_2_two_piece}</p>
+			  		</div>}
+
+			     </div>{/* End Artifact Set 1 Wrapper */}
+
+				{/* Alternative Artifact Combinations Wrapper: Full view (Images, Text & Tooltip) */}
+			    {build.artifact_set_3 && !filterApplied &&
+	      	<div className="artifact-set-alternative">
+
+	      		{/* Artifact Combination 2 - Full */}
+						<div className="build-section tooltip-on-hover" ref={elementTwoRef}>
+
+							{/* Single Set: Image */}
+							{build.artifact_set_3 && !build.artifact_set_4 &&
 	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
 
-	        		{/* Artifact Set Split Multi Image */}
-							{build.artifact_set_3 && build.artifact_logic_3 === 'AND' &&
+	        		{/* Artifact Set Split Multi Image (double) */}
+							{build.artifact_set_3 && build.artifact_set_4 &&
 							<>
-							<div className="obstruction-top">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
-	        		</div>
-	        		<div className="obstruction-bottom">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_4 +" Flower.webp"}/>
-	        		</div>
+	        			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
+	        			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + build.artifact_set_4 +" Flower.webp"}/>
 	        		</>}
 
-			      </div>
-			      <div className="build-content-entry-content">
-				      <h4>Alternative</h4>
-			        <ul>
-		          	{build.artifact_set_3 && 
-		          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
-		          		{build.artifact_set_3}{build.artifact_logic_3 === 'AND' && ' ×2'}
-		          	</li>}
-		          	{build.artifact_set_4 && build.artifact_logic_3 === 'AND' &&
-		          	<li className={selectedArtifactSet.includes(build.artifact_set_4) ? 'highlighted' : ''}>
-		          		{build.artifact_set_4} ×2
-		          	</li>}
-			        </ul>
-			      </div>
-		      </div>}{/* End Artifact Set 3 - Full */}
+	        		{/* Artifact Set Split Multi Image (split) */}
+							{/*	{build.artifact_set_1 && build.artifact_logic === 'AND' &&
+							<>
+							<div className="clipping-mask-top">
+	        			<img className="artifact-icon-split" src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
+	        		</div>
+	        		<div className="clipping-mask-bottom">
+	        			<img className="artifact-icon-split" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
+	        		</div>
+	        		</>}*/}
 
-			    {/* Tooltip - Artifact Set 3 - Full */}
-		 	 		<div className="artifact-info tooltip-alt" style={{top: artifactSetThreeHeight +'px'}}>
-		  			<h4>2-Piece Bonus</h4>
-		  			<p>{build.artifact_set_3_two_piece}</p>
-		  			<h4>4-Piece Bonus</h4>
-		  			<p>{build.artifact_set_3_four_piece}</p>
-		  		</div>
+				      <div className="build-section-text">
+								<h4>Alternative</h4>
+				        <ul>
+			          	{build.artifact_set_3 && 
+			          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
+			          		{build.artifact_set_3}{build.artifact_set_4 && <span className="artifact-logic"> ×2</span>}
+			          	</li>}
+			          	{build.artifact_set_4 &&
+			          	<li className={selectedArtifactSet.includes(build.artifact_set_4) ? 'highlighted' : ''}>
+			          		{build.artifact_set_4}<span className="artifact-logic"> ×2</span>
+			          	</li>}
+				        </ul>
+				      </div>
+			      </div>{/* End Artifact Set 2 - Full */}
 
-			    </div>}{/* End Alternative Artifact Sets Wrapper */}
-		    </>}
+				    {/* Tooltip - Artifact Set 2 - Full */}
+				    {/* Single set */}
+				    {!build.artifact_set_4 &&
+			 	 		<div className="artifact-info tooltip" style={{top: artifactSetTwoHeight +'px'}}>
+			  			<h4>2-Piece Bonus</h4>
+			  			<p>{build.artifact_set_3_two_piece}</p>
+			  			<h4>4-Piece Bonus</h4>
+			  			<p>{build.artifact_set_3_four_piece}</p>
+			  		</div>}
 
-				{/* Alternative Artifact Sets Wrapper - Minimal */}
-		    {build.artifact_set_2 && build.artifact_logic === 'OR' && filterApplied && showArtifactSets &&
-		    <>
-      	<div className="artifact-set-alternative">
+				    {/* Split set */}
+				    {build.artifact_set_4 &&
+			 	 		<div className="artifact-info tooltip" style={{top: artifactSetTwoHeight +'px'}}>
+			  			<h4>{build.artifact_set_3}</h4>
+			  			<p>{build.artifact_set_3_two_piece}</p>
+			  			<h4>{build.artifact_set_4}</h4>
+			  			<p>{build.artifact_set_4_two_piece}</p>
+			  		</div>}
 
-      		{/* Artifact Set 2 - Minimal */}
-					<div className="build-content-entry tooltip-on-hover" ref={elementTwoRef}>
-						<div className="artifact-icon-wrapper">
-	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-			      </div>
-		      </div>{/* End Artifact Set 2 - Minimal */}
+						{/* Artifact Combination 3 - Full */}
+				    {build.artifact_set_5 &&
+						<div className="build-section tooltip-on-hover" ref={elementThreeRef}>
 
-					{/* Artifact Set 3 - Minimal */}
-		    	{build.artifact_set_3 && build.artifact_logic_2 === 'OR' &&
-					<div className="build-content-entry" ref={elementThreeRef}>
-						<div className="artifact-icon-wrapper">
-	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
-			      </div>
-		      </div>}{/* End Artifact Set 3 - Minimal */}
+							{/* Artifact Set Single Image */}
+							{build.artifact_set_5 && !build.artifact_set_6 &&
+	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>}
 
-		    </div>{/* End Alternative Artifact Sets Wrapper - Minimal */}
-	     	</>}
+	        		{/* Artifact Set Split Multi Image (double) */}
+							{build.artifact_set_5 && build.artifact_set_6 &&
+							<>
+	        			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>
+	        			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + build.artifact_set_6 +" Flower.webp"}/>
+	        		</>}
+
+	        		{/* Artifact Set Split Multi Image (split) */}
+							{/*	{build.artifact_set_1 && build.artifact_logic === 'AND' &&
+							<>
+							<div className="clipping-mask-top">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
+	        		</div>
+	        		<div className="clipping-mask-bottom">
+	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
+	        		</div>
+	        		</>}*/}
+
+				      <div className="build-section-text">
+					      <h4>Alternative</h4>
+				        <ul>
+			          	{build.artifact_set_5 && 
+			          	<li className={selectedArtifactSet.includes(build.artifact_set_5) ? 'highlighted' : ''}>
+			          		{build.artifact_set_5}{build.artifact_set_6 && <span className="artifact-logic"> ×2</span>}
+			          	</li>}
+			          	{build.artifact_set_6 &&
+			          	<li className={selectedArtifactSet.includes(build.artifact_set_6) ? 'highlighted' : ''}>
+			          		{build.artifact_set_6}<span className="artifact-logic"> ×2</span>
+			          	</li>}
+				        </ul>
+				      </div>
+			      </div>}{/* End Artifact Set 3 - Full */}
+
+				    {/* Tooltip - Artifact Set 3 - Full */}
+				    {/* Single set */}
+				    {!build.artifact_set_6 &&
+			 	 		<div className="artifact-info tooltip" style={{top: artifactSetThreeHeight +'px'}}>
+			  			<h4>2-Piece Bonus</h4>
+			  			<p>{build.artifact_set_5_two_piece}</p>
+			  			<h4>4-Piece Bonus</h4>
+			  			<p>{build.artifact_set_5_four_piece}</p>
+			  		</div>}
+
+				    {/* Split set */}
+				    {build.artifact_set_6 &&
+			 	 		<div className="artifact-info tooltip" style={{top: artifactSetThreeHeight +'px'}}>
+			  			<h4>{build.artifact_set_5}</h4>
+			  			<p>{build.artifact_set_5_two_piece}</p>
+			  			<h4>{build.artifact_set_6}</h4>
+			  			<p>{build.artifact_set_6_two_piece}</p>
+			  		</div>}
+
+				  </div>}{/* End Alternative Artifact Sets Wrapper: Full view */}
+
+				{/* Alternative Artifact Sets Wrapper: Minimal view (Images only) */}
+			    {build.artifact_set_3 && filterApplied &&
+	      	<div className="artifact-set-alternative">
+
+	      		{/* Artifact Option 2 - Minimal */}
+	      		{build.artifact_set_3 &&
+		        <img className="artifact-icon-alt-small" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
+
+						{/* Artifact Option 3 - Minimal */}
+			    	{build.artifact_set_5 &&
+		        <img className="artifact-icon-alt-small" src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>}
+
+			    </div>}{/* End Alternative Artifact Sets Wrapper - Minimal view */}
+
+			  </>}
+
+				
 
 	    {/* About / Description / Note */}
       	{showAbout && 
       	<>
 				<div className="note">
-	      	<div className="build-content-entry">
-	      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set +" Plume.webp"}/>
+	      	<div className="build-section">
+	      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set_1 +" Plume.webp"}/>
 	      		{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Tutorial.webp"}/>*/}
-	      		<div className="build-content-entry-content">
+	      		<div className="build-section-text">
 		      		<h4>About</h4>
 				      <p>{build.note ? build.note : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the'}</p>  
 			      </div>
@@ -356,13 +399,13 @@ export default function CharacterCard({
 	      	{/* Sands */}
 	      	{showSands &&
 	      	<>
-		      <div className="build-content-entry">
-	        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set +" Sands.webp"}/>
+		      <div className="build-section">
+	        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set_1 +" Sands.webp"}/>
 	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
-	        	<div className="build-content-entry-content">
+	        	<div className="build-section-text">
 			      	<h4>Sands</h4>
 			        <ol>
-			          {build.sands && <li className={selectedSands.includes(build.sands) ? 'highlighted' : ''}>{build.sands}</li>}
+			          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{build.sands_1}</li>}
 			          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{build.sands_2}</li>}
 			          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{build.sands_3}</li>}
 			        </ol>
@@ -373,13 +416,13 @@ export default function CharacterCard({
 			  {/* Goblet */}
 	      	{showGoblet && 
 	      	<>
-		      <div className="build-content-entry">
-	        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set +" Goblet.webp"}/>
+		      <div className="build-section">
+	        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set_1 +" Goblet.webp"}/>
 	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
-	        	<div className="build-content-entry-content">
+	        	<div className="build-section-text">
 		      		<h4>Goblet</h4>
 		        	<ol>
-		          	{build.goblet && <li className={selectedGoblet.includes(build.goblet) ? 'highlighted' : ''}>{build.goblet}</li>}
+		          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{build.goblet_1}</li>}
 		          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{build.goblet_2}</li>}
 		        	</ol>
 			      </div>
@@ -389,13 +432,13 @@ export default function CharacterCard({
 			  {/* Circlet */}
 	      	{showCirclet && 
 	      	<>
-					<div className="build-content-entry">
-	        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set +" Circlet.webp"}/>
+					<div className="build-section">
+	        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set_1 +" Circlet.webp"}/>
 						{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
-			      <div className="build-content-entry-content">
+			      <div className="build-section-text">
 				      <h4>Circlet</h4>
 			        <ol>
-			          {build.circlet && <li className={selectedCirclet.includes(build.circlet) ? 'highlighted' : ''}>{build.circlet}</li>}
+			          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{build.circlet_1}</li>}
 			          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{build.circlet_2}</li>}
 			          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{build.circlet_3}</li>}
 			        </ol>
@@ -409,12 +452,12 @@ export default function CharacterCard({
       	{showSubstats && 
       	<>
 	      <div className="substats">
-	      	<div className="build-content-entry">
+	      	<div className="build-section">
 	      		<img className="artifact-icon-simple"  src={"./images/artifacts/Icon Substats.webp"}/>
-		      	<div className="build-content-entry-content">
+		      	<div className="build-section-text">
 			      <h4>Substats Priority</h4>
 			        <ol>
-			          {build.substats && <li className={selectedSubstats.includes(build.substats) ? 'highlighted' : ''}>{build.substats}</li>}
+			          {build.substats_1 && <li className={selectedSubstats.includes(build.substats_1) ? 'highlighted' : ''}>{build.substats_1}</li>}
 			          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{build.substats_2}</li>}
 			          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{build.substats_3}</li>}
 			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{build.substats_4}</li>}
@@ -431,9 +474,9 @@ export default function CharacterCard({
       	{showERRecommendation && 
       	<>
 	      <div className="er-recommendation">
-	      	<div className="build-content-entry">
+	      	<div className="build-section">
 		      	<img className="artifact-icon-simple" src={"./images/artifacts/Icon Energy Recharge.webp"}/>
-		      	<div className="build-content-entry-content">
+		      	<div className="build-section-text">
 				      <h4>ER Recommendation</h4>
 				        <ul>
 				        	{build.er_min === '' && build.er_max === '' && <li>No data</li>}
