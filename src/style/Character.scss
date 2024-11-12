@@ -6,7 +6,7 @@ $banner-size: 100px;
 $element-icon-size: 50px;
 $artifact-icon-simple-size: 45px;
 $artifact-icon-size: 55px;
-$card-width-full: 480px;
+$card-width-full: 475px;
 $card-width-small: 270px;
 
 // Colors
@@ -85,6 +85,137 @@ $primary-color: #242424;
   }
 
 
+// MOBILE SIZES
+@media screen and (max-width: 600px) {
+// Character Card - Full size 
+  div.character-card.full {
+    width: 100vw;
+    margin-bottom: 20px;
+
+    div.build-header {
+      width: 100%;
+      position: relative;
+      height: $banner-size / 1.5;
+
+      img.character-element {
+        height: 30px;
+        width: 30px;
+        left: 5px;
+        top: 14px;
+      }
+
+      div.character-banner-wrapper {
+        height: $banner-size / 1.5;
+      }
+      img.character-portrait {
+        height: $banner-size / 1.5;
+        margin-left: 35px;
+      }
+      img.character-portrait-two {
+        display: none;
+      }
+      div.character-title {
+        top: 2px;
+        left: 110px;
+
+        h2 {
+
+        }
+        h3 {
+          font-size: 0.9em;
+        }
+      }
+    }
+
+  // Main artifact set - Single
+    div.artifact-set {
+      width: 100%;
+    }
+
+  // Main artifact set - Multiple 
+    div.artifact-set.multiple {
+      width: 100%;
+    }
+
+  // Alternative artifact sets 
+    div.artifact-set-alternative {
+      width: 100%;
+    }
+
+  // Artifact types - Sands, Goblet, Circlet 
+    div.artifact-types {
+      width: 100%;
+    }
+
+  // Substats 
+    div.substats {
+      width: 100%;
+    }
+
+  // ER Recommendation 
+    div.er-recommendation {
+      width: 100%;
+    }
+
+  }
+}
+
+// PC SIZES
+@media screen and (min-width: 601px) {
+// Character Card - Full size 
+  div.character-card.full {
+    width: $card-width-full;
+    margin: 25px;
+
+  // Header wrapper 
+    div.build-header {
+      width: $card-width-full +10px;
+      position: relative;
+      height: $banner-size;
+      left: -5px;
+
+      img.character-portrait {
+        bottom: 5px;
+        height: $banner-size + 5;
+      }
+    }
+
+    div.artifact-set {
+      width: 100%;
+    }
+
+  // Main artifact set - Multiple 
+    div.artifact-set.multiple {
+      float: left;
+      width: ($card-width-full / 2) - 15px;
+    }
+
+  // Alternative artifact sets 
+    div.artifact-set-alternative {
+      position: absolute;
+      width: $card-width-full / 2 - 15px;
+      left: ($card-width-full / 2 + 5px);
+    }
+
+  // Artifact types - Sands, Goblet, Circlet 
+    div.artifact-types {
+      margin-right: 10px;
+      width: ($card-width-full / 2) - 15px;
+    }
+
+  // Substats 
+    div.substats {
+      width: ($card-width-full / 2) - 15px;
+    }
+
+  // ER Recommendation 
+    div.er-recommendation {
+      width: ($card-width-full / 2) - 15px;
+    }
+  }
+}
+
+
 // MAIN
 // ------------------------------------------
 // Character Card - Small size 
@@ -110,7 +241,6 @@ $primary-color: #242424;
         top: -12px;
         left: -15px;
       }
-
       div.character-banner-wrapper {
         height: 100%;
         opacity: 0.4;
@@ -166,17 +296,18 @@ $primary-color: #242424;
           height: 35px;
         }
       }
-      div.artifact-types, div.note, div.substats, div.er-recommendation {
+      div.about {
+        button {
+          width: 100%;
+        }
+      }
+      div.artifact-types, div.about, div.substats, div.er-recommendation {
         width: 100%;
       }
     }
   }
 
-// Character Card - Full size 
-  div.character-card.full {
-    width: $card-width-full;
-    margin: 25px;
-  }
+
 
 // Character Card - All sizes 
   div.character-card {
@@ -188,10 +319,6 @@ $primary-color: #242424;
   // Header wrapper 
     div.build-header {
       border-radius: 5px;
-      height: $banner-size;
-      width: $card-width-full +10px;
-      position: relative;
-      left: -5px;
       background-color: darken(#222222, 1%);
       margin-bottom: 10px;
 
@@ -199,8 +326,6 @@ $primary-color: #242424;
       img.character-portrait, img.character-portrait-two {
         position: relative;
         z-index: 1;
-        bottom:5px;
-        height: $banner-size + 5;
         border-radius: 10px;
         padding: 0;
         margin-left: 15px;
@@ -361,12 +486,15 @@ $primary-color: #242424;
             font-weight: 400;
             color: #BBB;
           }
-          li {
-            font-weight: 600;
+          p, li {
+            font-weight: 400;
           }
           span.artifact-logic {
             font-weight: 400;
             color: rgba(255, 255, 255, 0.87);
+          }
+          .highlighted {
+            font-weight: 700;
           }
         }
       }
@@ -391,20 +519,14 @@ $primary-color: #242424;
       // Main artifact set - Single 
         div.artifact-set {
           position: relative;
-          width: 100%;
         }
 
       // Main artifact set - Multiple 
         div.artifact-set.multiple {
-          float: left;
-          width: ($card-width-full / 2) - 15px;
         }
 
       // Alternative artifact sets 
         div.artifact-set-alternative {
-          position: absolute;
-          width: $card-width-full / 2 - 15px;
-          left: ($card-width-full / 2 + 5px);
 
           div.build-section {
             background: none;
@@ -418,31 +540,62 @@ $primary-color: #242424;
       // Artifact types - Sands, Goblet, Circlet 
         div.artifact-types {
           float: left;
-          margin-right: 10px;
-          width: ($card-width-full / 2) - 15px;
         }
 
       // Substats 
         div.substats {
           float: left;
-          width: ($card-width-full / 2) - 15px;
         }
 
       // ER Recommendation 
         div.er-recommendation {
-          width: ($card-width-full / 2) - 15px;
           float: left;
         }
 
       // About 
-        div.note {
-          font-weight: 600;
+        div.about {
+          font-weight: 400;
           line-height: 1.35;
           clear: both;
 
-          div.build-section {
-            padding-top: 10px;
-            padding-bottom: 20px;
+          // Expand text button
+          button {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: $card-width-full - 20px;
+            background: linear-gradient(transparent 0%, #252525 75%, #252525 100%);
+            border: none;
+            padding: 10px;
+
+            // Triangle icon
+            span {
+              color: #999;
+              position: relative;
+              top: 10px;
+            }
+          }
+
+          // Expand text button:hover
+          button:hover {
+            cursor: pointer;
+
+            // Triangle icon
+            span {
+              color: #FFF;
+            }
+          }
+
+          // Minimized section class
+          div.build-section.minimized {
+            height: 85px;
+            overflow: hidden;
+          }
+          // Expanded section class
+          div.build-section.expanded {
+            height: unset;
+            overflow: unset;
+            padding-bottom: 30px;
           }
         }
     

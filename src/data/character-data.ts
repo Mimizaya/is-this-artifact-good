@@ -460,7 +460,7 @@ export const characterData = [
 		element: 'Geo',
 	},
 	{
-		name: 'Anemo Traveller',
+		name: 'Anemo Traveler',
 		rarity: 5,
 		element: 'Anemo',
 	},

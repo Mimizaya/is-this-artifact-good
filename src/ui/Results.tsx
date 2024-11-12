@@ -38,43 +38,49 @@ export default function Results({
 
   // Handle filtering of build sections 
     const buildSectionsOptions = ['All', 'Artifact Sets', 'About', 'Sands', 'Goblet', 'Circlet', 'Substats', 'ER Recommendation'];
-    const [buildSectionsVisible, setBuildSectionsVisible] = useState(['All']); 
+    const [buildSectionsVisible, setBuildSectionsVisible] = useState(buildSectionsOptions);
 
-    const handleBuildSectionsVisibleChange = (section: string, event: React.MouseEvent) => {
-      const shiftModifier = event.shiftKey;
+    const handleBuildSectionsVisibleChange = (section: string) => {
 
-      // If shift modifier is held, set to only clicked section
-      if(shiftModifier){
-        setBuildSectionsVisible((prev) => {
-
-          // New selection with 'All' removed
-          const allRemoved = prev?.filter(n => n !== 'All'); 
-
-          let newSections;
-
-          // If section was already selected, remove it and 'All'
-          if (prev?.includes(section)) {
-            newSections = allRemoved.filter(n => n !== section);
-          } 
-
-          // If section was not already selected, add it
-          else {
-            newSections = [...allRemoved, section];
-          }
-
-          // If all sections -1 are selected, add 'All'
-          if (newSections.length === buildSectionsOptions.length - 1) {
-            newSections = ['All'];
-          }
-
-          // Return the updated sections
-          return newSections; 
-        });
+      // Click 'All' button
+      if (section === 'All') {
+        // If all are selected, deselect all
+        if (buildSectionsVisible.length === buildSectionsOptions.length) {
+          setBuildSectionsVisible([]);
+        } 
+        // If all are not selected, select all
+        else {      
+          setBuildSectionsVisible(buildSectionsOptions);
+        }
       }
 
-      // If no shift modifier
+      // Click a different button
       else {
-        setBuildSectionsVisible([section])
+        // All are already selected? Select only that section
+        if (buildSectionsVisible.length === buildSectionsOptions.length) {
+          setBuildSectionsVisible([section]);
+        }
+        // All are not selected
+        else {
+          setBuildSectionsVisible((prev) => {
+            let newSections;
+
+            // If section was already selected, remove it
+            if (prev?.includes(section)) {
+              newSections = prev.filter(n => n !== section);
+            } 
+            // If section was not already selected, add it
+            else {
+              newSections = [...prev, section];
+            }
+            // If all sections except 'All' are selected, add 'All'
+            if (newSections.length === buildSectionsOptions.length - 1) {
+              newSections = buildSectionsOptions;
+            }
+            // Return the updated sections
+            return newSections;
+          });
+        }
       }
     }
 
@@ -118,7 +124,6 @@ export default function Results({
         artifact_set_6_four_piece: artifactSet6Info ? artifactSet6Info.four_piece : null,
       };
     });
-
 
 
   // SORTING / FILTERING 
@@ -334,6 +339,9 @@ export default function Results({
         if (item[key]) {
           matchCount += selectedSubstats.filter((stat: string) => item[key] === stat).length;
         }
+        if (item[key] === 'CRIT Rate/DMG' && selectedSubstats.includes('CRIT Rate') && selectedSubstats.includes('CRIT DMG')) {
+          matchCount += 1;
+        }
       }
       return matchCount;
     };
@@ -414,8 +422,6 @@ export default function Results({
     const noFilter = buildsDataRaw.length === sortedMainResults.length; // returns true if same length
 
 
-    
-
   return (
     <section id="results">
 
@@ -424,8 +430,8 @@ export default function Results({
 
         {/* Display number of builds found */}
         <h2>{
-          noFilter ? 'Showing all builds' : 
-          sortedMainResults.length === 1 ? `Found ${sortedMainResults.length} build matching filters` : 
+          noFilter ? `Showing all ${sortedMainResults.length} builds` : 
+          sortedMainResults.length === 1 ? `Found 1 build matching filters` : 
           sortedMainResults.length > 1 ? `Found ${sortedMainResults.length} builds matching filters` : 
           'No builds matching current filters'}
         </h2>
@@ -440,7 +446,7 @@ export default function Results({
               <button
                 key={section} 
                 className={buildSectionsVisible.includes(section) ? 'highlighted' : ''}
-                onClick={(e) => handleBuildSectionsVisibleChange(section, e)}
+                onClick={() => handleBuildSectionsVisibleChange(section)}
               >
                 <img 
                   className="filter-icon" 
@@ -462,8 +468,6 @@ export default function Results({
       {/* Main Results Content */}
       <div id="results-content">
 
-
-
         {/* No results? Show error and reset button! */}
         {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 &&
           <div id="no-results">
@@ -477,6 +481,7 @@ export default function Results({
             <CharacterCard
               build={build}
               handleSelectedPinned={handleSelectedPinned}
+              buildSectionsOptions={buildSectionsOptions}
               buildSectionsVisible={buildSectionsVisible}
               selectedPinned={selectedPinned}
               selectedFilters={selectedFilters}
@@ -503,6 +508,7 @@ export default function Results({
               <CharacterCard
                 build={build}
                 handleSelectedPinned={handleSelectedPinned}
+                buildSectionsOptions={buildSectionsOptions}
                 buildSectionsVisible={buildSectionsVisible}
                 selectedPinned={selectedPinned}
                 selectedFilters={selectedFilters}

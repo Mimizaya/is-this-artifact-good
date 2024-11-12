@@ -1,10 +1,10 @@
 import React from 'react';
 
-
 export const updateFiltersSingleSelect = (
   value: string,
   setState: React.Dispatch<React.SetStateAction<string[]>>,
 ) => {
+  
   if(value === 'clear selection') {
     setState([]);
   }

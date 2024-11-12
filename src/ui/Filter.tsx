@@ -88,7 +88,7 @@ export default function Filter({
       set.name.toLowerCase().includes(artifactQuery.toLowerCase())
     );
 
-  // Handle menu behaviours
+  // Handle dropdown menu states 
     const handleDropDown = (menu: string) => {
       if(menu === 'Character') {
         setCharacterDropDownOpen(true);
@@ -144,10 +144,130 @@ export default function Filter({
       };
     }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
+  // Open/close filter menu
+    const [isMenuOpen, setIsMenuOpen] = useState(true);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    // Toggle menu on button click (for manual opening/closing)
+    const toggleMenu = () => {
+      setIsMenuOpen(prev => !prev);
+    };
+
+    // Drag to open?
+
+    // const [isDragging, setIsDragging] = useState(false); // Track if dragging is happening
+    
+    // const startX = useRef(0);
+    // const initialMenuPosition = useRef(0); // Track the initial position of the menu when dragging begins
+    // const menuWidth = 250; // Adjust the width of the menu as needed
+    // const dragThreshold = menuWidth / 5; // 1/5th of the menu width to trigger open/close
+
+    // Manage the menu transition when state changes
+    /*    useEffect(() => {
+        if (menuRef.current) {
+          // Set transition style and position based on isMenuOpen state
+          menuRef.current.style.transition = 'transform 0.3s ease';
+          menuRef.current.style.transform = isMenuOpen ? 'translateX(0)' : `translateX(-${menuWidth}px)`;
+        }
+      }, [isMenuOpen]);*/
+
+
+
+    // Touch dragging
+      /*  // Handle the start of the drag (for mouse and touch)
+      const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
+        if (e.type === 'touchstart') {
+          startX.current = e.touches[0].clientX; // For touch events, use `touches` array
+        } else if (e.type === 'mousedown') {
+          startX.current = (e as React.MouseEvent).clientX;
+        }
+        setIsDragging(true);
+        if (menuRef.current) {
+          initialMenuPosition.current = parseFloat(menuRef.current.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+        }
+      };
+
+      // Handle dragging (for mouse and touch)
+      const handleTouchMove = (e: React.TouchEvent | React.MouseEvent) => {
+        if (!isDragging) return;
+
+        let currentX;
+        if (e.type === 'touchmove') {
+          currentX = e.touches[0].clientX; // Use `touches` for touchmove
+        } else if (e.type === 'mousemove') {
+          currentX = (e as React.MouseEvent).clientX;
+        }
+
+        const diffX = currentX - startX.current + initialMenuPosition.current; // Calculate new position based on initial position
+
+        if (menuRef.current) {
+          // Restrict movement to the left within the bounds of the menu
+          const constrainedX = Math.min(0, Math.max(-menuWidth, diffX)); 
+          menuRef.current.style.transform = `translateX(${constrainedX}px)`; // Apply the dragging movement
+        }
+      };
+
+      // Handle the end of the drag (for mouse and touch)
+      const handleTouchEnd = () => {
+        setIsDragging(false);
+
+        if (menuRef.current) {
+          // Calculate the drag distance after release
+          const menuPosition = parseFloat(menuRef.current.style.transform.replace('translateX(', '').replace('px)', ''));
+
+          // If the menu is dragged more than half the width, open it, otherwise close it
+          if (menuPosition > -dragThreshold) {
+            setIsMenuOpen(true);
+          } else {
+            setIsMenuOpen(false);
+          }
+
+          // Apply the final transition effect based on the menu state
+          menuRef.current.style.transition = 'transform 0.3s ease';
+          menuRef.current.style.transform = isMenuOpen ? 'translateX(0)' : `translateX(-${menuWidth}px)`;
+        }
+      };
+
+      // Add mouse/touch event listeners for dragging
+      useEffect(() => {
+        const menuElement = menuRef.current;
+        if (menuElement) {
+          // Add event listeners for both mouse and touch events
+          //menuElement.addEventListener('mousedown', handleTouchStart);
+          menuElement.addEventListener('touchstart', handleTouchStart);
+
+          //window.addEventListener('mousemove', handleTouchMove);
+          window.addEventListener('touchmove', handleTouchMove);
+
+          //window.addEventListener('mouseup', handleTouchEnd);
+          window.addEventListener('touchend', handleTouchEnd);
+
+          return () => {
+            //menuElement.removeEventListener('mousedown', handleTouchStart);
+            menuElement.removeEventListener('touchstart', handleTouchStart);
+
+            //window.removeEventListener('mousemove', handleTouchMove);
+            window.removeEventListener('touchmove', handleTouchMove);
+
+            //window.removeEventListener('mouseup', handleTouchEnd);
+            window.removeEventListener('touchend', handleTouchEnd);
+          };
+        }
+      }, [isDragging]); // Re-run the effect only when dragging state changes*/
+
+
   return (
-    <section id="filter">
+    <section id="filter" className={isMenuOpen ? 'open' : 'closed'} ref={menuRef}>
+
+
+
+
       <div className="filter-header">
         <h2>Filter options</h2>
+        <div className="toggle-filters-group">
+          <button onClick={() => toggleMenu()} className="toggle-filters-apply">{isMenuOpen ? 'Apply' : 'Open'}</button>
+          {/*<button className="toggle-filters-visibility">Reset</button>*/}
+        </div>
       </div>
 
       {/* Artifact Filters */}
@@ -451,7 +571,7 @@ export default function Filter({
                 <img 
                   className="filter-icon" 
                   src={
-                    selectedCharacter.length > 0 ? `./images/characters/${selectedCharacter}.webp` : 
+                    selectedCharacter.length > 0 ? `./images/characters/portraits/${selectedCharacter}.webp` : 
                     selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
                   }
                   alt={selectedCharacter[0]}
@@ -499,7 +619,7 @@ export default function Filter({
 
                   {/* Image */}
                   <img
-                    src={`./images/characters/${character.name}.webp`}
+                    src={`./images/characters/portraits/${character.name}.webp`}
                     alt={character.name}
                   />
 

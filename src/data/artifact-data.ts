@@ -14,7 +14,7 @@ export const artifactSets = [
 	{
 		name: 'Obsidian Codex',
 		two_piece: 'While the equipping character is in Nightsoul\'s Blessing and is on the field, their DMG dealt is increased by 15%.',
-		four_piece: 'After the equipping character consumes 1 Nightsoul point while on the field, CRIT Rate increases by 40% for 6s. This effect can trigger once every second.',
+		four_piece: '<i>After</i> <b>the</b> <i>equipping character</i> consumes 1 <b>Nightsoul</b> point while on the field, CRIT Rate increases by 40% for 6s. This effect can trigger once every second.',
 	},
 	{
 		name: 'Scroll of the Hero of Cinder City',

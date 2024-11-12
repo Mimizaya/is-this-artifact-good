@@ -52,6 +52,96 @@ div.build-section div.artifact-set div.build-section-text:hover div.build-sectio
   opacity: 1 !important;
 }
 
+@media screen and (max-width: 600px) {
+  div.character-card.full {
+    width: 100vw;
+    margin-bottom: 20px;
+  }
+  div.character-card.full div.build-header {
+    width: 100%;
+    position: relative;
+    height: 66.6666666667px;
+  }
+  div.character-card.full div.build-header img.character-element {
+    height: 30px;
+    width: 30px;
+    left: 5px;
+    top: 14px;
+  }
+  div.character-card.full div.build-header div.character-banner-wrapper {
+    height: 66.6666666667px;
+  }
+  div.character-card.full div.build-header img.character-portrait {
+    height: 66.6666666667px;
+    margin-left: 35px;
+  }
+  div.character-card.full div.build-header img.character-portrait-two {
+    display: none;
+  }
+  div.character-card.full div.build-header div.character-title {
+    top: 2px;
+    left: 110px;
+  }
+  div.character-card.full div.build-header div.character-title h3 {
+    font-size: 0.9em;
+  }
+  div.character-card.full div.artifact-set {
+    width: 100%;
+  }
+  div.character-card.full div.artifact-set.multiple {
+    width: 100%;
+  }
+  div.character-card.full div.artifact-set-alternative {
+    width: 100%;
+  }
+  div.character-card.full div.artifact-types {
+    width: 100%;
+  }
+  div.character-card.full div.substats {
+    width: 100%;
+  }
+  div.character-card.full div.er-recommendation {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 601px) {
+  div.character-card.full {
+    width: 475px;
+    margin: 25px;
+  }
+  div.character-card.full div.build-header {
+    width: 485px;
+    position: relative;
+    height: 100px;
+    left: -5px;
+  }
+  div.character-card.full div.build-header img.character-portrait {
+    bottom: 5px;
+    height: 105px;
+  }
+  div.character-card.full div.artifact-set {
+    width: 100%;
+  }
+  div.character-card.full div.artifact-set.multiple {
+    float: left;
+    width: 222.5px;
+  }
+  div.character-card.full div.artifact-set-alternative {
+    position: absolute;
+    width: 222.5px;
+    left: 242.5px;
+  }
+  div.character-card.full div.artifact-types {
+    margin-right: 10px;
+    width: 222.5px;
+  }
+  div.character-card.full div.substats {
+    width: 222.5px;
+  }
+  div.character-card.full div.er-recommendation {
+    width: 222.5px;
+  }
+}
 div.character-card.small {
   width: 270px;
   margin: 15px 20px;
@@ -117,13 +207,11 @@ div.character-card.small div.build-content div.artifact-set-alternative {
 div.character-card.small div.build-content div.artifact-set-alternative img.artifact-icon-alt-small {
   height: 35px;
 }
-div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.note, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-recommendation {
+div.character-card.small div.build-content div.about button {
   width: 100%;
 }
-
-div.character-card.full {
-  width: 480px;
-  margin: 25px;
+div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.about, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-recommendation {
+  width: 100%;
 }
 
 div.character-card {
@@ -134,18 +222,12 @@ div.character-card {
 }
 div.character-card div.build-header {
   border-radius: 5px;
-  height: 100px;
-  width: 490px;
-  position: relative;
-  left: -5px;
   background-color: #1f1f1f;
   margin-bottom: 10px;
 }
 div.character-card div.build-header img.character-portrait, div.character-card div.build-header img.character-portrait-two {
   position: relative;
   z-index: 1;
-  bottom: 5px;
-  height: 105px;
   border-radius: 10px;
   padding: 0;
   margin-left: 15px;
@@ -280,12 +362,15 @@ div.character-card div.build-content div.build-section div.build-section-text h4
   font-weight: 400;
   color: #BBB;
 }
-div.character-card div.build-content div.build-section div.build-section-text li {
-  font-weight: 600;
+div.character-card div.build-content div.build-section div.build-section-text p, div.character-card div.build-content div.build-section div.build-section-text li {
+  font-weight: 400;
 }
 div.character-card div.build-content div.build-section div.build-section-text span.artifact-logic {
   font-weight: 400;
   color: rgba(255, 255, 255, 0.87);
+}
+div.character-card div.build-content div.build-section div.build-section-text .highlighted {
+  font-weight: 700;
 }
 div.character-card div.build-content div.constellation {
   position: absolute;
@@ -300,16 +385,6 @@ div.character-card div.build-content div.constellation img {
 }
 div.character-card div.build-content div.artifact-set {
   position: relative;
-  width: 100%;
-}
-div.character-card div.build-content div.artifact-set.multiple {
-  float: left;
-  width: 225px;
-}
-div.character-card div.build-content div.artifact-set-alternative {
-  position: absolute;
-  width: 225px;
-  left: 245px;
 }
 div.character-card div.build-content div.artifact-set-alternative div.build-section {
   background: none;
@@ -319,25 +394,46 @@ div.character-card div.build-content div.artifact-set-alternative div.build-sect
 }
 div.character-card div.build-content div.artifact-types {
   float: left;
-  margin-right: 10px;
-  width: 225px;
 }
 div.character-card div.build-content div.substats {
   float: left;
-  width: 225px;
 }
 div.character-card div.build-content div.er-recommendation {
-  width: 225px;
   float: left;
 }
-div.character-card div.build-content div.note {
-  font-weight: 600;
+div.character-card div.build-content div.about {
+  font-weight: 400;
   line-height: 1.35;
   clear: both;
 }
-div.character-card div.build-content div.note div.build-section {
-  padding-top: 10px;
-  padding-bottom: 20px;
+div.character-card div.build-content div.about button {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 455px;
+  background: linear-gradient(transparent 0%, #252525 75%, #252525 100%);
+  border: none;
+  padding: 10px;
+}
+div.character-card div.build-content div.about button span {
+  color: #999;
+  position: relative;
+  top: 10px;
+}
+div.character-card div.build-content div.about button:hover {
+  cursor: pointer;
+}
+div.character-card div.build-content div.about button:hover span {
+  color: #FFF;
+}
+div.character-card div.build-content div.about div.build-section.minimized {
+  height: 85px;
+  overflow: hidden;
+}
+div.character-card div.build-content div.about div.build-section.expanded {
+  height: unset;
+  overflow: unset;
+  padding-bottom: 30px;
 }
 
 /*# sourceMappingURL=Character.css.map */
