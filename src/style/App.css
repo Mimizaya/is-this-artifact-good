@@ -1,4 +1,7 @@
+@import './Filter.css';
+@import './Results.css';
 @import './Character.css';
+@import './Footer.css';
 * {
   box-sizing: border-box;
 }
@@ -33,306 +36,9 @@ ul, li, ol {
   filter: grayscale(0%) !important;
 }
 
-@media screen and (max-width: 600px) {
-  section#filter.closed {
-    left: -100%;
-  }
-  section#filter.open {
-    left: 0;
-  }
-  section#filter {
-    width: 100%;
-    transition: all 0.3s ease-out;
-  }
-  section#filter div.filter-header {
-    width: 100%;
-  }
-  section#filter div.toggle-filters-group {
-    z-index: 99;
-    display: block;
-    float: right;
-    width: 100%;
-    height: 50px;
-  }
-  section#filter div.toggle-filters-group button.toggle-filters-apply {
-    float: right;
-    padding: 0 40px;
-    height: 100%;
-    transition: all 0.3s ease-out;
-    background-color: #222722;
-    cursor: pointer;
-    border: 1px solid #192019;
-    text-align: center;
-    color: #DDD;
-    font-weight: 700;
-    font-size: 0.9em;
-    font-family: inherit;
-  }
-  section#filter div.dropdown-wrapper, section#filter label {
-    width: 100%;
-  }
-  section#filter ul.dropdown-menu {
-    width: 100%;
-  }
-  section#filter button.reset-filters {
-    width: 100%;
-  }
-  section#results {
-    margin-left: 0;
-  }
-  section#results div.results-header {
-    display: none;
-  }
-  section#results div#results-content {
-    margin-top: 60px;
-    width: 100%;
-  }
-}
-@media screen and (min-width: 601px) {
-  section#filter {
-    width: 300px;
-  }
-  section#filter div.filter-header {
-    width: 290px;
-  }
-  section#filter div.toggle-filters-group {
-    display: none;
-  }
-  section#filter div.dropdown-wrapper, section#filter ul.dropdown-menu, section#filter label {
-    width: 250px;
-  }
-  section#results div#results-content {
-    margin-top: 120px;
-    margin-left: 320px;
-  }
-}
-section#filter {
-  position: fixed;
-  height: 100%;
-  z-index: 99;
-  background-color: #222222;
-  box-sizing: border-box;
-  top: 0;
-  left: 0;
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  padding: 20px;
-}
-section#filter div.filter-header {
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  height: 50px;
-  background-color: #1f1f1f;
-}
-section#filter div.filter-header h2 {
-  flex: 50%;
-  color: #CCC;
-  font-size: 1em;
+.highlighted.flatstat {
+  color: #99B199;
   font-weight: 700;
-  margin-top: 12px;
-  margin-left: 20px;
-}
-section#filter div#filter-artifact {
-  margin-top: 30px;
-}
-section#filter div#filter-other {
-  margin-top: 30px;
-}
-section#filter div#filter-artifact h2, section#filter div#filter-other h2 {
-  font-size: 2em;
-}
-section#filter div.filter-artifact-mainstats div.filter-option {
-  margin: 0;
-}
-section#filter div.filter-artifact-mainstats div.filter-option:last-of-type {
-  margin-bottom: 15px;
-}
-section#filter div.filter-option {
-  margin-bottom: 15px;
-}
-section#filter div.filter-option img.filter-icon {
-  height: 25px;
-  margin-right: 7px;
-  filter: grayscale(100%);
-}
-section#filter div.filter-option div.search-bar {
-  height: 44px;
-  width: 250px;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #252525;
-  border-bottom: 1px solid #192019;
-  position: relative;
-}
-section#filter div.filter-option div.search-bar input.search-input {
-  all: unset;
-  padding: 0 10px;
-  height: 44px;
-  width: 250px;
-}
-section#filter div.filter-option label:hover {
-  background-color: #313131;
-  cursor: pointer;
-}
-section#filter div.filter-option label {
-  transition: all 0.3s ease-out;
-  display: flex;
-  padding: 5px;
-  background-color: #252525;
-  border-bottom: 1px solid #192019;
-  box-shadow: 1px 3px 5px #202020;
-  user-select: none;
-}
-section#filter div.filter-option label input {
-  display: none;
-  visibility: hidden;
-}
-section#filter .filter-option .artifact-type {
-  margin-top: 10px;
-}
-section#filter .filter-option .artifact-type:first-of-type {
-  margin-top: 0;
-}
-section#filter div.dropdown-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-section#filter div.dropdown-wrapper div.dropdown {
-  transition: all 0.3s ease-out;
-  display: flex;
-  cursor: pointer;
-  background-color: #252525;
-  border-bottom: 1px solid #192019;
-  box-shadow: 1px 3px 5px #202020;
-  height: 44px;
-  width: 500px;
-  position: relative;
-  user-select: none;
-}
-section#filter div.dropdown-wrapper div.dropdown img {
-  padding: 5px;
-  padding-right: 0;
-  height: 100%;
-}
-section#filter div.dropdown-wrapper div.dropdown p {
-  padding: 8px;
-  padding-left: 0;
-}
-section#filter div.dropdown-wrapper div.dropdown:hover {
-  background-color: #313131;
-}
-section#filter ul.dropdown-menu {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  z-index: 10;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #222222;
-  box-shadow: 1px 3px 5px #191919;
-  border-bottom: 1px solid #192019;
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  height: 500px;
-}
-section#filter ul.dropdown-menu li {
-  transition: all 0.3s ease-out;
-  height: 44px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #192019;
-}
-section#filter ul.dropdown-menu li img {
-  margin: 0;
-  height: 100%;
-}
-section#filter ul.dropdown-menu li p {
-  padding: 8px;
-}
-section#filter ul.dropdown-menu li:hover {
-  background-color: #313131;
-}
-
-section#results {
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  height: 100%;
-  width: 100vw;
-}
-section#results div#results-content {
-  display: flex;
-  flex-wrap: wrap;
-}
-section#results div#additional-results-wrapper h3.additional-results-content-header {
-  margin-top: 10px;
-}
-section#results div#additional-results-wrapper div#additional-results-content {
-  display: flex;
-  flex-wrap: wrap;
-}
-section#results div.results-header {
-  position: fixed;
-  top: 0;
-  left: 300px;
-  z-index: 10;
-  height: 110px;
-  background-color: #1f1f1f;
-  width: 100%;
-  padding-left: 20px;
-}
-section#results div.results-header h2 {
-  color: #CCC;
-  font-size: 1em;
-  font-weight: 700;
-  margin-top: 12px;
-}
-section#results div.results-header div#filter-build {
-  margin-top: 5px;
-}
-section#results div.results-header div#filter-build h3 {
-  color: #CCC;
-  font-size: 1em;
-  font-weight: 700;
-  margin-bottom: 3px;
-}
-section#results div.results-header div#filter-build div.filter-build-options button.highlighted {
-  background-color: #363636;
-  font-weight: 400;
-  color: #FFF;
-}
-section#results div.results-header div#filter-build div.filter-build-options button:hover {
-  background-color: #313131;
-  cursor: pointer;
-}
-section#results div.results-header div#filter-build div.filter-build-options button {
-  color: #CCC;
-  background-color: #242424;
-  font-family: inherit;
-  border: none;
-  padding: 8px 13px 8px 10px;
-  border-bottom: 1px solid #192019;
-  box-shadow: 1px 3px 5px #202020;
-  transition: all 0.3s ease-out;
-  border-radius: 50px;
-  margin-right: 5px;
-  display: flex;
-  float: left;
-}
-section#results div.results-header div#filter-build div.filter-build-options button img {
-  margin-right: 2px;
-  height: 20px;
-}
-
-div#no-results {
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 35vh;
 }
 
 button.reset-filters {
@@ -356,7 +62,7 @@ button.clear-input {
 
 button.reset-filters, button.clear-input {
   transition: all 0.3s ease-out;
-  background-color: #272222;
+  background-color: #36272f;
   box-shadow: 1px 3px 5px #202020;
   cursor: pointer;
   text-align: center;
@@ -367,7 +73,7 @@ button.reset-filters, button.clear-input {
 }
 
 button.reset-filters:hover, button.clear-input:hover {
-  background-color: #362727;
+  background-color: #3f2d37;
 }
 
 /*# sourceMappingURL=App.css.map */

@@ -3,16 +3,28 @@ import { useState, useRef, useEffect } from 'react';
 
 // Datasets
 import { characterData } from '../data/character-data.ts';
-import { artifactSets, artifactSands, artifactGoblet, artifactCirclet } from '../data/artifact-data.ts';
+import { 
+  artifactSets, 
+  artifactSands, 
+  artifactGoblet, 
+  artifactCirclet } from '../data/artifact-data.ts';
 import { substats } from '../data/substats.ts';
 import { elements } from '../data/elements.ts';
 
 // Type definitions
-import { Character, ArtifactSet, SelectedFilters } from '../types/types.ts';
+import { Character, ArtifactSet, SelectedFilters, SavedFilters } from '../types/types.ts';
+
+// UI
+import FilterTabs from './FilterTabs.tsx';
 
 export default function Filter({
+  isMobile,
   resetFilters,
   selectedFilters,
+  savedFilters,
+  isMenuOpen,
+  handleTabChange,
+  currentFilterTab,
   handleCharacterChange,
   handleArtifactSetChange,
   handleSandsChange,
@@ -21,8 +33,13 @@ export default function Filter({
   handleSubstatsChange,
   handleElementsChange,
 } : {
-  resetFilters: () => void;
+  isMobile: boolean;
+  resetFilters: (filter: string | null) => void;
   selectedFilters: SelectedFilters;
+  savedFilters: SavedFilters;
+  isMenuOpen: boolean;
+  handleTabChange: any;
+  currentFilterTab: any;
   handleCharacterChange: (name: string) => void;
   handleArtifactSetChange: (set: string) => void;
   handleSandsChange: (stat: string) => void;
@@ -32,10 +49,10 @@ export default function Filter({
   handleElementsChange: (element: string) => void;
 }) {
 
-  // Destructure the selected filters object
+  // Destructure the selected filters object 
     const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
 
-  // States
+  // States 
     const [characterQuery, setCharacterQuery] = useState<string>('');
     const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
 
@@ -46,7 +63,7 @@ export default function Filter({
     const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
     const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false);
 
-  // Automatically focus the search inputs when opened
+  // Automatically focus the search inputs when opened 
     const characterRef = useRef<HTMLInputElement>(null);
     const artifactRef = useRef<HTMLInputElement>(null);
 
@@ -59,7 +76,7 @@ export default function Filter({
       }
     }, [characterDropDownOpen, artifactSetDropDownOpen]);
 
-  // Search queries
+  // Handle search queries 
     const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
       setCharacterQuery(e.target.value)
     }
@@ -67,12 +84,12 @@ export default function Filter({
       setArtifactQuery(e.target.value)
     }
 
-  // Filtered character data based on the query
+  // Filtered character data based on the query 
     const filteredCharacterData = characterData.filter((character: Character) =>
       character.name.toLowerCase().includes(characterQuery.toLowerCase())
     );
 
-  // Sort artifacts alphabetically (currently not in use)
+  // Sort artifacts alphabetically (currently not in use) 
     /*const sortedArtifacts = artifactSets.sort((a: ArtifactSet, b: ArtifactSet) => {
       if (a.name < b.name) {
         return -1;
@@ -83,7 +100,7 @@ export default function Filter({
       return 0;
     });*/
 
-  // Filtered artifact data based on the query
+  // Filtered artifact data based on the query 
     const filteredArtifacts = artifactSets.filter((set: ArtifactSet) =>
       set.name.toLowerCase().includes(artifactQuery.toLowerCase())
     );
@@ -144,131 +161,21 @@ export default function Filter({
       };
     }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
-  // Open/close filter menu
-    const [isMenuOpen, setIsMenuOpen] = useState(true);
-    const menuRef = useRef<HTMLDivElement>(null);
 
-    // Toggle menu on button click (for manual opening/closing)
-    const toggleMenu = () => {
-      setIsMenuOpen(prev => !prev);
-    };
-
-    // Drag to open?
-
-    // const [isDragging, setIsDragging] = useState(false); // Track if dragging is happening
-    
-    // const startX = useRef(0);
-    // const initialMenuPosition = useRef(0); // Track the initial position of the menu when dragging begins
-    // const menuWidth = 250; // Adjust the width of the menu as needed
-    // const dragThreshold = menuWidth / 5; // 1/5th of the menu width to trigger open/close
-
-    // Manage the menu transition when state changes
-    /*    useEffect(() => {
-        if (menuRef.current) {
-          // Set transition style and position based on isMenuOpen state
-          menuRef.current.style.transition = 'transform 0.3s ease';
-          menuRef.current.style.transform = isMenuOpen ? 'translateX(0)' : `translateX(-${menuWidth}px)`;
-        }
-      }, [isMenuOpen]);*/
-
-
-
-    // Touch dragging
-      /*  // Handle the start of the drag (for mouse and touch)
-      const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
-        if (e.type === 'touchstart') {
-          startX.current = e.touches[0].clientX; // For touch events, use `touches` array
-        } else if (e.type === 'mousedown') {
-          startX.current = (e as React.MouseEvent).clientX;
-        }
-        setIsDragging(true);
-        if (menuRef.current) {
-          initialMenuPosition.current = parseFloat(menuRef.current.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
-        }
-      };
-
-      // Handle dragging (for mouse and touch)
-      const handleTouchMove = (e: React.TouchEvent | React.MouseEvent) => {
-        if (!isDragging) return;
-
-        let currentX;
-        if (e.type === 'touchmove') {
-          currentX = e.touches[0].clientX; // Use `touches` for touchmove
-        } else if (e.type === 'mousemove') {
-          currentX = (e as React.MouseEvent).clientX;
-        }
-
-        const diffX = currentX - startX.current + initialMenuPosition.current; // Calculate new position based on initial position
-
-        if (menuRef.current) {
-          // Restrict movement to the left within the bounds of the menu
-          const constrainedX = Math.min(0, Math.max(-menuWidth, diffX)); 
-          menuRef.current.style.transform = `translateX(${constrainedX}px)`; // Apply the dragging movement
-        }
-      };
-
-      // Handle the end of the drag (for mouse and touch)
-      const handleTouchEnd = () => {
-        setIsDragging(false);
-
-        if (menuRef.current) {
-          // Calculate the drag distance after release
-          const menuPosition = parseFloat(menuRef.current.style.transform.replace('translateX(', '').replace('px)', ''));
-
-          // If the menu is dragged more than half the width, open it, otherwise close it
-          if (menuPosition > -dragThreshold) {
-            setIsMenuOpen(true);
-          } else {
-            setIsMenuOpen(false);
-          }
-
-          // Apply the final transition effect based on the menu state
-          menuRef.current.style.transition = 'transform 0.3s ease';
-          menuRef.current.style.transform = isMenuOpen ? 'translateX(0)' : `translateX(-${menuWidth}px)`;
-        }
-      };
-
-      // Add mouse/touch event listeners for dragging
-      useEffect(() => {
-        const menuElement = menuRef.current;
-        if (menuElement) {
-          // Add event listeners for both mouse and touch events
-          //menuElement.addEventListener('mousedown', handleTouchStart);
-          menuElement.addEventListener('touchstart', handleTouchStart);
-
-          //window.addEventListener('mousemove', handleTouchMove);
-          window.addEventListener('touchmove', handleTouchMove);
-
-          //window.addEventListener('mouseup', handleTouchEnd);
-          window.addEventListener('touchend', handleTouchEnd);
-
-          return () => {
-            //menuElement.removeEventListener('mousedown', handleTouchStart);
-            menuElement.removeEventListener('touchstart', handleTouchStart);
-
-            //window.removeEventListener('mousemove', handleTouchMove);
-            window.removeEventListener('touchmove', handleTouchMove);
-
-            //window.removeEventListener('mouseup', handleTouchEnd);
-            window.removeEventListener('touchend', handleTouchEnd);
-          };
-        }
-      }, [isDragging]); // Re-run the effect only when dragging state changes*/
 
 
   return (
-    <section id="filter" className={isMenuOpen ? 'open' : 'closed'} ref={menuRef}>
+    <section id="filter" className={isMenuOpen ? 'open' : 'closed'}>
 
-
-
-
-      <div className="filter-header">
-        <h2>Filter options</h2>
-        <div className="toggle-filters-group">
-          <button onClick={() => toggleMenu()} className="toggle-filters-apply">{isMenuOpen ? 'Apply' : 'Open'}</button>
-          {/*<button className="toggle-filters-visibility">Reset</button>*/}
-        </div>
-      </div>
+      {isMobile &&
+      <FilterTabs 
+        handleTabChange={handleTabChange}
+        currentFilterTab={currentFilterTab}
+        selectedFilters={selectedFilters}
+        isMobile={isMobile}
+        savedFilters={savedFilters}
+        isMenuOpen={isMenuOpen}
+      />}
 
       {/* Artifact Filters */}
       <div id="filter-artifact">
@@ -290,7 +197,7 @@ export default function Filter({
                   className="filter-icon"  
                   src={
                     selectedArtifactSet.length > 0 ? `./images/artifacts/flowers/${selectedArtifactSet} Flower.webp` : 
-                    selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Artifact.webp` : ''
+                    selectedArtifactSet.length === 0 ? `./images/icons/Icon Artifact.webp` : ''
                   }
                   alt={selectedArtifactSet[0]}
                 />
@@ -368,7 +275,7 @@ export default function Filter({
                   className="filter-icon"
                   src={
                     selectedArtifactSet.length > 0 ? `./images/artifacts/sands/${selectedArtifactSet} Sands.webp` : 
-                    selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Sands.webp` : ''
+                    selectedArtifactSet.length === 0 ? `./images/icons/Icon Sands.webp` : ''
                   }
                   alt={
                     selectedArtifactSet.length > 0 ? `${selectedArtifactSet} Sands` : 
@@ -425,7 +332,7 @@ export default function Filter({
                   className="filter-icon"
                   src={
                     selectedArtifactSet.length > 0 ? `./images/artifacts/goblets/${selectedArtifactSet} Goblet.webp` : 
-                    selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Goblet.webp` : ''
+                    selectedArtifactSet.length === 0 ? `./images/icons/Icon Goblet.webp` : ''
                   }
                   alt={
                     selectedArtifactSet.length > 0 ? `${selectedArtifactSet} Goblet` : 
@@ -482,7 +389,7 @@ export default function Filter({
                   className="filter-icon"
                   src={
                     selectedArtifactSet.length > 0 ? `./images/artifacts/circlets/${selectedArtifactSet} Circlet.webp` : 
-                    selectedArtifactSet.length === 0 ? `./images/artifacts/Icon Circlet.webp` : ''
+                    selectedArtifactSet.length === 0 ? `./images/icons/Icon Circlet.webp` : ''
                   }
                   alt={
                     selectedArtifactSet.length > 0 ? `${selectedArtifactSet} Circlet` : 
@@ -534,11 +441,14 @@ export default function Filter({
               <img
                 className="filter-icon"  
                 src={
-                  stat === 'HP%' ? `./images/artifacts/Icon HP.webp` :
-                  stat === 'ATK%' ? `./images/artifacts/Icon ATK.webp` :
-                  stat === 'DEF%' ? `./images/artifacts/Icon DEF.webp` :
-                  stat === 'CRIT DMG' ? `./images/artifacts/Icon CRIT Rate.webp` :
-                  `./images/artifacts/Icon ${stat}.webp`} 
+                  stat === 'HP%' ? `./images/icons/Icon HP.webp` :
+                  stat === 'Flat HP' ? `./images/icons/Icon HP.webp` :
+                  stat === 'ATK%' ? `./images/icons/Icon ATK.webp` :
+                  stat === 'Flat ATK' ? `./images/icons/Icon ATK.webp` :
+                  stat === 'DEF%' ? `./images/icons/Icon DEF.webp` :
+                  stat === 'Flat DEF' ? `./images/icons/Icon DEF.webp` :
+                  stat === 'CRIT DMG' ? `./images/icons/Icon CRIT Rate.webp` :
+                  `./images/icons/Icon ${stat}.webp`} 
               />
               {stat}
             </label>
@@ -572,7 +482,7 @@ export default function Filter({
                   className="filter-icon" 
                   src={
                     selectedCharacter.length > 0 ? `./images/characters/portraits/${selectedCharacter}.webp` : 
-                    selectedCharacter.length === 0 ? `./images/artifacts/Icon Character.webp` : ''
+                    selectedCharacter.length === 0 ? `./images/icons/Icon Character.webp` : ''
                   }
                   alt={selectedCharacter[0]}
                 />
@@ -651,8 +561,9 @@ export default function Filter({
         </div>
       </div>{/* End Other Filters */}
 
-
-      <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
+      <div className={isMenuOpen ? 'toggle-filters open' : 'toggle-filters closed'}>
+        <button className="reset-filters" onClick={() => resetFilters(null)}>Reset filters</button>
+      </div>
     </section>
   );
 }

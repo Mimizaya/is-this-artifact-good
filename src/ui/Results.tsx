@@ -6,31 +6,47 @@ import { artifactSets } from '../data/artifact-data.ts';
 import { elements } from '../data/elements.ts';
 
 // Type definitions
-import { Character, RawBuild, FullBuild, ArtifactSet, SelectedFilters } from '../types/types.ts';
+import { 
+  Character, 
+  RawBuild, 
+  FullBuild, 
+  ArtifactSet, 
+  SelectedFilters, SavedFilters } from '../types/types.ts';
 
 // UI components
-import CharacterCard from './CharacterCard.tsx'
+import FilterTabs from './FilterTabs.tsx';
+import CharacterCard from './CharacterCard.tsx';
+import Footer from './Footer.tsx';
 
 export default function Results({
+  isMobile,
   buildsDataRaw,
   selectedFilters,
   resetFilters,
+  handleTabChange,
+  currentFilterTab,
+  savedFilters,
+  isMenuOpen,
 }: {
+  isMobile: boolean;
   buildsDataRaw: RawBuild[];
   selectedFilters: SelectedFilters;
-  resetFilters: () => void;
+  resetFilters: (filter: string | null) => void;
+  handleTabChange: any;
+  currentFilterTab: any;
+  savedFilters: SavedFilters;
+  isMenuOpen: boolean;
 }) {
 
-  // Save filter configurations - WIP 
-    //const [currentFilterTab, setCurrentFilterTab] = useState(1);
-    //const [savedFilters, setSavedFilters] = useState([]);
+
 
   // Destructure the selected filters object 
       const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
   
   // Handle pin build 
     const [selectedPinned, setSelectedPinned] = useState<number[]>([]);
-    const handleSelectedPinned = (id: number) => {
+    const handleSelectedPinned = (e: any, id: number) => {
+      e.stopPropagation();
       setSelectedPinned((prev) =>
         prev.includes(id) ? prev.filter((n) => n !== id) : [...prev, id]
       );
@@ -97,6 +113,8 @@ export default function Results({
       const artifactSet4Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_4);
       const artifactSet5Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_5);
       const artifactSet6Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_6);
+      const artifactSet7Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_7);
+      const artifactSet8Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_8);
 
       // If a match is found, merge the relevant data
       // Use `!` to assert that result is not null/undefined
@@ -104,24 +122,27 @@ export default function Results({
         ...build,
         element: characterInfo!.element,
         rarity: characterInfo!.rarity,
+        banner_offset: characterInfo?.banner_offset,
 
         artifact_set_1_two_piece: artifactSet1Info!.two_piece,
         artifact_set_1_four_piece: artifactSet1Info!.four_piece,
 
         artifact_set_2_two_piece: artifactSet2Info ? artifactSet2Info.two_piece : null,
-        artifact_set_2_four_piece: artifactSet2Info ? artifactSet2Info.four_piece : null,
 
         artifact_set_3_two_piece: artifactSet3Info ? artifactSet3Info.two_piece : null,
         artifact_set_3_four_piece: artifactSet3Info ? artifactSet3Info.four_piece : null,
 
         artifact_set_4_two_piece: artifactSet4Info ? artifactSet4Info.two_piece : null,
-        artifact_set_4_four_piece: artifactSet4Info ? artifactSet4Info.four_piece : null,
         
         artifact_set_5_two_piece: artifactSet5Info ? artifactSet5Info.two_piece : null,
         artifact_set_5_four_piece: artifactSet5Info ? artifactSet5Info.four_piece : null,
         
         artifact_set_6_two_piece: artifactSet6Info ? artifactSet6Info.two_piece : null,
-        artifact_set_6_four_piece: artifactSet6Info ? artifactSet6Info.four_piece : null,
+        
+        artifact_set_7_two_piece: artifactSet7Info ? artifactSet7Info.two_piece : null,
+        artifact_set_7_four_piece: artifactSet7Info ? artifactSet7Info.four_piece : null,
+
+        artifact_set_8_two_piece: artifactSet8Info ? artifactSet8Info.two_piece : null,
       };
     });
 
@@ -213,7 +234,9 @@ export default function Results({
         selectedSubstats.includes(build.substats_3) ||
         selectedSubstats.includes(build.substats_4) ||
         selectedSubstats.includes(build.substats_5) ||
-        selectedSubstats.includes(build.substats_6);
+        selectedSubstats.includes(build.substats_6) ||
+        selectedSubstats.includes(build.flatstats_1) ||
+        selectedSubstats.includes(build.flatstats_2);
 
       // Check element
       const isElementSelected = selectedElements.length === 0 || 
@@ -313,7 +336,9 @@ export default function Results({
         selectedSubstats.includes(build.substats_3) ||
         selectedSubstats.includes(build.substats_4) ||
         selectedSubstats.includes(build.substats_5) ||
-        selectedSubstats.includes(build.substats_6);
+        selectedSubstats.includes(build.substats_6) ||
+        selectedSubstats.includes(build.flatstats_1) ||
+        selectedSubstats.includes(build.flatstats_2);
 
       // Check element
       const isElementSelected = selectedElements.length === 0 || 
@@ -343,6 +368,13 @@ export default function Results({
           matchCount += 1;
         }
       }
+      // Check for matches in each flat substats property
+      for (let i = 1; i <= 2; i++) {
+        const key = `flatstats_${i}`;
+        if (item[key]) {
+          matchCount += selectedSubstats.filter((stat: string) => item[key] === stat).length;
+        }
+      }
       return matchCount;
     };
 
@@ -370,6 +402,8 @@ export default function Results({
 
     // Map keys to their corresponding selected values
     const keyValueMapOne = {
+      flatstats_2: selectedSubstats,
+      flatstats_1: selectedSubstats,
       substats_6: selectedSubstats,
       substats_5: selectedSubstats,
       substats_4: selectedSubstats,
@@ -419,7 +453,7 @@ export default function Results({
     sortedAdditionalResults = sortByMultipleKeys(sortedAdditionalResults, keyValueMapTwo);
 
   // CHECK: Are there actually any filters applied? 
-    const noFilter = buildsDataRaw.length === sortedMainResults.length; // returns true if same length
+    //const noFilter = buildsDataRaw.length === sortedMainResults.length; // returns true if same length
 
 
   return (
@@ -429,16 +463,16 @@ export default function Results({
       <div className="results-header">
 
         {/* Display number of builds found */}
-        <h2>{
+{/*        <h2>{
           noFilter ? `Showing all ${sortedMainResults.length} builds` : 
           sortedMainResults.length === 1 ? `Found 1 build matching filters` : 
           sortedMainResults.length > 1 ? `Found ${sortedMainResults.length} builds matching filters` : 
           'No builds matching current filters'}
-        </h2>
+        </h2>*/}
 
         {/* Builds Filter Menu: What sections are shown? */}
         <div id="filter-build">
-          <h3>Select visible build sections</h3>
+          {/*<h3>Select visible build sections</h3>*/}
 
           {/* Filter Options */}
           <div className="filter-build-options">
@@ -451,11 +485,11 @@ export default function Results({
                 <img 
                   className="filter-icon" 
                   src={
-                    section === 'All' ? `./images/artifacts/Icon Character Archive.webp` :
-                    section === 'Artifact Sets' ? `./images/artifacts/Icon Artifact.webp` :
-                    section === 'About' ? `./images/artifacts/Icon Tutorial.webp` :
-                    section === 'ER Recommendation' ? `./images/artifacts/Icon Energy Recharge.webp` :
-                    `./images/artifacts/Icon ${section}.webp`
+                    section === 'All' ? `./images/icons/Icon Character Archive.webp` :
+                    section === 'Artifact Sets' ? `./images/icons/Icon Artifact.webp` :
+                    section === 'About' ? `./images/icons/Icon Tutorial.webp` :
+                    section === 'ER Recommendation' ? `./images/icons/Icon Energy Recharge.webp` :
+                    `./images/icons/Icon ${section}.webp`
                   } 
                 />
                 {section}
@@ -463,48 +497,43 @@ export default function Results({
             ))}
           </div>{/* End Filter Options */}
         </div>{/* End Builds Filter Menu */}
+
+        {/* Filter Tabs */}
+          {!isMobile &&
+          <FilterTabs 
+            isMenuOpen={isMenuOpen}
+            isMobile={isMobile}
+            handleTabChange={handleTabChange}
+            currentFilterTab={currentFilterTab}
+            selectedFilters={selectedFilters}
+            savedFilters={savedFilters}
+          />}
+        {/* End Filter Tabs */}
+
       </div>{/* End Results Header */}
 
       {/* Main Results Content */}
+      <div id="main-content">
       <div id="results-content">
 
-        {/* No results? Show error and reset button! */}
-        {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 &&
-          <div id="no-results">
-            <h3>These are not the builds you're looking for...</h3>
-            <button className="reset-filters" onClick={() => resetFilters()}>Reset filters</button>
-          </div>}
+        {/* No results error handling */}
+          {/* No results for main set? Show error and filter for off-set button! */}
+            {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && selectedArtifact &&
+              <div id="no-results">
+                <h3>No on-set results found for {selectedArtifact.name} with the selected stats.</h3>
+                <button className="reset-filters" onClick={() => resetFilters('artifact-set')}>Check for off-piece matches?</button>
+              </div>}
+
+          {/* No artifact selected and no result? Show error and reset button! */}
+            {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && !selectedArtifact &&
+              <div id="no-results">
+                <h3>These are not the builds you're looking for...</h3>
+                <button className="reset-filters" onClick={() => resetFilters(null)}>Reset filters</button>
+              </div>}
 
         {/* Show build(s) that match filter(s) */}
-        {sortedMainResults.map((build: FullBuild) => (
-          <div key={build.ID}>
-            <CharacterCard
-              build={build}
-              handleSelectedPinned={handleSelectedPinned}
-              buildSectionsOptions={buildSectionsOptions}
-              buildSectionsVisible={buildSectionsVisible}
-              selectedPinned={selectedPinned}
-              selectedFilters={selectedFilters}
-            />
-          </div>
-        ))}
-
-      </div>{/* End Main Results Content */}
-
-      {/* Additional results */}
-      {sortedAdditionalResults.length > 0 &&
-      <div id="additional-results-wrapper">
-        <h3 className="additional-results-content-header">
-          {sortedAdditionalResults.length} Partial match{sortedAdditionalResults.length > 1 && 'es'}: Matching 2&ndash;Piece Set Bonus
-        </h3>
-        <p>{selectedArtifact?.name}</p>
-        <p>2&ndash;Piece Set Bonus: {selectedArtifact?.two_piece}.</p>
-        <br />
-        <p>The builds listed below use the same 2&ndash;Piece Set Bonus and their listed set can be freely exchanged for any other set with the same bonus.</p>
-        <div id="additional-results-content">
-          {/* Show build(s) that match filter(s) */}
-          {sortedAdditionalResults.map((build: FullBuild) => (
-            <div key={build.ID}>
+          {sortedMainResults.map((build: FullBuild) => (
+            <div className="character-card-wrapper" key={build.ID}>
               <CharacterCard
                 build={build}
                 handleSelectedPinned={handleSelectedPinned}
@@ -512,12 +541,45 @@ export default function Results({
                 buildSectionsVisible={buildSectionsVisible}
                 selectedPinned={selectedPinned}
                 selectedFilters={selectedFilters}
+                isMobile={isMobile}
               />
             </div>
           ))}
-        </div>
-      </div>}{/* End Additional results */}
 
+      </div>{/* End Main Results Content */}
+      
+
+      {/* Additional results - Partial matches based on 2-piece set bonus */}
+        {sortedAdditionalResults.length > 0 &&
+        <div id="additional-results-wrapper">
+          <div className="additional-results-text">
+            <h3 className="additional-results-content-header">
+              {sortedAdditionalResults.length} Partial match{sortedAdditionalResults.length > 1 && 'es'}: <br />
+              Matching 2&ndash;Piece Set Bonus
+            </h3>
+            <p>{selectedArtifact?.name} 2&ndash;Piece Set Bonus: <b>{selectedArtifact?.two_piece}</b></p>
+            <p>The builds listed below use the same 2&ndash;Piece Set Bonus and their listed set can be freely exchanged for any other set with the same bonus.</p>
+          </div>
+          <div id="additional-results-content">
+            {/* Show build(s) that match filter(s) */}
+            {sortedAdditionalResults.map((build: FullBuild) => (
+              <div className="character-card-wrapper" key={build.ID}>
+                <CharacterCard
+                  build={build}
+                  handleSelectedPinned={handleSelectedPinned}
+                  buildSectionsOptions={buildSectionsOptions}
+                  buildSectionsVisible={buildSectionsVisible}
+                  selectedPinned={selectedPinned}
+                  selectedFilters={selectedFilters}
+                  isMobile={isMobile}
+                />
+              </div>
+            ))}
+          </div>
+        </div>}{/* End Additional results */}
+        </div>{/* End Main Content */}
+
+    <Footer />
     </section>
   );
 }

@@ -13,11 +13,13 @@ export const characterData = [
 		name: 'Mualani',
 		rarity: 5,
 		element: 'Hydro',
+		banner_offset: 63,
 	},
 	{
 		name: 'Kachina',
 		rarity: 4,
 		element: 'Geo',
+		banner_offset: 10,
 	},
 	{
 		name: 'Emilie',
@@ -43,11 +45,13 @@ export const characterData = [
 		name: 'Arlecchino',
 		rarity: 5,
 		element: 'Pyro',
+		banner_offset: 52,
 	},
 	{
 		name: 'Chiori',
 		rarity: 5,
 		element: 'Geo',
+		banner_offset: 55,
 	},
 	{
 		name: 'Xianyun',
@@ -68,6 +72,7 @@ export const characterData = [
 		name: 'Navia',
 		rarity: 5,
 		element: 'Geo',
+		banner_offset: 85,
 	},
 	{
 		name: 'Furina',
@@ -88,6 +93,7 @@ export const characterData = [
 		name: 'Neuvillette',
 		rarity: 5,
 		element: 'Hydro',
+		banner_offset: 48,
 	},
 	{
 		name: 'Freminet',
@@ -98,11 +104,13 @@ export const characterData = [
 		name: 'Lyney',
 		rarity: 5,
 		element: 'Pyro',
+		banner_offset: 53,
 	},
 	{
 		name: 'Lynette',
 		rarity: 4,
 		element: 'Anemo',
+		banner_offset: 19,
 	},
 	{
 		name: 'Kirara',
@@ -128,11 +136,13 @@ export const characterData = [
 		name: 'Dehya',
 		rarity: 5,
 		element: 'Pyro',
+		banner_offset: 30,
 	},
 	{
 		name: 'Alhaitham',
 		rarity: 5,
 		element: 'Dendro',
+		banner_offset: 38,
 	},
 	{
 		name: 'Yaoyao',
@@ -143,6 +153,7 @@ export const characterData = [
 		name: 'Wanderer',
 		rarity: 5,
 		element: 'Anemo',
+		banner_offset: 53,
 	},
 	{
 		name: 'Faruzan',
@@ -158,6 +169,7 @@ export const characterData = [
 		name: 'Nahida',
 		rarity: 5,
 		element: 'Dendro',
+		banner_offset: 56,
 	},
 	{
 		name: 'Nilou',
@@ -168,16 +180,19 @@ export const characterData = [
 		name: 'Cyno',
 		rarity: 5,
 		element: 'Electro',
+		banner_offset: 66,
 	},
 	{
 		name: 'Candace',
 		rarity: 4,
 		element: 'Hydro',
+		banner_offset: 26,
 	},
 	{
 		name: 'Dori',
 		rarity: 4,
 		element: 'Electro',
+		banner_offset: 104,
 	},
 	{
 		name: 'Tighnari',
@@ -188,16 +203,19 @@ export const characterData = [
 		name: 'Collei',
 		rarity: 4,
 		element: 'Dendro',
+		banner_offset: 129,
 	},
 	{
 		name: 'Shikanoin Heizou',
 		rarity: 4,
 		element: 'Anemo',
+		banner_offset: 66,
 	},
 	{
 		name: 'Kuki Shinobu',
 		rarity: 4,
 		element: 'Electro',
+		banner_offset: 15,
 	},
 	{
 		name: 'Yelan',
@@ -213,6 +231,7 @@ export const characterData = [
 		name: 'Yae Miko',
 		rarity: 5,
 		element: 'Electro',
+		banner_offset: 56,
 	},
 	{
 		name: 'Shenhe',
@@ -228,16 +247,19 @@ export const characterData = [
 		name: 'Arataki Itto',
 		rarity: 5,
 		element: 'Geo',
+		banner_offset: 68,
 	},
 	{
 		name: 'Gorou',
 		rarity: 4,
 		element: 'Geo',
+		banner_offset: 14,
 	},
 	{
 		name: 'Thoma',
 		rarity: 4,
 		element: 'Pyro',
+		banner_offset: 89,
 	},
 	{
 		name: 'Sangonomiya Kokomi',
@@ -248,6 +270,7 @@ export const characterData = [
 		name: 'Raiden Shogun',
 		rarity: 5,
 		element: 'Electro',
+		banner_offset: 42,
 	},
 	{
 		name: 'Kujou Sara',
@@ -293,6 +316,7 @@ export const characterData = [
 		name: 'Rosaria',
 		rarity: 4,
 		element: 'Cryo',
+		banner_offset: 48,
 	},
 	{
 		name: 'Hu Tao',
@@ -323,6 +347,7 @@ export const characterData = [
 		name: 'Xinyan',
 		rarity: 4,
 		element: 'Pyro',
+		banner_offset: 29,
 	},
 	{
 		name: 'Tartaglia',
@@ -333,6 +358,7 @@ export const characterData = [
 		name: 'Diona',
 		rarity: 4,
 		element: 'Cryo',
+		banner_offset: 29,
 	},
 	{
 		name: 'Klee',
@@ -353,11 +379,13 @@ export const characterData = [
 		name: 'Mona',
 		rarity: 5,
 		element: 'Hydro',
+		banner_offset: 95,
 	},
 	{
 		name: 'Qiqi',
 		rarity: 5,
 		element: 'Cryo',
+		banner_offset: 87,
 	},
 	{
 		name: 'Diluc',
@@ -368,21 +396,25 @@ export const characterData = [
 		name: 'Jean',
 		rarity: 5,
 		element: 'Anemo',
+		banner_offset: 83,
 	},
 	{
 		name: 'Sucrose',
 		rarity: 4,
 		element: 'Anemo',
+		banner_offset: 128,
 	},
 	{
 		name: 'Chongyun',
 		rarity: 4,
 		element: 'Cryo',
+		banner_offset: 49,
 	},
 	{
 		name: 'Noelle',
 		rarity: 4,
 		element: 'Geo',
+		banner_offset: 37,
 	},
 	{
 		name: 'Bennett',
@@ -393,6 +425,7 @@ export const characterData = [
 		name: 'Fischl',
 		rarity: 4,
 		element: 'Electro',
+		banner_offset: 17,
 	},
 	{
 		name: 'Ningguang',
@@ -403,11 +436,13 @@ export const characterData = [
 		name: 'Xingqiu',
 		rarity: 4,
 		element: 'Hydro',
+		banner_offset: 128,
 	},
 	{
 		name: 'Beidou',
 		rarity: 4,
 		element: 'Electro',
+		banner_offset: 111,
 	},
 	{
 		name: 'Xiangling',
@@ -423,6 +458,7 @@ export const characterData = [
 		name: 'Barbara',
 		rarity: 4,
 		element: 'Hydro',
+		banner_offset: 37,
 	},
 	{
 		name: 'Lisa',

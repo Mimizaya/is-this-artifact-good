@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Stylesheet
 import './style/App.css';
@@ -15,15 +15,15 @@ import Results from './ui/Results.tsx';
 import { 
   updateFiltersSingleSelect,
   updateFiltersMultiSelect,
-} from './functions/filters.ts'
+} from './utility/functions'
 
 // Type definitions
-import { RawBuild } from './types/types.ts';
+import { RawBuild, SavedFilters } from './types/types.ts';
 
 export default function App() {
 
   // Data version 
-    const VERSION = '1.3';
+    const VERSION = '1.1';
 
   // Prepare data imported from CSV 
     const [rawData, setRawData] = useState<RawBuild[]>([]);
@@ -80,7 +80,46 @@ export default function App() {
       selectedSubstats,
       selectedElements
     };
+  
+  // Filter Tabs 
+    // 1. States for saving information 
+      const [currentFilterTab, setCurrentFilterTab] = useState(1);
+      const [savedFilters, setSavedFilters] = useState<SavedFilters>({});
 
+    // 2. Save current filter tab when filters change 
+      useEffect(() => {
+        // Save the current filter settings in the `savedFilters` object for the active tab
+        setSavedFilters((prev) => {
+          return {
+            ...prev,
+            [currentFilterTab]: selectedFilters
+          };
+        });
+      }, [
+          selectedCharacter,
+          selectedArtifactSet,
+          selectedSands,
+          selectedGoblet,
+          selectedCirclet,
+          selectedSubstats,
+          selectedElements
+        ]);
+
+    // 3. Change tab function - Set the states with saved info 
+      const handleTabChange = (tabId: number) => {
+        setCurrentFilterTab(tabId);
+
+        // Load filters from the saved state of the current tab
+        const filtersForTab = savedFilters[tabId] || {}; // Default to empty if no saved filters for the tab
+        setSelectedCharacter(filtersForTab.selectedCharacter || []);
+        setSelectedArtifactSet(filtersForTab.selectedArtifactSet || []);
+        setSelectedSands(filtersForTab.selectedSands || []);
+        setSelectedGoblet(filtersForTab.selectedGoblet || []);
+        setSelectedCirclet(filtersForTab.selectedCirclet || []);
+        setSelectedSubstats(filtersForTab.selectedSubstats || []);
+        setSelectedElements(filtersForTab.selectedElements || []);
+      };
+    
   // Handle filter selections 
 
     const handleCharacterChange = (name: string) => {
@@ -111,23 +150,99 @@ export default function App() {
       updateFiltersMultiSelect(element, setSelectedElements);
     };
 
-  // Reset all filters 
-    const resetFilters = () => {
-      setSelectedArtifactSet([]);
-      setSelectedSands([]);
-      setSelectedGoblet([]);
-      setSelectedCirclet([]);
-      setSelectedSubstats([]);
-      setSelectedCharacter([]);
-      setSelectedElements([]);
+  // Reset filters 
+    const resetFilters = (filter: string | null) => {
+      if(filter === 'artifact-set') {
+        setSelectedArtifactSet([]);
+      }
+      else {
+        setSelectedArtifactSet([]);
+        setSelectedSands([]);
+        setSelectedGoblet([]);
+        setSelectedCirclet([]);
+        setSelectedSubstats([]);
+        setSelectedCharacter([]);
+        setSelectedElements([]);
+      }
+
     }
+
+  // Open/close filter options menu (swipe detection) 
+    const [isMenuOpen, setIsMenuOpen] = useState(true);
+
+    // Toggle menu on button click
+    /* const toggleMenu = () => {
+      setIsMenuOpen(prev => !prev);
+    };*/
+  
+    // Refs for storing touch positions
+    const touchStartX = useRef(0); // Store the start position of the touch
+    const touchEndX = useRef(0);   // Store the end position of the touch
+
+    // Handle the touch start event
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+      touchStartX.current = e.touches[0].clientX;
+      touchEndX.current = e.touches[0].clientX;
+    };
+
+    // Handle the touch move event
+    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+      touchEndX.current = e.touches[0].clientX;
+    };
+
+    // Handle the touch end event
+    const handleTouchEnd = () => {
+      // Calculate the horizontal distance
+      const diffX = touchStartX.current - touchEndX.current;
+      const swipeThreshold = 75;
+
+      // Swipe left
+      if (diffX > swipeThreshold) {  
+        setIsMenuOpen(false);
+      } 
+      // Swipe right
+      else if (diffX < -swipeThreshold) { 
+        setIsMenuOpen(true);
+      }
+    };
+
+  // Save filter configurations - WIP 
+
+  // CHECK: Mobile? Check width 
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 600); // Adjust threshold as needed
+      };
+
+      // Set initial state
+      handleResize();
+
+      // Add event listener for resizing
+      window.addEventListener('resize', handleResize);
+
+      // Cleanup the event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
 
   return (
     <>
-      <main>
+      <main      
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}>
+
         <Filter 
+          isMobile={isMobile}
           resetFilters={resetFilters}
           selectedFilters={selectedFilters}
+          isMenuOpen={isMenuOpen}
+          handleTabChange={handleTabChange}
+          currentFilterTab={currentFilterTab}
+          savedFilters={savedFilters}
 
           // Change filter values
           handleCharacterChange={handleCharacterChange}
@@ -138,34 +253,17 @@ export default function App() {
           handleSubstatsChange={handleSubstatsChange}
           handleElementsChange={handleElementsChange}
         />
+
         <Results 
+          isMenuOpen={isMenuOpen}
+          isMobile={isMobile}
           resetFilters={resetFilters}
           selectedFilters={selectedFilters}
+          savedFilters={savedFilters}
           buildsDataRaw={rawData}
+          handleTabChange={handleTabChange}
+          currentFilterTab={currentFilterTab}
         />
-
-    {/* UNCOMMENT TO VIEW ALL CSV DATA
-    <div>
-      <h1>Parsed CSV Data</h1>
-      <table>
-        <thead>
-          <tr>
-            {rawData.length > 0 && Object.keys(rawData[0]).map((key) => (
-              <th key={key}>{key}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rawData.map((row, index) => (
-            <tr key={index}>
-              {Object.values(row).map((value, colIndex) => (
-                <td key={colIndex}>{value !== undefined ? value : ''}</td> // Display empty strings for undefined values
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>*/}
       </main>
     </>
   )

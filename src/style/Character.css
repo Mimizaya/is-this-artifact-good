@@ -6,55 +6,65 @@
   border-bottom: 5px solid orange;
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 div.tooltip-on-hover:hover + div.artifact-info.tooltip,
 div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
   display: block;
 }
 
-div.artifact-info.tooltip, div.artifact-info.tooltip-alt {
+div.artifact-info.tooltip {
   display: none;
   position: absolute;
-  z-index: 60;
-  padding: 20px;
-  width: 350px;
-  border-bottom: 1px solid #192019;
+  left: 10px;
+  top: 10px;
+  z-index: 9999;
+  width: 455px;
+  border-bottom: 1px solid #191919;
   font-size: 0.95em;
-  box-shadow: 5px 10px 10px #171717;
+  box-shadow: 5px 10px 10px #222222;
   background-color: #2a2a2a;
   color: rgba(255, 255, 255, 0.87);
   border-radius: 5px;
   pointer-events: none;
+  padding: 2px;
+  animation-name: fade-in;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
 }
-div.artifact-info.tooltip h4, div.artifact-info.tooltip-alt h4 {
-  font-size: 1.1em;
-  font-weight: 700;
+div.artifact-info.tooltip div.tooltip-part {
+  display: flex;
 }
-div.artifact-info.tooltip p, div.artifact-info.tooltip-alt p {
+div.artifact-info.tooltip div.tooltip-part img {
+  margin-top: 8px;
+  margin-left: 4px;
+  height: 50px;
+  width: 50px;
+}
+div.artifact-info.tooltip div.tooltip-part div.tooltip-text {
+  margin-top: 10px;
+  padding-left: 5px;
+  padding-right: 30px;
+}
+div.artifact-info.tooltip div.tooltip-part div.tooltip-text h4 {
+  font-size: 1em;
+  font-weight: 600;
+}
+div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
+  color: #DDD;
   font-size: 0.9em;
-  margin-bottom: 10px;
-}
-div.artifact-info.tooltip p:last-of-type, div.artifact-info.tooltip-alt p:last-of-type {
-  margin-bottom: 0;
-}
-
-div.artifact-info.tooltip {
-  left: 0;
-}
-
-div.artifact-info.tooltip-alt {
-  right: 0;
-}
-
-div.build-section div.artifact-set div.build-section-text:hover, div.build-section div.artifact-set-alternative div.build-section-text:hover {
-  background-color: #2a2a2a !important;
-}
-div.build-section div.artifact-set div.build-section-text:hover div.build-section-text, div.build-section div.artifact-set-alternative div.build-section-text:hover div.build-section-text {
-  opacity: 1 !important;
+  margin-bottom: 15px;
 }
 
 @media screen and (max-width: 600px) {
   div.character-card.full {
-    width: 100vw;
+    width: 100%;
     margin-bottom: 20px;
   }
   div.character-card.full div.build-header {
@@ -72,36 +82,85 @@ div.build-section div.artifact-set div.build-section-text:hover div.build-sectio
     height: 66.6666666667px;
   }
   div.character-card.full div.build-header img.character-portrait {
-    height: 66.6666666667px;
+    height: 71.6666666667px;
     margin-left: 35px;
+    bottom: 5px;
   }
   div.character-card.full div.build-header img.character-portrait-two {
     display: none;
   }
   div.character-card.full div.build-header div.character-title {
-    top: 2px;
-    left: 110px;
+    top: 6px;
+    left: 115px;
+  }
+  div.character-card.full div.build-header div.character-title h2 {
+    font-size: 1.2em;
   }
   div.character-card.full div.build-header div.character-title h3 {
-    font-size: 0.9em;
+    font-size: 1em;
   }
-  div.character-card.full div.artifact-set {
-    width: 100%;
+  div.character-card.full div.build-content {
+    animation-name: fade-in;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
   }
-  div.character-card.full div.artifact-set.multiple {
-    width: 100%;
+  div.character-card.full div.build-content div.build-section img.artifact-icon {
+    height: 33.3333333333px;
+    width: 33.3333333333px;
   }
-  div.character-card.full div.artifact-set-alternative {
-    width: 100%;
+  div.character-card.full div.build-content div.build-section img.artifact-icon-simple {
+    height: 30px;
+    width: 30px;
+  }
+  div.character-card.full div.build-content div.build-section img.artifact-icon-top {
+    height: 25px;
+    width: 25px;
+  }
+  div.character-card.full div.build-content div.build-section img.artifact-icon-bottom {
+    height: 25px;
+    width: 25px;
+    top: 26px;
+    left: 11px;
+  }
+  div.character-card.full div.build-content div.build-section div.build-section-text {
+    font-size: 0.85em;
   }
   div.character-card.full div.artifact-types {
+    width: calc(50% - 10px);
+    margin-right: 10px;
+    float: left;
+  }
+  div.character-card.full div.substats, div.character-card.full div.er-recommendation {
+    width: 50%;
+    float: left;
+  }
+  div.character-card.full div.about button {
     width: 100%;
   }
-  div.character-card.full div.substats {
+  div.artifact-info.tooltip {
     width: 100%;
   }
-  div.character-card.full div.er-recommendation {
-    width: 100%;
+  div.artifact-info.tooltip div.tooltip-part img {
+    margin-top: 8px;
+    height: 33.3333333333px;
+    width: 50px;
+  }
+  div.artifact-info.tooltip div.tooltip-part div.tooltip-text {
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 30px;
+  }
+  div.artifact-info.tooltip div.tooltip-part div.tooltip-text h3 {
+    font-size: 1em;
+  }
+  div.artifact-info.tooltip div.tooltip-part div.tooltip-text h4 {
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+  div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
+    color: #DDD;
+    font-size: 0.8em;
+    margin-bottom: 15px;
   }
 }
 @media screen and (min-width: 601px) {
@@ -119,17 +178,11 @@ div.build-section div.artifact-set div.build-section-text:hover div.build-sectio
     bottom: 5px;
     height: 105px;
   }
-  div.character-card.full div.artifact-set {
-    width: 100%;
+  div.character-card.full div.build-header img.character-portrait-two {
+    height: 105px;
   }
-  div.character-card.full div.artifact-set.multiple {
-    float: left;
-    width: 222.5px;
-  }
-  div.character-card.full div.artifact-set-alternative {
-    position: absolute;
-    width: 222.5px;
-    left: 242.5px;
+  div.character-card.full div.build-header div.pin-build {
+    top: -5px;
   }
   div.character-card.full div.artifact-types {
     margin-right: 10px;
@@ -141,79 +194,92 @@ div.build-section div.artifact-set div.build-section-text:hover div.build-sectio
   div.character-card.full div.er-recommendation {
     width: 222.5px;
   }
+  div.character-card.full div.about button {
+    width: 455px;
+  }
+  div.character-card.small {
+    width: 275px;
+    margin: 20px;
+  }
+  div.character-card.small div.build-header {
+    width: 275px;
+    height: 66.6666666667px;
+    position: relative;
+    left: 0;
+    margin-bottom: 5px;
+  }
+  div.character-card.small div.build-header img.character-portrait {
+    margin-left: 3px;
+    bottom: 5px;
+    height: 71.6666666667px;
+  }
+  div.character-card.small div.build-header img.character-element {
+    height: 33.3333333333px;
+    width: 33.3333333333px;
+    position: absolute;
+    z-index: 2;
+    top: -12px;
+    left: -15px;
+  }
+  div.character-card.small div.build-header div.character-banner-wrapper {
+    height: 66.6666666667px;
+    opacity: 0.5;
+    bottom: 0px;
+  }
+  div.character-card.small div.build-header div.character-banner-wrapper img.character-banner {
+    bottom: 20px;
+  }
+  div.character-card.small div.build-header div.character-title {
+    position: absolute;
+    left: 76.6666666667px;
+    top: 6px;
+    text-shadow: 1px 1px 5px black;
+  }
+  div.character-card.small div.build-header div.character-title h2 {
+    width: 178.3333333333px;
+    font-size: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 600;
+  }
+  div.character-card.small div.build-header div.character-title h3.build-name {
+    font-size: 0.9em;
+    position: relative;
+    top: -5px;
+    margin: 0;
+    font-weight: 600;
+  }
+  div.character-card.small div.build-content div.artifact-sets-1 div.artifact-set.number-1,
+  div.character-card.small div.build-content div.artifact-sets-2 div.artifact-set.number-1,
+  div.character-card.small div.build-content div.artifact-sets-3 div.artifact-set.number-1,
+  div.character-card.small div.build-content div.artifact-sets-4 div.artifact-set.number-1 {
+    grid-column: span 2;
+  }
+  div.character-card.small div.build-content div.artifact-set {
+    position: relative;
+  }
+  div.character-card.small div.build-content div.artifact-set-alternative {
+    width: 30px;
+    position: absolute;
+    top: 10px;
+    left: 220px;
+  }
+  div.character-card.small div.build-content div.artifact-set-alternative img.artifact-icon-alt-1-small, div.character-card.small div.build-content div.artifact-set-alternative img.artifact-icon-alt-2-small {
+    height: 35px;
+    position: relative;
+    left: 20px;
+  }
+  div.character-card.small div.build-content div.artifact-set-alternative img.artifact-icon-alt-2-small {
+    top: -10px;
+  }
+  div.character-card.small div.build-content div.about button {
+    width: 100%;
+  }
+  div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.about, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-recommendation {
+    width: 100%;
+  }
 }
-div.character-card.small {
-  width: 270px;
-  margin: 15px 20px;
-}
-div.character-card.small div.build-header {
-  width: 270px;
-  height: 66.6666666667px;
-  left: 0;
-}
-div.character-card.small div.build-header img.character-portrait {
-  margin-left: 3px;
-  bottom: 0;
-  height: 66.6666666667px;
-}
-div.character-card.small div.build-header img.character-element {
-  height: 33.3333333333px;
-  width: 33.3333333333px;
-  position: absolute;
-  z-index: 2;
-  top: -12px;
-  left: -15px;
-}
-div.character-card.small div.build-header div.character-banner-wrapper {
-  height: 100%;
-  opacity: 0.4;
-}
-div.character-card.small div.build-header div.character-banner-wrapper img.character-banner {
-  bottom: 0;
-}
-div.character-card.small div.build-header div.character-title {
-  position: absolute;
-  left: 74.6666666667px;
-  top: 10px;
-  text-shadow: 1px 1px 5px black;
-}
-div.character-card.small div.build-header div.character-title h2 {
-  font-size: 1.1em;
-}
-div.character-card.small div.build-header div.character-title h3.build-name {
-  font-size: 0.8em;
-  position: relative;
-  top: -5px;
-  margin: 0;
-  font-weight: 700;
-}
-div.character-card.small div.build-content div.artifact-set {
-  position: relative;
-  width: 100%;
-}
-div.character-card.small div.build-content div.artifact-set.multiple {
-  float: none;
-  width: 100%;
-}
-div.character-card.small div.build-content div.artifact-set.multiple div.build-section-text ul li {
-  padding-right: 30px;
-}
-div.character-card.small div.build-content div.artifact-set-alternative {
-  width: 30px;
-  position: absolute;
-  top: 10px;
-  left: 220px;
-}
-div.character-card.small div.build-content div.artifact-set-alternative img.artifact-icon-alt-small {
-  height: 35px;
-}
-div.character-card.small div.build-content div.about button {
-  width: 100%;
-}
-div.character-card.small div.build-content div.artifact-types, div.character-card.small div.build-content div.about, div.character-card.small div.build-content div.substats, div.character-card.small div.build-content div.er-recommendation {
-  width: 100%;
-}
-
 div.character-card {
   position: relative;
   background-color: #222222;
@@ -233,7 +299,9 @@ div.character-card div.build-header img.character-portrait, div.character-card d
   margin-left: 15px;
 }
 div.character-card div.build-header img.character-portrait-two {
-  left: 205px;
+  position: absolute;
+  right: 20px;
+  bottom: -5px;
 }
 div.character-card div.build-header img.character-element {
   height: 50px;
@@ -279,8 +347,22 @@ div.character-card div.build-header div.character-title h3.build-name {
 }
 div.character-card div.build-header div.pin-build {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 3px;
+  right: 5px;
+}
+div.character-card div.build-header div.pin-build button.pin-build-button {
+  color: #aaa;
+  background: none;
+  border: none;
+  font-size: 2em;
+  text-shadow: 1px 1px 5px #333;
+}
+div.character-card div.build-header div.pin-build button.pin-build-button:hover {
+  color: #ccac00;
+  cursor: pointer;
+}
+div.character-card div.build-header div.pin-build button.pin-build-button.active {
+  color: gold;
 }
 div.character-card div.build-content {
   margin-left: 0;
@@ -289,6 +371,7 @@ div.character-card div.build-content {
 }
 div.character-card div.build-content div.build-section {
   display: flex;
+  height: 100%;
   position: relative;
   background-color: #252525;
   padding: 10px 6px 12px 6px;
@@ -299,18 +382,15 @@ div.character-card div.build-content div.build-section {
   border-radius: 5px;
 }
 div.character-card div.build-content div.build-section img.artifact-icon {
-  position: absolute;
   z-index: 3;
-  top: 5px;
-  left: 2px;
-  height: 55px;
-  width: 55px;
+  height: 50px;
+  width: 50px;
   opacity: 1;
 }
 div.character-card div.build-content div.build-section img.artifact-icon-top,
 div.character-card div.build-content div.build-section img.artifact-icon-bottom {
-  height: 42.3076923077px;
-  width: 42.3076923077px;
+  height: 38.4615384615px;
+  width: 38.4615384615px;
 }
 div.character-card div.build-content div.build-section img.artifact-icon-top {
   position: absolute;
@@ -328,8 +408,8 @@ div.character-card div.build-content div.build-section div.clipping-mask-top,
 div.character-card div.build-content div.build-section div.clipping-mask-bottom {
   position: absolute;
   z-index: 4;
-  height: 55px;
-  width: 55px;
+  height: 50px;
+  width: 50px;
   overflow: hidden;
 }
 div.character-card div.build-content div.build-section div.clipping-mask-top img.artifact-icon-split,
@@ -349,13 +429,12 @@ div.character-card div.build-content div.build-section div.clipping-mask-bottom 
   clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
 }
 div.character-card div.build-content div.build-section img.artifact-icon-simple {
-  position: absolute;
   opacity: 0.7;
   height: 45px;
   width: 45px;
 }
 div.character-card div.build-content div.build-section div.build-section-text {
-  margin-left: 55px;
+  padding-left: 5px;
 }
 div.character-card div.build-content div.build-section div.build-section-text h4 {
   font-size: 0.9em;
@@ -383,14 +462,24 @@ div.character-card div.build-content div.constellation img {
   width: 100%;
   height: 100%;
 }
-div.character-card div.build-content div.artifact-set {
-  position: relative;
+div.character-card div.build-content div.artifact-sets-1 div.artifact-set.number-1 {
+  width: 100%;
 }
-div.character-card div.build-content div.artifact-set-alternative div.build-section {
-  background: none;
+div.character-card div.build-content div.artifact-sets-2,
+div.character-card div.build-content div.artifact-sets-3,
+div.character-card div.build-content div.artifact-sets-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
 }
-div.character-card div.build-content div.artifact-set-alternative div.build-section div.build-section-text {
-  opacity: 0.8;
+div.character-card div.build-content div.artifact-sets-2 div.build-section,
+div.character-card div.build-content div.artifact-sets-3 div.build-section,
+div.character-card div.build-content div.artifact-sets-4 div.build-section {
+  margin-bottom: 0;
+}
+div.character-card div.build-content div.artifact-sets-3 div.artifact-set.number-1 {
+  grid-column: span 2;
 }
 div.character-card div.build-content div.artifact-types {
   float: left;
@@ -410,7 +499,6 @@ div.character-card div.build-content div.about button {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 455px;
   background: linear-gradient(transparent 0%, #252525 75%, #252525 100%);
   border: none;
   padding: 10px;

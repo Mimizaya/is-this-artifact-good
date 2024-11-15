@@ -191,4 +191,9 @@ export const artifactSets = [
 		two_piece: 'ATK +18%',
 		four_piece: 'If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their Normal Attack DMG by 35%.'
 	},
+	{
+		name: 'The Exile',
+		two_piece: 'Energy Recharge +20%',
+		four_piece: 'Using an Elemental Burst regenerates 2 Energy for all party members (excluding the wearer) every 2s for 6s. This effect cannot stack.'
+	},
 ];

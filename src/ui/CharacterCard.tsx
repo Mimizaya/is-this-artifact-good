@@ -3,10 +3,9 @@ import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 // Type definitions
 import { FullBuild, SelectedFilters } from '../types/types';
 
-
-
 // UI
-import Tooltip from './Tooltip.tsx'
+import Artifact from './Artifact.tsx'
+
 
 export default function CharacterCard({
   build,
@@ -15,37 +14,18 @@ export default function CharacterCard({
   handleSelectedPinned,
   selectedPinned,
   selectedFilters,
+  isMobile,
 } : {
   build: FullBuild;
   buildSectionsOptions: string[];
   buildSectionsVisible: string[];
-  handleSelectedPinned: (id: number) => void;
+  handleSelectedPinned: (e: any, id: number) => void;
   selectedPinned: number[];
   selectedFilters: SelectedFilters;
+  isMobile: boolean;
 }) {
 
-  
-
-  // MOBILE?: Check width to determine mobile or not
-  	const [isMobile, setIsMobile] = useState(false);
-	  useEffect(() => {
-	    const handleResize = () => {
-	      setIsMobile(window.innerWidth <= 600); // Adjust threshold as needed
-	    };
-
-	    // Set initial state
-	    handleResize();
-
-	    // Add event listener for resizing
-	    window.addEventListener('resize', handleResize);
-
-	    // Cleanup the event listener on component unmount
-	    return () => {
-	      window.removeEventListener('resize', handleResize);
-	    };
-	  }, []);
-
-	// Destructure the selected filters object 
+  // Destructure the selected filters object 
     const { 
     	selectedCharacter, 
     	selectedArtifactSet, 
@@ -55,22 +35,19 @@ export default function CharacterCard({
     	selectedSubstats,
     	//selectedElements, // Part of the object, but not used.
     } = selectedFilters;
-
+	
 	// Refs 
-		const elementOneRef = useRef<HTMLInputElement>(null);
-	  const elementTwoRef = useRef<HTMLInputElement>(null);
-	  const elementThreeRef = useRef<HTMLInputElement>(null);
 	  const aboutSectionRef = useRef<HTMLInputElement>(null);
 
-	// Show build contents toggle 
+	// INTERACT: Show build contents toggle 
 	  const [isBuildVisible, setIsBuildVisible] = useState<boolean>();
 	  const toggleBuildVisibility = () => {
 	  	console.log('Clicked build')
 	    setIsBuildVisible(prev => !prev);
 	  };
 
-	// Set default showing of build contents (mobile or not?)
-	  useEffect(() => {
+	// BUILD CONTENT: Set default showing of entire build content (mobile or not?) 
+	  useLayoutEffect(() => {
 	  	if(isMobile) {
 	  		setIsBuildVisible(false)
 	  	}
@@ -79,33 +56,7 @@ export default function CharacterCard({
 	  	}
 	  }, [isMobile]);
 
-	// Calculate and set tooltip positions 
- 		const [artifactSetOneHeight, setArtifactSetOneHeight] = useState<number>();
- 		const [artifactSetTwoHeight, setArtifactSetTwoHeight] = useState<number>();
- 		const [artifactSetThreeHeight, setArtifactSetThreeHeight] = useState<number>();
-
-		useLayoutEffect(() => {
-			const offset = 5;
-			const artifactOne = elementOneRef.current;
-			const artifactTwo = elementTwoRef.current;
-			const artifactThree = elementThreeRef.current;
-
-			if(artifactOne) {
-				const artifactOneHeight = artifactOne.offsetHeight;
-				setArtifactSetOneHeight(artifactOneHeight - offset);
-			}
-			if(artifactTwo) {
-				const artifactTwoHeight = artifactTwo.offsetHeight;
-				setArtifactSetTwoHeight(artifactTwoHeight - offset);
-			}
-			if(artifactThree) {
-				const artifactThreeHeight = artifactThree.offsetHeight;
-				setArtifactSetThreeHeight(artifactThreeHeight - offset);
-			}
-			
-		}, []);
-
-	// Check filters for conditional rendering of build sections 
+	// BUILD CONTENT: Check filters for conditional rendering of build sections 
 
 		const filterApplied = buildSectionsVisible.length !== buildSectionsOptions.length;
 		const showArtifactSets = buildSectionsVisible.includes('Artifact Sets') || buildSectionsVisible.includes('All');
@@ -116,50 +67,7 @@ export default function CharacterCard({
 		const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
 		const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
 
-	// Ensure equal heights on Artifact Set and Alternatives sections 
-		useEffect(() => {
-	    const elementOne = elementOneRef.current;
-	    const elementTwo = elementTwoRef.current;
-	    const elementThree = elementThreeRef.current;
-
-	    if(!isMobile) {
-				if(filterApplied) {
-					if(elementOne) {
-			  		elementOne.style.height = '';
-					}
-					if(elementTwo) {
-			  		elementTwo.style.height = '';
-					}
-			  }
-
-		    if(!filterApplied) {
-			    if(elementOne) {
-			      const elementOneHeight = elementOne.offsetHeight;
-			      let maxHeight = elementOneHeight;
-
-			      if(elementTwo) {
-			        const elementTwoHeight = elementTwo.offsetHeight;
-			        maxHeight = Math.max(elementOneHeight, elementTwoHeight);
-
-				      if (elementThree) {
-				        const elementThreeHeight = elementThree.offsetHeight;
-				        maxHeight = Math.max(elementOneHeight, elementTwoHeight + elementThreeHeight);
-				      }
-
-			        if(elementOneHeight !== elementTwoHeight && elementThree === null) {
-			          elementOne.style.height = `${maxHeight}px`;
-			          elementTwo.style.height = `${maxHeight}px`;
-			        }
-			        else if(elementThree) {
-			        	elementOne.style.height = `${maxHeight + 5}px`; // +5 for margins
-			        }
-			      } 
-		    	}
-		    }
-	  	}
-	  }, [filterApplied, isBuildVisible]);
-
-	// Handle minimize/maximize About section 
+	// INTERACT: Handle minimize/maximize About section 
 		const [aboutIsExpandable, setAboutIsExpandable] = useState<boolean>();
 		const [aboutIsExpanded, setAboutIsExpanded] = useState<boolean>();
 		useEffect(() => {
@@ -178,7 +86,9 @@ export default function CharacterCard({
 		  }
 		}, [filterApplied, isBuildVisible]);
 
-		const handleAboutIsExpanded = () => {
+		const handleAboutIsExpanded = (e: any) => {
+			e.preventDefault();
+			e.stopPropagation();
 			setAboutIsExpanded(!aboutIsExpanded);
 		}
 		
@@ -192,10 +102,20 @@ export default function CharacterCard({
 
       	{/* Character Element symbol */}
 					<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
-
+					
 				{/* Character Banner */}
 					<div className="character-banner-wrapper">
-						<img className="character-banner" src={"./images/characters/banners/" + build.character_name + " Banner.webp"} alt={build.element}/>
+						<img
+							className="character-banner" 
+							src={"./images/characters/banners/" + build.character_name + " Banner.webp"} 
+							alt={build.element}
+							style={{
+								bottom: 
+								!filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset : '60px') : 
+								!filterApplied && isMobile ? (build.banner_offset ? build.banner_offset / 1.5 +2 : '60px') :
+								'60px'
+							}}
+							/>
 					</div>
 
 				{/* Character Profile Pictures */}
@@ -223,9 +143,9 @@ export default function CharacterCard({
         {/* Pin Build Button */}
 	        <div className="pin-build">
 	        	<button 
-	        		className="pin-build-button"
-	        		onClick={() => handleSelectedPinned(build.ID)}
-	        		>{selectedPinned.includes(build.ID) ? 'Pinned' : 'Pin'}
+	        		className={selectedPinned.includes(build.ID) ? 'pin-build-button active' : 'pin-build-button'}
+	        		onClick={(e) => handleSelectedPinned(e, build.ID)}
+	        		>&#9733; {/* Star Icon */}
 	        		</button>
 	        </div>
         
@@ -244,167 +164,44 @@ export default function CharacterCard({
       {/* Artifact Sets */}
       	{showArtifactSets &&
       	<>
-	      {/* Main Artifact Combination - Wrapper (Images, Text & Tooltip) */}
-	      	<div className={build.artifact_set_3 ? 'artifact-set multiple' : 'artifact-set'}>
+      	<div className={
+      		build.artifact_set_7 ? 'artifact-sets-4' : 
+      		build.artifact_set_5 ? 'artifact-sets-3' : 
+      		build.artifact_set_3 ? 'artifact-sets-2' : 
+      		'artifact-sets-1'
+      	}>
 
-	      		{/* Artifact Option 1 */}
-						<div className="build-section tooltip-on-hover" ref={elementOneRef}>
+	      {/* Artifact Option 2 - Full */}
+	      <Artifact
+	      	number={1}
+	      	build={build}
+	      	selectedArtifactSet={selectedArtifactSet}
+	      />
 
-							{/* Artifact Set Single Image */}
-							{build.artifact_set_1 && !build.artifact_set_2 &&
-	        		<img className="artifact-icon" src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>}
+	      {/* Artifact Option 2 - Full */}
+			  {build.artifact_set_3 && !filterApplied &&
+	      <Artifact 
+	      	number={3}
+	      	build={build}
+	      	selectedArtifactSet={selectedArtifactSet}
+	      />}
+	      
+				{/* Artifact Option 3 - Full */}
+				{build.artifact_set_5 && !filterApplied &&
+				<Artifact 
+	      	number={5}
+	      	build={build}
+	      	selectedArtifactSet={selectedArtifactSet}
+	      />}
 
-	        		{/* Artifact Set Split Multi Image (double) */}
-							{build.artifact_set_1 && build.artifact_set_2 &&
-							<>
-	        			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
-	        			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-	        		</>}
+				{/* Artifact Option 4 - Full */}
+				{build.artifact_set_7 && !filterApplied &&
+				<Artifact 
+	      	number={7}
+	      	build={build}
+	      	selectedArtifactSet={selectedArtifactSet}
+	      />}
 
-	        		{/* Artifact Set Split Multi Image (split) */}
-							{/*	{build.artifact_set_1 && build.artifact_logic === 'AND' &&
-							<>
-							<div className="clipping-mask-top">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
-	        		</div>
-	        		<div className="clipping-mask-bottom">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-	        		</div>
-	        		</>}*/}
-
-				      <div className="build-section-text">
-					      <h4>Artifact Set{build.artifact_set_2 && 's'}</h4>
-				        <ul>
-			          	{build.artifact_set_1 && 
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_1) ? 'highlighted' : ''}>
-			          		{build.artifact_set_1}{build.artifact_set_2 && <span className="artifact-logic"> ×2</span>}
-			          	</li>}
-			          	{build.artifact_set_2 && build.artifact_set_2 &&
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_2) ? 'highlighted' : ''}>
-			          		{build.artifact_set_2}<span className="artifact-logic"> ×2</span>
-			          	</li>}
-				        </ul>
-				      </div>
-			      </div>{/* End Artifact Set 1 */}
-
-				    {/* Tooltip - Artifact Option 1 */}
-				    <Tooltip 
-				    	artifactSet_1={build.artifact_set_1}
-				    	artifactSet_1_two_piece={build.artifact_set_1_two_piece}
-				    	artifactSet_1_four_piece={build.artifact_set_1_four_piece}
-				    	artifactSet_2={build.artifact_set_2}
-				    	artifactSet_2_two_piece={build.artifact_set_2_two_piece}
-				    	position={artifactSetOneHeight}
-				    />
-
-			    </div>{/* End Artifact Combination 1 Wrapper */}
-
-				{/* Alternative Artifact Combinations Wrapper: Full view (Images, Text & Tooltip) */}
-			    {build.artifact_set_3 && !filterApplied &&
-	      	<div className="artifact-set-alternative">
-
-	      		{/* Artifact Option 2 - Full */}
-						<div className="build-section tooltip-on-hover" ref={elementTwoRef}>
-
-							{/* Single Set: Image */}
-							{build.artifact_set_3 && !build.artifact_set_4 &&
-	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
-
-	        		{/* Artifact Set Split Multi Image (double) */}
-							{build.artifact_set_3 && build.artifact_set_4 &&
-							<>
-	        			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>
-	        			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + build.artifact_set_4 +" Flower.webp"}/>
-	        		</>}
-
-	        		{/* Artifact Set Split Multi Image (split) */}
-							{/*	{build.artifact_set_1 && build.artifact_logic === 'AND' &&
-							<>
-							<div className="clipping-mask-top">
-	        			<img className="artifact-icon-split" src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
-	        		</div>
-	        		<div className="clipping-mask-bottom">
-	        			<img className="artifact-icon-split" src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-	        		</div>
-	        		</>}*/}
-
-				      <div className="build-section-text">
-								<h4>Alternative</h4>
-				        <ul>
-			          	{build.artifact_set_3 && 
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_3) ? 'highlighted' : ''}>
-			          		{build.artifact_set_3}{build.artifact_set_4 && <span className="artifact-logic"> ×2</span>}
-			          	</li>}
-			          	{build.artifact_set_4 &&
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_4) ? 'highlighted' : ''}>
-			          		{build.artifact_set_4}<span className="artifact-logic"> ×2</span>
-			          	</li>}
-				        </ul>
-				      </div>
-			      </div>{/* End Artifact Option 2 - Full */}
-
-				    {/* Tooltip - Artifact Option 2 - Full */}
-				    <Tooltip 
-				    	artifactSet_1={build.artifact_set_3}
-				    	artifactSet_1_two_piece={build.artifact_set_3_two_piece}
-				    	artifactSet_1_four_piece={build.artifact_set_3_four_piece}
-				    	artifactSet_2={build.artifact_set_4}
-				    	artifactSet_2_two_piece={build.artifact_set_4_two_piece}
-				    	position={artifactSetTwoHeight}
-				    />
-
-						{/* Artifact Option 3 - Full */}
-				    {build.artifact_set_5 &&
-						<div className="build-section tooltip-on-hover" ref={elementThreeRef}>
-
-							{/* Artifact Set Single Image */}
-							{build.artifact_set_5 && !build.artifact_set_6 &&
-	        		<img className="artifact-icon"  src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>}
-
-	        		{/* Artifact Set Split Multi Image (double) */}
-							{build.artifact_set_5 && build.artifact_set_6 &&
-							<>
-	        			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>
-	        			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + build.artifact_set_6 +" Flower.webp"}/>
-	        		</>}
-
-	        		{/* Artifact Set Split Multi Image (split) */}
-							{/*	{build.artifact_set_1 && build.artifact_logic === 'AND' &&
-							<>
-							<div className="clipping-mask-top">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>
-	        		</div>
-	        		<div className="clipping-mask-bottom">
-	        			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + build.artifact_set_2 +" Flower.webp"}/>
-	        		</div>
-	        		</>}*/}
-
-				      <div className="build-section-text">
-					      <h4>Alternative</h4>
-				        <ul>
-			          	{build.artifact_set_5 && 
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_5) ? 'highlighted' : ''}>
-			          		{build.artifact_set_5}{build.artifact_set_6 && <span className="artifact-logic"> ×2</span>}
-			          	</li>}
-			          	{build.artifact_set_6 &&
-			          	<li className={selectedArtifactSet.includes(build.artifact_set_6) ? 'highlighted' : ''}>
-			          		{build.artifact_set_6}<span className="artifact-logic"> ×2</span>
-			          	</li>}
-				        </ul>
-				      </div>
-			      </div>}{/* End Artifact Option 3 - Full */}
-
-				    {/* Tooltip - Artifact Option 3 - Full */}
-				    <Tooltip 
-				    	artifactSet_1={build.artifact_set_5}
-				    	artifactSet_1_two_piece={build.artifact_set_5_two_piece}
-				    	artifactSet_1_four_piece={build.artifact_set_5_four_piece}
-				    	artifactSet_2={build.artifact_set_6}
-				    	artifactSet_2_two_piece={build.artifact_set_6_two_piece}
-				    	position={artifactSetThreeHeight}
-				    />
-
-				  </div>}{/* End Alternative Artifact Options Wrapper: Full view */}
 
 				{/* Alternative Artifact Options Wrapper: Minimal view (Images only) */}
 			    {build.artifact_set_3 && filterApplied &&
@@ -412,13 +209,14 @@ export default function CharacterCard({
 
 	      		{/* Artifact Option 2 - Minimal */}
 	      		{build.artifact_set_3 &&
-		        <img className="artifact-icon-alt-small" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
+		        <img className="artifact-icon-alt-1-small" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
 
 						{/* Artifact Option 3 - Minimal */}
 			    	{build.artifact_set_5 &&
-		        <img className="artifact-icon-alt-small" src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>}
+		        <img className="artifact-icon-alt-2-small" src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>}
 
 			    </div>}{/* End Alternative Artifact Option Wrapper - Minimal view */}
+		    </div>
 			  </>}
 
 	    {/* About */}
@@ -433,7 +231,7 @@ export default function CharacterCard({
 	      		{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Tutorial.webp"}/>*/}
 
 	      		{aboutIsExpandable &&
-	      		<button onClick={() => handleAboutIsExpanded()}>
+	      		<button onClick={(e) => handleAboutIsExpanded(e)}>
 	      			{aboutIsExpanded ? <span>&#9650;</span> : <span>&#9660;</span>}  
 	      		</button>}
 	      		<div className="build-section-text">
@@ -444,12 +242,12 @@ export default function CharacterCard({
 				      <p>{build.note}</p>}
 
 		      		{/* About: Second paragraph */}
-				      {build.note &&
-				      <p>{build.note}</p>}
+				      {/*{build.note &&*/}
+				      {/*<p>{build.note}</p>}*/}
 
 		      		{/* About: Third paragraph */}
-				      {build.note &&
-				      <p>{build.note}</p>}
+				      {/*{build.note &&*/}
+				      {/*<p>{build.note}</p>}*/}
 
 				      {/* Placeholder if no about exists */}
 				      {!build.note &&
@@ -520,7 +318,7 @@ export default function CharacterCard({
       	<>
 	      <div className="substats">
 	      	<div className="build-section">
-	      		<img className="artifact-icon-simple" src={"./images/artifacts/Icon Substats.webp"}/>
+	      		<img className="artifact-icon-simple" src={"./images/icons/Icon Substats.webp"}/>
 		      	<div className="build-section-text">
 			      <h4>Substats Priority</h4>
 			        <ol>
@@ -530,6 +328,8 @@ export default function CharacterCard({
 			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{build.substats_4}</li>}
 			          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{build.substats_5}</li>}
 			          {build.substats_6 && <li className={selectedSubstats.includes(build.substats_6) ? 'highlighted' : ''}>{build.substats_6}</li>}
+			          {build.flatstats_1 && selectedSubstats.includes(build.flatstats_1) && <li className={selectedSubstats.includes(build.flatstats_1) ? 'highlighted flatstat' : ''}>{build.flatstats_1}</li>}
+			          {build.flatstats_2 && selectedSubstats.includes(build.flatstats_2) && <li className={selectedSubstats.includes(build.flatstats_2) ? 'highlighted flatstat' : ''}>{build.flatstats_2}</li>}
 			        </ol>
 			      </div>
 		      </div>
@@ -542,7 +342,7 @@ export default function CharacterCard({
       	<>
 	      <div className="er-recommendation">
 	      	<div className="build-section">
-		      	<img className="artifact-icon-simple" src={"./images/artifacts/Icon Energy Recharge.webp"}/>
+		      	<img className="artifact-icon-simple" src={"./images/icons/Icon Energy Recharge.webp"}/>
 		      	<div className="build-section-text">
 				      <h4>ER Recommendation</h4>
 				        <ul>
