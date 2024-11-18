@@ -19,80 +19,101 @@ export default function CharacterCard({
   build: FullBuild;
   buildSectionsOptions: string[];
   buildSectionsVisible: string[];
-  handleSelectedPinned: (e: any, id: number) => void;
+  handleSelectedPinned: (e: React.MouseEvent<HTMLButtonElement>, id: number) => void;
   selectedPinned: number[];
   selectedFilters: SelectedFilters;
   isMobile: boolean;
 }) {
 
-  // Destructure the selected filters object 
-    const { 
-    	selectedCharacter, 
-    	selectedArtifactSet, 
-    	selectedSands, 
-    	selectedGoblet, 
-    	selectedCirclet, 
-    	selectedSubstats,
-    	//selectedElements, // Part of the object, but not used.
-    } = selectedFilters;
+  // SELECTED FILTERS
+  	// 1. Destructure the selected filters object 
+	    const { 
+	    	selectedCharacter, 
+	    	selectedArtifactSet, 
+	    	selectedSands, 
+	    	selectedGoblet, 
+	    	selectedCirclet, 
+	    	selectedSubstats,
+	    	//selectedElements, // Part of the object, but not used.
+	    } = selectedFilters;
 	
-	// Refs 
-	  const aboutSectionRef = useRef<HTMLInputElement>(null);
+	// BUILD CONTENT: Which sections are shown? (set from Results.tsx)
+	  // 1. Establish variables for conditional showing of sections (PC) 
+			const filterApplied = buildSectionsVisible.length !== buildSectionsOptions.length;
+			const showArtifactSets = buildSectionsVisible.includes('Artifact Sets') || buildSectionsVisible.includes('All');
+			const showAbout = buildSectionsVisible.includes('About') || buildSectionsVisible.includes('All');
+			const showSands = buildSectionsVisible.includes('Sands') || buildSectionsVisible.includes('All');
+			const showGoblet = buildSectionsVisible.includes('Goblet') || buildSectionsVisible.includes('All');
+			const showCirclet = buildSectionsVisible.includes('Circlet') || buildSectionsVisible.includes('All');
+			const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
+			const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
+		// 2. Set default state based on mobile or not 
+		  useLayoutEffect(() => {
+		  	if(isMobile) {
+		  		setIsBuildVisible(false)
+		  	}
+		  	else {
+		  		setIsBuildVisible(true)
+		  	}
+		  }, [isMobile]);
+	  // 3. Handle clicks to toggle build content section (Mobile) 
+		  const [isBuildVisible, setIsBuildVisible] = useState<boolean>();
+		  const toggleBuildVisibility = () => {
+		    setIsBuildVisible(prev => !prev);
+		  };
 
-	// INTERACT: Show build contents toggle 
-	  const [isBuildVisible, setIsBuildVisible] = useState<boolean>();
-	  const toggleBuildVisibility = () => {
-	  	console.log('Clicked build')
-	    setIsBuildVisible(prev => !prev);
-	  };
+	// ABOUT: Handle minimize/maximize
+		// 1. States & Refs 
+			const [aboutIsExpandable, setAboutIsExpandable] = useState<boolean>();
+			const [aboutIsExpanded, setAboutIsExpanded] = useState<boolean>();
+			const aboutSectionRef = useRef<HTMLInputElement>(null);
+		// 2. Set state based on content height. Expandable or not? 
+			useEffect(() => {
+			  const aboutSection = aboutSectionRef.current;
 
-	// BUILD CONTENT: Set default showing of entire build content (mobile or not?) 
-	  useLayoutEffect(() => {
-	  	if(isMobile) {
-	  		setIsBuildVisible(false)
-	  	}
-	  	else {
-	  		setIsBuildVisible(true)
-	  	}
-	  }, [isMobile]);
+			  if (aboutSection) {
+			    const aboutSectionHeight = aboutSection.scrollHeight;
 
-	// BUILD CONTENT: Check filters for conditional rendering of build sections 
-
-		const filterApplied = buildSectionsVisible.length !== buildSectionsOptions.length;
-		const showArtifactSets = buildSectionsVisible.includes('Artifact Sets') || buildSectionsVisible.includes('All');
-		const showAbout = buildSectionsVisible.includes('About') || buildSectionsVisible.includes('All');
-		const showSands = buildSectionsVisible.includes('Sands') || buildSectionsVisible.includes('All');
-		const showGoblet = buildSectionsVisible.includes('Goblet') || buildSectionsVisible.includes('All');
-		const showCirclet = buildSectionsVisible.includes('Circlet') || buildSectionsVisible.includes('All');
-		const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
-		const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
-
-	// INTERACT: Handle minimize/maximize About section 
-		const [aboutIsExpandable, setAboutIsExpandable] = useState<boolean>();
-		const [aboutIsExpanded, setAboutIsExpanded] = useState<boolean>();
-		useEffect(() => {
-		  const aboutSection = aboutSectionRef.current;
-
-		  if (aboutSection) {
-		    const aboutSectionHeight = aboutSection.scrollHeight;
-
-		    if (aboutSectionHeight > 85) {
-		      setAboutIsExpandable(true);
-		      setAboutIsExpanded(false);
-		    } 
-		    else {
-		      setAboutIsExpandable(false);
-		    }
-		  }
-		}, [filterApplied, isBuildVisible]);
-
-		const handleAboutIsExpanded = (e: any) => {
-			e.preventDefault();
-			e.stopPropagation();
-			setAboutIsExpanded(!aboutIsExpanded);
-		}
+			    if (aboutSectionHeight >= 85) {
+			      setAboutIsExpandable(true);
+			      setAboutIsExpanded(false);
+			    } 
+			    else {
+			      setAboutIsExpandable(false);
+			    }
+			  }
+			}, [filterApplied, isBuildVisible]);
+		// 3. Handle maximizing of about section on click 
+			const handleAboutIsExpanded = (e: any) => {
+				e.preventDefault();
+				e.stopPropagation();
+				setAboutIsExpanded(!aboutIsExpanded);
+			}
+	
+	// IMAGES
+		// BANNER
+			// 1. Placeholder 
+		  	const bannerPlaceholderImage = './images/characters/banners/Placeholder Banner.webp';
+		  // 2. Image source 
+		  	const bannerImageUrl = `./images/characters/banners/${build.character_name} Banner.webp`;
+		  // 3. State to store the final image URL 
+		  	const [bannerImgSrc, setBannerImgSrc] = useState(bannerImageUrl);
+		  // 4. Handle the error if image fails to load 
+			  const handleBannerError = () => {
+			    setBannerImgSrc(bannerPlaceholderImage);  // Set the image to placeholder if original image fails
+			  };
 		
-
+		// PORTRAIT
+			// 1. Placeholder 
+		  	const portraitPlaceholderImage = './images/characters/portraits/Placeholder.webp';
+		  // 2. Image source 
+		  	const portraitImageUrl = `./images/characters/portraits/${build.character_name}.webp`;
+		  // 3. State to store the final image URL 
+		  	const [portraitImgSrc, setPortraitImgSrc] = useState(portraitImageUrl);
+		  // 4. Handle the error if image fails to load 
+			  const handlePortraitError = () => {
+			    setPortraitImgSrc(portraitPlaceholderImage);  // Set the image to placeholder if original image fails
+			  };
 
 	return (
 		<div className={filterApplied ? 'character-card small' : 'character-card full'}>
@@ -100,25 +121,27 @@ export default function CharacterCard({
 		{/* Build header wrapper */}
       <div onClick={() => isMobile && toggleBuildVisibility()} className={`build-header rarity-${build.rarity}`}>
 
-      	{/* Character Element symbol */}
+      	{/* Element symbol */}
 					<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
 					
-				{/* Character Banner */}
+				{/* Banner */}
 					<div className="character-banner-wrapper">
 						<img
 							className="character-banner" 
-							src={"./images/characters/banners/" + build.character_name + " Banner.webp"} 
+							src={bannerImgSrc} 
+							onError={handleBannerError}
 							alt={build.element}
 							style={{
 								bottom: 
 								!filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset : '60px') : 
 								!filterApplied && isMobile ? (build.banner_offset ? build.banner_offset / 1.5 +2 : '60px') :
+								filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset / 2 : '35px') :
 								'60px'
 							}}
 							/>
 					</div>
 
-				{/* Character Profile Pictures */}
+				{/* Profile Pictures */}
 					{/* Traveler build and no filters (i.e. big format display) */}
 					{build.character_name.includes('Traveler') && !filterApplied
 						?
@@ -130,11 +153,15 @@ export default function CharacterCard({
 						:
 						<>
 							{/* Single picture for everyone else (also for traveler in small format display) */}
-							<img className="character-portrait" src={"./images/characters/portraits/" + build.character_name + ".webp"} alt={build.character_name}/>
+							<img 
+								className="character-portrait" 
+								src={portraitImgSrc} 
+								onError={handlePortraitError}
+								alt={build.character_name}/>
 						</>
 					}
         
-        {/* Character titles - Name and Build */}
+        {/* Titles - Name and Build */}
 	        <div className="character-title">
 	        	<h2 className={selectedCharacter.includes(build.character_name) ? 'character-name highlighted' : 'character-name'}>{build.character_name}</h2>
 	        	<h3 className="build-name">{build.build_name}</h3>
@@ -155,30 +182,24 @@ export default function CharacterCard({
 	    {isBuildVisible &&
       <div className="build-content">
 
-      {/* Constellation - Background image - REMOVE? */}
-      	<div className="constellation">
-      		{/*<img src={"./images/constellations/" + build.character_name +" Constellation.webp"}/>*/}
-      		{/*<img src={"./images/artifacts/flowers/" + build.artifact_set_1 +" Flower.webp"}/>*/}
-      	</div>
-
       {/* Artifact Sets */}
       	{showArtifactSets &&
       	<>
       	<div className={
-      		build.artifact_set_7 ? 'artifact-sets-4' : 
-      		build.artifact_set_5 ? 'artifact-sets-3' : 
-      		build.artifact_set_3 ? 'artifact-sets-2' : 
-      		'artifact-sets-1'
+      		build.artifact_set_7 ? 'artifact-options-4' : 
+      		build.artifact_set_5 ? 'artifact-options-3' : 
+      		build.artifact_set_3 ? 'artifact-options-2' : 
+      		'artifact-options-1'
       	}>
 
-	      {/* Artifact Option 2 - Full */}
+	      {/* Artifact Option 1: Sets 1 & 2 */}
 	      <Artifact
 	      	number={1}
 	      	build={build}
 	      	selectedArtifactSet={selectedArtifactSet}
 	      />
 
-	      {/* Artifact Option 2 - Full */}
+	      {/* Artifact Option 2: Sets 3 & 4 */}
 			  {build.artifact_set_3 && !filterApplied &&
 	      <Artifact 
 	      	number={3}
@@ -186,7 +207,7 @@ export default function CharacterCard({
 	      	selectedArtifactSet={selectedArtifactSet}
 	      />}
 	      
-				{/* Artifact Option 3 - Full */}
+				{/* Artifact Option 3: Sets 5 & 6 */}
 				{build.artifact_set_5 && !filterApplied &&
 				<Artifact 
 	      	number={5}
@@ -194,7 +215,7 @@ export default function CharacterCard({
 	      	selectedArtifactSet={selectedArtifactSet}
 	      />}
 
-				{/* Artifact Option 4 - Full */}
+				{/* Artifact Option 4: Sets 7 & 8 */}
 				{build.artifact_set_7 && !filterApplied &&
 				<Artifact 
 	      	number={7}
@@ -228,7 +249,6 @@ export default function CharacterCard({
 	      		className={aboutIsExpanded ? 'build-section expanded' : 'build-section minimized'}>
 
 	      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set_1 +" Plume.webp"}/>
-	      		{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Tutorial.webp"}/>*/}
 
 	      		{aboutIsExpandable &&
 	      		<button onClick={(e) => handleAboutIsExpanded(e)}>
@@ -251,7 +271,7 @@ export default function CharacterCard({
 
 				      {/* Placeholder if no about exists */}
 				      {!build.note &&
-				    	<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</p>}
+				    	<p>This is a build. You can build this character like this. It's one of the builds with artifacts and stats and stuff.</p>}
 
 			      </div>
 			  	</div>
@@ -322,12 +342,15 @@ export default function CharacterCard({
 		      	<div className="build-section-text">
 			      <h4>Substats Priority</h4>
 			        <ol>
+			        	{/* Normal substats: Always visible */}
 			          {build.substats_1 && <li className={selectedSubstats.includes(build.substats_1) ? 'highlighted' : ''}>{build.substats_1}</li>}
 			          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{build.substats_2}</li>}
 			          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{build.substats_3}</li>}
 			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{build.substats_4}</li>}
 			          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{build.substats_5}</li>}
 			          {build.substats_6 && <li className={selectedSubstats.includes(build.substats_6) ? 'highlighted' : ''}>{build.substats_6}</li>}
+
+			          {/* Flat substats: Visible only when filtered for */}
 			          {build.flatstats_1 && selectedSubstats.includes(build.flatstats_1) && <li className={selectedSubstats.includes(build.flatstats_1) ? 'highlighted flatstat' : ''}>{build.flatstats_1}</li>}
 			          {build.flatstats_2 && selectedSubstats.includes(build.flatstats_2) && <li className={selectedSubstats.includes(build.flatstats_2) ? 'highlighted flatstat' : ''}>{build.flatstats_2}</li>}
 			        </ol>
@@ -346,8 +369,13 @@ export default function CharacterCard({
 		      	<div className="build-section-text">
 				      <h4>ER Recommendation</h4>
 				        <ul>
+				        	{/* No data */}
 				        	{build.er_min === '' && build.er_max === '' && <li>No data</li>}
+
+				        	{/* Not applicable */}
 				          {build.er_min === 'n/a' && build.er_max === 'n/a' && <li>No requirement</li>}
+
+				          {/* Has value */}
 				          {build.er_min !== 'n/a' && build.er_min !== '' && build.er_max !== 'n/a' && build.er_max !== '' && <li>{build.er_min}&ndash;{build.er_max}%</li>}
 				        </ul>
 	     		 	</div>
@@ -358,7 +386,6 @@ export default function CharacterCard({
 
       </div>}{/* End Build content wrapper */}
 
-      <div className="clear"></div>
     </div>
 	);
 }

@@ -1,5 +1,5 @@
 // Type definitions
-import { FullBuild } from '../types/types';
+import { FullBuild, ArtifactSet} from '../types/types';
 
 // UI
 import Tooltip from './Tooltip.tsx'
@@ -14,33 +14,53 @@ export default function Artifact({
 	selectedArtifactSet: string[];
 }) {
 
-	// Artifact option label
-	const artifactSet_label = build[`artifact_set_${number}_label` as keyof FullBuild];
+	// Convert numbers for artifact set numbers class 
+		let newNumber;
 
-	// Artifact 1 info
-	const artifactSet_1 = build[`artifact_set_${number}` as keyof FullBuild];
-	const artifactSet_1_two_piece = build[`artifact_set_${number}_two_piece` as keyof FullBuild];
-	const artifactSet_1_four_piece = build[`artifact_set_${number}_four_piece` as keyof FullBuild];
+		if(number === 1) {
+			newNumber = 1;
+		} 
+		else if(number === 3) {
+			newNumber = 2;
+		} 
+		else if(number === 5) {
+			newNumber = 3;
+		}
+		else if(number === 7) {
+			newNumber = 4;
+		}
 
-	// Artifact 2 info
-	const artifactSet_2 = build[`artifact_set_${number+1}` as keyof FullBuild];
-	const artifactSet_2_two_piece = build[`artifact_set_${number+1}_two_piece` as keyof FullBuild];
+	// Artifact option label 
+		const artifactSet_label = build[`artifact_set_${number}_label` as keyof FullBuild];
 
+	// Artifact set 1 info 
+		// 1. Artifact name
+			const artifactSet_1: ArtifactSet["name"] = String(build[`artifact_set_${number}` as keyof FullBuild] ?? '');
+		// 2. Artifact 2-piece bonus description
+			const artifactSet_1_two_piece: ArtifactSet["two_piece"] = String(build[`artifact_set_${number}_two_piece` as keyof FullBuild] ?? '');
+		// 3. Artifact 4-piece bonus description
+			const artifactSet_1_four_piece: ArtifactSet["four_piece"] = String(build[`artifact_set_${number}_four_piece` as keyof FullBuild] ?? '');
+
+	// Artifact set 2 info 
+		// 1. Artifact name
+			const artifactSet_2: ArtifactSet["name"] = String(build[`artifact_set_${number+1}` as keyof FullBuild] ?? '');
+		// 2. Artifact 2-piece bonus description
+			const artifactSet_2_two_piece: ArtifactSet["two_piece"] = String(build[`artifact_set_${number+1}_two_piece` as keyof FullBuild] ?? '');
 
 	return (
-		<div className={`artifact-set number-${number}`}>
+		<div className={`artifact-set option-${newNumber}`}>
 			<div className="build-section tooltip-on-hover">
 
 				{/* Artifact Set Single Image */}
 				{artifactSet_1 && !artifactSet_2 &&
 	  		<img className="artifact-icon" src={"./images/artifacts/flowers/" + artifactSet_1 +" Flower.webp"}/>}
 
-	  		{/* Artifact Set Split Multi Image (double) */}
+	  		{/* Artifact Set Split Multi Image (diagonal) */}
 				{artifactSet_1 && artifactSet_2 &&
-				<>
+				<div className="artifact-icons-double">
 	  			<img className="artifact-icon-top" src={"./images/artifacts/flowers/" + artifactSet_1 +" Flower.webp"}/>
 	  			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + artifactSet_2 +" Flower.webp"}/>
-	  		</>}
+	  		</div>}
 
 	  		{/* Artifact Set Split Multi Image (split) */}
 				{/*	{artifactSet_1 && build.artifact_logic === 'AND' &&

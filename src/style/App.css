@@ -24,10 +24,6 @@ ul, li, ol {
   list-style-type: none;
 }
 
-.clear {
-  clear: both;
-}
-
 .highlighted {
   color: lightgreen;
   font-weight: 700;

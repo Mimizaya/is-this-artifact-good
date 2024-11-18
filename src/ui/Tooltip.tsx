@@ -1,6 +1,9 @@
 // Functions
 import { parseText } from '../utility/functions'
 
+// Type definitions
+import { ArtifactSet } from '../types/types';
+
 export default function Tooltip({
 	artifactSet_1, 
 	artifactSet_1_two_piece,
@@ -8,16 +11,15 @@ export default function Tooltip({
 	artifactSet_2,
 	artifactSet_2_two_piece,
 } : {
-	artifactSet_1: any;
-	artifactSet_1_two_piece: any;
-	artifactSet_1_four_piece: any;
-	artifactSet_2: any;
-	artifactSet_2_two_piece: any;
+	artifactSet_1: ArtifactSet["name"];
+	artifactSet_1_two_piece: ArtifactSet["two_piece"];
+	artifactSet_1_four_piece: ArtifactSet["four_piece"];
+	artifactSet_2: ArtifactSet["name"];
+	artifactSet_2_two_piece: ArtifactSet["two_piece"];
 }) {
 
 	return (
 		<>
-	    {/* Tooltip - Artifact Set 1 */}
 	    {/* Single set */}
 	    {!artifactSet_2 &&
 		 	<div className="artifact-info tooltip">
@@ -38,7 +40,6 @@ export default function Tooltip({
 	    {/* Split set */}
 	    {artifactSet_2 &&
 		 	<div className="artifact-info tooltip">
-
 		 		<div className="tooltip-part">
 			 		<img 
 			 			src={'./images/artifacts/flowers/' + artifactSet_1 + ' Flower.webp'}
@@ -60,7 +61,6 @@ export default function Tooltip({
 						<p>{parseText(artifactSet_2_two_piece)}</p>
 			 		</div>
 			 	</div>
-
 			</div>}
 		</>
 	)

@@ -51,9 +51,9 @@ $primary-color: #242424;
     top: 10px;
     z-index: 9999;
     width: 455px;
-    border-bottom: 1px solid #191919;
+    border-bottom: 1px solid #202020;
     font-size: 0.95em;
-    box-shadow: 5px 10px 10px #222222;
+    box-shadow: 5px 5px 10px #222222;
     background-color: lighten(#222222, 3%);
     color: rgba(255, 255, 255, 0.87);
     border-radius: 5px;
@@ -281,110 +281,134 @@ $primary-color: #242424;
     }
   }
 
-// Character Card - Small version when sections are filtered out
+// Character Card - Small version
   div.character-card.small {
     width: $card-width-small;
     margin: 20px;
 
-    div.build-header {
-      width: $card-width-small;
-      height: $banner-size / 1.5;
-      position: relative;
-      left: 0;
-      margin-bottom: 5px;
-
-      img.character-portrait {
-        margin-left: 3px;
-        bottom: 5px;
-        height: $banner-size / 1.5 + 5px;
-      }
-      img.character-element {
-        height: $element-icon-size / 1.5;
-        width: $element-icon-size / 1.5;
-        position: absolute;
-        z-index: 2;
-        top: -12px;
-        left: -15px;
-      }
-      div.character-banner-wrapper {
+    // Header
+      div.build-header {
+        width: $card-width-small;
         height: $banner-size / 1.5;
-        opacity: 0.5;
-        bottom: 0px;
+        position: relative;
+        left: 0;
+        margin-bottom: 5px;
 
-        img.character-banner {
-          bottom: 20px;
-        }
-      }
-      div.character-title {
-        position: absolute;
-        left: $banner-size / 1.5 + 10px;
-        top: 6px;
-        text-shadow: 1px 1px 5px black;
+      // Banner 
+        div.character-banner-wrapper {
+          height: $banner-size / 1.5;
+          opacity: 0.5;
+          bottom: 0px;
 
-        h2 {
-          width: $card-width-small - $banner-size / 1.5 - 30;
-          font-size: 1.2em;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          font-weight: 600;
+          img.character-banner {
+            bottom: 20px;
+          }
         }
+      // Element
+        img.character-element {
+          height: $element-icon-size / 1.5;
+          width: $element-icon-size / 1.5;
+          position: absolute;
+          z-index: 2;
+          top: -12px;
+          left: -15px;
+        }
+      // Portrait
+        img.character-portrait {
+          margin-left: 3px;
+          bottom: 5px;
+          height: $banner-size / 1.5 + 5px;
+        }
+      // Titles
+        div.character-title {
+          position: absolute;
+          left: $banner-size / 1.5 + 10px;
+          top: 6px;
+          text-shadow: 1px 1px 5px black;
 
-        h3.build-name {
-          font-size: 0.9em;
-          position: relative;
-          top: -5px;
-          margin: 0;
-          font-weight: 600;
-        }
+        // Character name
+          h2.character-name {
+            width: $card-width-small - $banner-size / 1.5 - 30;
+            font-size: 1.2em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: 600;
+          }
+
+        // Build name
+          h3.build-name {
+            font-size: 0.9em;
+            position: relative;
+            top: -5px;
+            margin: 0;
+            font-weight: 600;
+          }
       }
     }
 
-    div.build-content {
-
-
-      // Always span the entire width
-      div.artifact-sets-1,
-      div.artifact-sets-2, 
-      div.artifact-sets-3,
-      div.artifact-sets-4 {
-        div.artifact-set.number-1 {
-          grid-column: span 2;
+    // General content
+      div.build-content {
+        div.build-section {
+          div.build-section-text {
+            h4 {
+              font-size: 0.8em;
+            }
+            p,li {
+              color: #FFF;
+              font-size: 0.95em;
+            }
+            p.highlighted,li.highlighted {
+              color: lightgreen;
+            }
+          }
         }
-      }
 
-      // Position for the alternative icons
-      div.artifact-set {
-        position: relative;
-      }
+    // Specific sections
+      // Artifacts
+        div.artifact-options-1,
+        div.artifact-options-2, 
+        div.artifact-options-3,
+        div.artifact-options-4 {
 
-      // Alternative icons
-      div.artifact-set-alternative {
-        width: 30px;
-        position: absolute;
-        top: 10px;
-        left: 220px;
+          // All sets
+            div.artifact-set {
+              position: relative;
+            }
+          // Option 1: Main set(s)
+            div.artifact-set.option-1 {
+              grid-column: span 2;
+            }
+          // Alternative sets: Icons
+            div.artifact-set-alternative {
+              width: 30px;
+              position: absolute;
+              top: 10px;
+              left: 220px;
 
-        img.artifact-icon-alt-1-small, img.artifact-icon-alt-2-small {
-          height: 35px;
-          position: relative;
-          left: 20px;
+              img.artifact-icon-alt-1-small, img.artifact-icon-alt-2-small {
+                height: 35px;
+                position: relative;
+                left: 20px;
+              }
+              img.artifact-icon-alt-2-small {
+                top: -10px;
+              }
+            }
         }
-        img.artifact-icon-alt-2-small {
-          top: -10px;
+      // About
+        div.about {
+          button {
+            width: 100%;
+          }
         }
-      }
-      div.about {
-        button {
+      // All sections cover full width
+        div.artifact-types, div.about, div.substats, div.er-recommendation {
           width: 100%;
         }
       }
-      div.artifact-types, div.about, div.substats, div.er-recommendation {
-        width: 100%;
-      }
     }
   }
-}
 
 // ALL SCREEN SIZES
 // Character Card - General 
@@ -398,7 +422,6 @@ $primary-color: #242424;
     div.build-header {
       border-radius: 5px;
       background-color: darken(#222222, 1%);
-      margin-bottom: 10px;
 
     // Portraits 
       img.character-portrait, img.character-portrait-two {
@@ -490,6 +513,7 @@ $primary-color: #242424;
   // Content wrapper 
     div.build-content {
       margin-left: 0;
+      margin-top: 3px;
       padding: 10px;
       position: relative;
 
@@ -515,22 +539,25 @@ $primary-color: #242424;
         }
 
       // Multi set artifact icons (show both)
-        img.artifact-icon-top,
-        img.artifact-icon-bottom {
-          height: $artifact-icon-size / 1.3;
-          width: $artifact-icon-size / 1.3;
-        }
-        img.artifact-icon-top {
-          position: absolute;
-          z-index: 5;
-          top: 10px;
-          left: 3px;
-        }
-        img.artifact-icon-bottom {
-          position: absolute;
-          z-index: 4;
-          top: 30px;
-          left: 17px;
+        div.artifact-icons-double {
+          height: $artifact-icon-size;
+          width: $artifact-icon-size;
+
+          img.artifact-icon-top,
+          img.artifact-icon-bottom {
+            height: $artifact-icon-size / 1.3;
+            width: $artifact-icon-size / 1.3;
+          }
+          img.artifact-icon-top {
+            position: relative;
+            z-index: 5;
+          }
+          img.artifact-icon-bottom {
+            position: absolute;
+            z-index: 4;
+            top: 30px;
+            left: 15px;
+          }
         }
 
       // Multi set artifact icons (split style) 
@@ -607,15 +634,15 @@ $primary-color: #242424;
 
       // Artifacts
         // If 1 option
-        div.artifact-sets-1 {
-          div.artifact-set.number-1 {
+        div.artifact-options-1 {
+          div.artifact-set.option-1 {
             width: 100%;
           }
         }
         // If more than 1 option
-        div.artifact-sets-2,
-        div.artifact-sets-3,
-        div.artifact-sets-4 {
+        div.artifact-options-2,
+        div.artifact-options-3,
+        div.artifact-options-4 {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 10px;
@@ -626,8 +653,8 @@ $primary-color: #242424;
             margin-bottom: 0;
           }
         }
-        div.artifact-sets-3 {
-          div.artifact-set.number-1 {
+        div.artifact-options-3 {
+          div.artifact-set.option-1 {
             grid-column: span 2;
           }
         }
@@ -682,12 +709,11 @@ $primary-color: #242424;
 
           // Minimized section class
           div.build-section.minimized {
-            height: 85px;
+            max-height: 85px;
             overflow: hidden;
           }
           // Expanded section class
           div.build-section.expanded {
-            height: unset;
             overflow: unset;
             padding-bottom: 30px;
           }

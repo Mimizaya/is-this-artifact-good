@@ -1,5 +1,8 @@
-import { useState, useEffect, useRef } from 'React';
-import { FilterTab, SavedFilters } from '../types/types.ts';
+import { useState, useEffect, useRef } from 'react';
+import { FilterTab, SavedFilters, SelectedFilters, ArtifactSet } from '../types/types.ts';
+
+import { artifactSets } from '../data/artifact-data.ts';
+
 export default function FilterTabs({ 
   handleTabChange, 
   currentFilterTab, 
@@ -9,18 +12,20 @@ export default function FilterTabs({
   isMenuOpen,
 } : {
   handleTabChange: any;
-  currentFilterTab: any;
-  selectedFilters: any;
+  currentFilterTab: number;
+  selectedFilters: SelectedFilters;
   savedFilters: SavedFilters; 
   isMobile: boolean;
   isMenuOpen: boolean;
 }) {
 
-  // Destructure the selected filters object 
-    const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
-    
-  // Initial Tabs 
-    const initialFilterTabs = [
+  // SELECTED FILTERS
+    // 1. Destructure the selected filters object 
+      const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
+  
+  // TABS
+    // 1. Initial Tabs 
+    const initialFilterTabs: FilterTab[] = [
       {
         id: 1,
         default_name: 'Default tab',
@@ -29,29 +34,26 @@ export default function FilterTabs({
     ];
 
     const [filterTabs, setFilterTabs] = useState(initialFilterTabs);
-
-  // Handle Add Tab 
+    // 2. Handle Add Tab 
     // Reference for tracking the next available ID
     const nextId = useRef(2); // Start from 2 since we already have Tab 1 as initial
 
-    const handleAddTab = () => {
+    const handleAddTab = (artifact: string | null) => {
       const newId = nextId.current; // Get the next available ID
       nextId.current += 1; // Increment the ID for the next tab
-
-      setFilterTabs((prev) => {
-        return [
-          ...prev,
-          {
-            id: newId,
-            default_name: 'New tab',
-            name: null,
-          }
-        ];
-      });
-      handleTabChange(newId);
+        setFilterTabs((prev) => {
+          return [
+            ...prev,
+            {
+              id: newId,
+              default_name: 'New tab',
+              name: null,
+            }
+          ];
+        });
+      handleTabChange(newId, artifact);
     };
-
-  // Handle Close Tab 
+    // 3. Handle Close Tab 
     const handleTabClose = (id: number) => {
       setFilterTabs((prev) => {
         const newTabs = prev.filter((tab) => tab.id !== id);
@@ -62,18 +64,25 @@ export default function FilterTabs({
         // Get the index of the tab to be removed in the updated filterTabs
         const currentIndex = filterTabs.findIndex((tab) => tab.id === id);
 
-        // Get the tab before the current tab
+        // Get the tab before and after the current tab
         const prevTab = filterTabs[currentIndex - 1];
+        const nextTab = filterTabs[currentIndex + 1];
 
-        // If a previous tab exists, switch to it
-        handleTabChange(prevTab.id);
+        // If current index is not 0, go to previous
+        if(currentIndex !== 0) {
+          handleTabChange(prevTab.id);
+        }
+        // Else if 0, go to next
+        else {
+          handleTabChange(nextTab.id);
+        }
+
       }
     };
-
-  // Automatic re-naming of Tabs 
+    // 4. Automatic re-naming of Tabs 
     useEffect(() => {
       setFilterTabs((prev) =>
-        prev.map((tab) => {
+        prev.map((tab: FilterTab) => {
           if (tab.id === currentFilterTab) {
             if(selectedCharacter.length > 0) {
               return { ...tab, name: selectedCharacter }; 
@@ -82,19 +91,19 @@ export default function FilterTabs({
               return { ...tab, name: selectedArtifactSet }; 
             }
             else if(selectedElements.length > 0) {
-              return { ...tab, name: selectedElements + '' }; 
+              return { ...tab, name: [selectedElements.join(', ')] }; 
             }
             else if(selectedSands.length > 0) {
-              return { ...tab, name: 'Sands: ' + selectedSands[0] }; 
+              return { ...tab, name: ['Sands: ' + selectedSands[0]] }; 
             }
             else if(selectedGoblet.length > 0) {
-              return { ...tab, name: 'Goblet: ' + selectedGoblet[0] }; 
+              return { ...tab, name: ['Goblet: ' + selectedGoblet[0]] }; 
             }
             else if(selectedCirclet.length > 0) {
-              return { ...tab, name: 'Circlet: ' + selectedCirclet[0] }; 
+              return { ...tab, name: ['Circlet: ' + selectedCirclet[0]] }; 
             }
             else if(selectedSubstats.length > 0) {
-              return { ...tab, name: 'Substats: ' + selectedSubstats[0] };
+              return { ...tab, name: ['Substats: ' + selectedSubstats[0]] };
             }
             else {
               return { ...tab, name: null };
@@ -104,9 +113,31 @@ export default function FilterTabs({
         })
       );
     }, [selectedFilters, currentFilterTab]);
+    // 5. Suggest other artifact from same domain 
+    const artifactDomain = artifactSets.find((set: ArtifactSet) => set.name === selectedArtifactSet?.toString())
+    const partnerArtifact = artifactDomain?.domain
+      ? artifactSets
+        .filter((set: ArtifactSet) => set.domain === artifactDomain?.domain)
+        .filter((set) => set.name !== artifactDomain?.name)
+        .map((set) => set.name)
+        .toString() // Convert the array to a string
+      : ''; // Return an empty string if domain is null or undefined
+
+    const tabIsAlreadyOpen = filterTabs?.map((tab: FilterTab) => {
+      return tab?.name?.toString() === partnerArtifact;
+    });
 
   return (
     <div id="filter-tabs" className={isMenuOpen ? 'open' : 'closed'}>
+      <button 
+        className={currentFilterTab === 0 ? 'filter-pinned highlighted' : 'filter-pinned'}
+        onClick={() => {
+          handleTabChange(0);
+        }}
+      >
+        &#9733; {/* Star Icon */}
+      </button>
+
       {filterTabs.map((tab: FilterTab) => (
         <div key={tab.id} className={currentFilterTab === tab.id ? 'filter-tab highlighted' : 'filter-tab'}>
           <button
@@ -151,7 +182,7 @@ export default function FilterTabs({
           <p>{tab.name ? tab.name : tab.default_name}</p>}
 
           {isMobile &&
-          <p>New tab</p>}
+          <p>Tab</p>}
           
           </button>
           {filterTabs.length > 1 && !isMobile &&
@@ -162,9 +193,22 @@ export default function FilterTabs({
           </button>}
         </div>
       ))}
+
+        {selectedArtifactSet.length > 0 && !tabIsAlreadyOpen.includes(true) && partnerArtifact &&
+        <button 
+          className="filter-suggestion"
+          onClick={() => handleAddTab(partnerArtifact)}>
+          <img 
+            src={'./images/artifacts/flowers/' + partnerArtifact + ' Flower.webp'}
+          />
+          <p>
+            Add {partnerArtifact}?
+          </p>
+        </button>}
+
         <button 
           className="filter-new"
-          onClick={() => handleAddTab()}
+          onClick={() => handleAddTab(null)}
         >
           +
         </button>

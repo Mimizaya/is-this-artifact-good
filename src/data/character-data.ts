@@ -1,4 +1,9 @@
 export const characterData = [
+		{
+		name: 'Chasca',
+		rarity: 5,
+		element: 'Anemo',
+	},
 	{
 		name: 'Xilonen',
 		rarity: 5,

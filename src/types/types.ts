@@ -1,27 +1,49 @@
+export interface Character {
+	name: string;
+	rarity: number;
+	element: string;
+}
 export interface RawBuild {
+	// Basic info
 	ID: number;
 	character_name: string;
 	build_name: string;
+
+	// Artifact option 1
 	artifact_set_1_label: string;
 	artifact_set_1: string;
 	artifact_set_2: string;
+
+	// Artifact option 2
 	artifact_set_3_label: string;
 	artifact_set_3: string;
 	artifact_set_4: string;
+
+	// Artifact option 3
 	artifact_set_5_label: string;
 	artifact_set_5: string;
 	artifact_set_6: string;
+
+	// Artifact option 4
 	artifact_set_7_label: string;
 	artifact_set_7: string;
 	artifact_set_8: string;
+
+	// Sands options
 	sands_1: string;
 	sands_2: string;
 	sands_3: string;
+
+	// Goblet options
 	goblet_1: string;
 	goblet_2: string;
+
+	// Circlet options
 	circlet_1: string;
 	circlet_2: string;
 	circlet_3: string;
+
+	// Sands options
 	substats_1: string;
 	substats_2: string;
 	substats_3: string;
@@ -30,8 +52,12 @@ export interface RawBuild {
 	substats_6: string;
 	flatstats_1: string;
 	flatstats_2: string;
-	er_min: string;
-	er_max: string;
+
+	// Energy Recharge
+	er_min: number | 'n/a' | '';
+	er_max: number | 'n/a' | '';
+
+	// About
 	note: string;
 }
 
@@ -53,15 +79,11 @@ export interface FullBuild extends RawBuild {
 	artifact_set_8_two_piece: string | null;
 }
 
-export interface Character {
-	name: string;
-	rarity: number;
-	element: string;
-}
 export interface ArtifactSet {
 	name: string;
 	two_piece: string;
 	four_piece: string;
+	domain: string | null;
 }
 export interface SelectedFilters {
   selectedCharacter: string[];
@@ -76,7 +98,7 @@ export interface SelectedFilters {
 export interface FilterTab {
   id: number;
   default_name: string;
-  name: string | null;
+  name: string[] | null;
 };
 
 export interface SavedFilters {

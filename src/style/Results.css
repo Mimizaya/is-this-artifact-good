@@ -1,8 +1,4 @@
 @media screen and (max-width: 600px) {
-  div.character-card-wrapper {
-    width: 100%;
-    height: 100%;
-  }
   section#results {
     width: 100%;
   }
@@ -10,20 +6,11 @@
     padding: 0px 20px;
   }
   section#results div.results-header {
-    left: 0;
-    padding-left: 0;
-    height: 45px;
-  }
-  section#results div.results-header h2 {
-    margin-top: 12px;
-    margin-left: 5%;
-  }
-  section#results div.results-header div#filter-build {
     display: none;
   }
   section#results div#results-content {
     width: 100%;
-    padding-top: 55px;
+    padding-top: 20px;
   }
   div#additional-results-wrapper div.additional-results-text h3, div#additional-results-wrapper div.additional-results-text p {
     padding: 0px 10px;
@@ -103,16 +90,54 @@
   section#results div.results-header div#filter-tabs div.filter-tab.highlighted button.filter-select {
     font-weight: 600;
   }
-  section#results div.results-header div#filter-tabs button.filter-new {
+  section#results div.results-header div#filter-tabs button.filter-new,
+  section#results div.results-header div#filter-tabs button.filter-pinned,
+  section#results div.results-header div#filter-tabs button.filter-suggestion {
     border: none;
     width: 40px;
-    width: 40px;
     border-radius: 5px;
-    background-color: #292929;
+    background-color: #242424;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    overflow: hidden;
   }
-  section#results div.results-header div#filter-tabs button.filter-new:hover {
+  section#results div.results-header div#filter-tabs button.filter-new, section#results div.results-header div#filter-tabs button.filter-pinned {
+    justify-content: center;
+    font-size: 1.2em;
+    padding-bottom: 2px;
+  }
+  section#results div.results-header div#filter-tabs button.filter-new:hover,
+  section#results div.results-header div#filter-tabs button.filter-pinned:hover,
+  section#results div.results-header div#filter-tabs button.filter-suggestion:hover {
     background-color: #313131;
     cursor: pointer;
+    transition: all 0.1s ease-out;
+  }
+  section#results div.results-header div#filter-tabs button.filter-pinned:hover {
+    color: #ccac00;
+  }
+  section#results div.results-header div#filter-tabs button.filter-pinned.highlighted {
+    background-color: #363636;
+    color: gold;
+  }
+  section#results div.results-header div#filter-tabs button.filter-suggestion {
+    padding: 0;
+  }
+  section#results div.results-header div#filter-tabs button.filter-suggestion img {
+    margin-left: 2px;
+    margin-right: 4px;
+    height: 90%;
+  }
+  section#results div.results-header div#filter-tabs button.filter-suggestion p {
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  section#results div.results-header div#filter-tabs button.filter-suggestion:hover {
+    width: 200px;
   }
   section#results div#results-content {
     padding-top: 145px;
@@ -170,6 +195,7 @@ section#results div.results-header div#filter-build h3 {
 }
 section#results div.results-header div#filter-build div.filter-build-options {
   height: 100%;
+  display: flex;
 }
 section#results div.results-header div#filter-build div.filter-build-options button.highlighted {
   background-color: #363636;
@@ -186,12 +212,12 @@ section#results div.results-header div#filter-build div.filter-build-options but
   background-color: #242424;
   font-family: inherit;
   border: none;
-  padding: 10px 13px 8px 10px;
+  padding: 10px 13px 8px 8px;
   transition: all 0.3s ease-out;
   border-radius: 5px;
   margin-right: 5px;
+  margin-bottom: 5px;
   display: flex;
-  float: left;
 }
 section#results div.results-header div#filter-build div.filter-build-options button img {
   margin-right: 2px;
@@ -204,6 +230,7 @@ section#results div#main-content {
 section#results div#results-content {
   display: flex;
   flex-wrap: wrap;
+  align-items: start;
 }
 section#results div#results-content div#no-results {
   text-align: center;
@@ -217,10 +244,6 @@ section#results div#additional-results-wrapper div#additional-results-content {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-}
-
-div.character-card-wrapper {
-  height: 100%;
 }
 
 /*# sourceMappingURL=Results.css.map */

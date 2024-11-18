@@ -39,7 +39,7 @@ export default function Filter({
   savedFilters: SavedFilters;
   isMenuOpen: boolean;
   handleTabChange: any;
-  currentFilterTab: any;
+  currentFilterTab: number;
   handleCharacterChange: (name: string) => void;
   handleArtifactSetChange: (set: string) => void;
   handleSandsChange: (stat: string) => void;
@@ -49,120 +49,162 @@ export default function Filter({
   handleElementsChange: (element: string) => void;
 }) {
 
-  // Destructure the selected filters object 
-    const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
+  // SELECTED FILTERS
+    // 1. Destructure the selected filters object
+      const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
 
-  // States 
-    const [characterQuery, setCharacterQuery] = useState<string>('');
-    const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
+  // MENU: Handle dropdown menus
+    // 1. States & Refs 
+      const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
+      const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState<boolean>(false);
+      const [sandsDropDownOpen, setSandsDropDownOpen] = useState<boolean>(false);
+      const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
+      const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false); 
 
-    const [artifactQuery, setArtifactQuery] = useState<string>('');
-    const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState<boolean>(false);
-
-    const [sandsDropDownOpen, setSandsDropDownOpen] = useState<boolean>(false);
-    const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
-    const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false);
-
-  // Automatically focus the search inputs when opened 
-    const characterRef = useRef<HTMLInputElement>(null);
-    const artifactRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-      if (characterDropDownOpen && characterRef.current) {
-        characterRef.current.focus();
+      const characterDropDownRef = useRef<HTMLInputElement>(null);
+      const artifactDropDownRef = useRef<HTMLInputElement>(null);
+      const sandsDropDownRef = useRef<HTMLInputElement>(null);
+      const gobletDropDownRef = useRef<HTMLInputElement>(null);
+      const circletDropDownRef = useRef<HTMLInputElement>(null);
+    // 2. Handle opening of menu on click 
+      const handleDropDown = (menu: string) => {
+        if(menu === 'Character') {
+          setCharacterDropDownOpen(true);
+        }
+        if(menu === 'Artifact') {
+          setArtifactSetDropDownOpen(true);
+        }
+        if(menu === 'Sands') {
+          setSandsDropDownOpen(true);
+        }
+        if(menu === 'Goblet') {
+          setGobletDropDownOpen(true);
+        }
+        if(menu === 'Circlet') {
+          setCircletDropDownOpen(true);
+        }
       }
-      if (artifactSetDropDownOpen && artifactRef.current) {
-        artifactRef.current.focus();
-      }
-    }, [characterDropDownOpen, artifactSetDropDownOpen]);
-
-  // Handle search queries 
-    const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCharacterQuery(e.target.value)
-    }
-    const handleArtifactQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setArtifactQuery(e.target.value)
-    }
-
-  // Filtered character data based on the query 
-    const filteredCharacterData = characterData.filter((character: Character) =>
-      character.name.toLowerCase().includes(characterQuery.toLowerCase())
-    );
-
-  // Sort artifacts alphabetically (currently not in use) 
-    /*const sortedArtifacts = artifactSets.sort((a: ArtifactSet, b: ArtifactSet) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });*/
-
-  // Filtered artifact data based on the query 
-    const filteredArtifacts = artifactSets.filter((set: ArtifactSet) =>
-      set.name.toLowerCase().includes(artifactQuery.toLowerCase())
-    );
-
-  // Handle dropdown menu states 
-    const handleDropDown = (menu: string) => {
-      if(menu === 'Character') {
-        setCharacterDropDownOpen(true);
-      }
-      if(menu === 'Artifact') {
-        setArtifactSetDropDownOpen(true);
-      }
-      if(menu === 'Sands') {
-        setSandsDropDownOpen(true);
-      }
-      if(menu === 'Goblet') {
-        setGobletDropDownOpen(true);
-      }
-      if(menu === 'Circlet') {
-        setCircletDropDownOpen(true);
-      }
-    }
-
-    const characterDropDownRef = useRef<HTMLInputElement>(null);
-    const artifactDropDownRef = useRef<HTMLInputElement>(null);
-    const sandsDropDownRef = useRef<HTMLInputElement>(null);
-    const gobletDropDownRef = useRef<HTMLInputElement>(null);
-    const circletDropDownRef = useRef<HTMLInputElement>(null);
-
-    const handleClickOutside = (event: any) => {
-      // Check if the click was outside the dropdown and button
-      if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target)) {
-        setCharacterDropDownOpen(false);
-      }
-      if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target)) {
-        setArtifactSetDropDownOpen(false);
-      }
-      if (sandsDropDownRef.current && !sandsDropDownRef.current.contains(event.target)) {
-        setSandsDropDownOpen(false);
-      }
-      if (gobletDropDownRef.current && !gobletDropDownRef.current.contains(event.target)) {
-        setGobletDropDownOpen(false);
-      }
-      if (circletDropDownRef.current && !circletDropDownRef.current.contains(event.target)) {
-        setCircletDropDownOpen(false);
-      }
-    };
-
-    useEffect(() => {
-      // Add the event listener when the dropdown is open
-      if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
-        document.addEventListener('mousedown', handleClickOutside);
-      }
-
-      // Cleanup the event listener on component unmount or when dropdown closes
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+    // 3. Listen for clicks on/outside of menu 
+      useEffect(() => {
+        // Add the event listener when the dropdown is open
+        if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
+          document.addEventListener('mousedown', handleClickOutside);
+        }
+        // Cleanup the event listener on component unmount or when dropdown closes
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
+    // 4. Handle clicks outside menu 
+      const handleClickOutside = (event: any) => {
+        // Check if the click was outside the dropdown and button
+        if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target)) {
+          setCharacterDropDownOpen(false);
+          setCharacterQuery('');
+        }
+        if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target)) {
+          setArtifactSetDropDownOpen(false);
+          setArtifactQuery('');
+        }
+        if (sandsDropDownRef.current && !sandsDropDownRef.current.contains(event.target)) {
+          setSandsDropDownOpen(false);
+        }
+        if (gobletDropDownRef.current && !gobletDropDownRef.current.contains(event.target)) {
+          setGobletDropDownOpen(false);
+        }
+        if (circletDropDownRef.current && !circletDropDownRef.current.contains(event.target)) {
+          setCircletDropDownOpen(false);
+        }
       };
-    }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
 
+  // SEARCH: Character 
+    // 1. State to hold query
+      const [characterQuery, setCharacterQuery] = useState<string>('');
+    // 2. Update query on input
+      const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCharacterQuery(e.target.value)
+      }
+    // 3. Filter and sort the list based on query
+      const filteredCharacterData = characterData
+      .filter((character: Character) =>
+        character.name.toLowerCase().includes(characterQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        const queryLower = characterQuery.toLowerCase();
+        const indexA = a.name.toLowerCase().indexOf(queryLower);
+        const indexB = b.name.toLowerCase().indexOf(queryLower);
 
+        // If indexA or indexB is -1 (meaning no match), push those characters to the end
+        if (indexA === -1 && indexB === -1) return 0; // No change if neither match
+        if (indexA === -1) return 1; // Put 'a' after 'b'
+        if (indexB === -1) return -1; // Put 'b' after 'a'
 
+        // Sort by the position of the first match
+        return indexA - indexB;
+      });
+    // 4. Automatically set/unset filter based on result
+      useEffect(() => {
+        if (filteredCharacterData.length === 1) {
+          const newCharacter = filteredCharacterData[0].name;
+          handleCharacterChange(newCharacter);
+        } 
+        else if (filteredCharacterData.length > 1) {
+          if (characterQuery.length > 0) { // Prevent resetting when selecting by clicking, which sets the query to empty string.
+            resetFilters('character');
+          }
+        }
+      }, [characterQuery]);
+
+  // SEARCH: Artifact set 
+    // 1. State to hold query 
+      const [artifactQuery, setArtifactQuery] = useState<string>('');
+    // 2. Update query on input 
+      const handleArtifactQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setArtifactQuery(e.target.value)
+      }
+    // 3. Filter and sort the list based on query 
+      const filteredArtifacts = artifactSets.filter((set: ArtifactSet) =>
+        set.name.toLowerCase().includes(artifactQuery.toLowerCase())
+      )      
+      .sort((a, b) => {
+        const queryLower = artifactQuery.toLowerCase();
+        const indexA = a.name.toLowerCase().indexOf(queryLower);
+        const indexB = b.name.toLowerCase().indexOf(queryLower);
+
+        // If indexA or indexB is -1 (meaning no match), push those characters to the end
+        if (indexA === -1 && indexB === -1) return 0; // No change if neither match
+        if (indexA === -1) return 1; // Put 'a' after 'b'
+        if (indexB === -1) return -1; // Put 'b' after 'a'
+
+        // Sort by the position of the first match
+        return indexA - indexB;
+      });
+    // 4. Automatically set/unset filter based on result 
+      useEffect(() => {
+        if (filteredArtifacts.length === 1) {
+          const newArtifact = filteredArtifacts[0].name;
+          handleArtifactSetChange(newArtifact);
+        }
+        else if (filteredArtifacts.length > 1) {
+          if(artifactQuery.length > 0 ) { // Prevent resetting when selecting by clicking, which sets the query to empty string.
+            resetFilters('artifact');
+          }
+        }
+      }, [artifactQuery]);
+
+  // SEARCH: Focus input when menu open
+    // 1. Refs 
+      const characterRef = useRef<HTMLInputElement>(null);
+      const artifactRef = useRef<HTMLInputElement>(null);
+    // 2. Set focus based on ref 
+      useEffect(() => {
+        if (characterDropDownOpen && characterRef.current) {
+          characterRef.current.focus();
+        }
+        if (artifactSetDropDownOpen && artifactRef.current) {
+          artifactRef.current.focus();
+        }
+      }, [characterDropDownOpen, artifactSetDropDownOpen]);
 
   return (
     <section id="filter" className={isMenuOpen ? 'open' : 'closed'}>
@@ -245,12 +287,12 @@ export default function Filter({
                   </li>
                 ))}
               </ul>
-
-
               </>
             )
           }
         </div>
+
+
 
         {/* Mainstats */}
         <div className="filter-artifact-mainstats">
@@ -486,6 +528,7 @@ export default function Filter({
                   }
                   alt={selectedCharacter[0]}
                 />
+
                 <p>
                   {/* Text */}
                   {/* If a character is selected, show that. Else show placeholder */}
@@ -562,7 +605,7 @@ export default function Filter({
       </div>{/* End Other Filters */}
 
       <div className={isMenuOpen ? 'toggle-filters open' : 'toggle-filters closed'}>
-        <button className="reset-filters" onClick={() => resetFilters(null)}>Reset filters</button>
+        <button className="reset-filters" onClick={() => resetFilters(null)}>Clear all filters</button>
       </div>
     </section>
   );
