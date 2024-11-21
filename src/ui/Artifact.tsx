@@ -8,10 +8,16 @@ export default function Artifact({
 	number, 
 	build, 
 	selectedArtifactSet,
+	numberOfArtifactOptions,
+	minimal,
+	matchingSets,
 } : {
 	number: number;
 	build: FullBuild;
 	selectedArtifactSet: string[];
+	numberOfArtifactOptions: number;
+	minimal: boolean,
+	matchingSets: string[];
 }) {
 
 	// Convert numbers for artifact set numbers class 
@@ -28,7 +34,69 @@ export default function Artifact({
 		}
 		else if(number === 7) {
 			newNumber = 4;
+		}		
+		else if(number === 9) {
+			newNumber = 5;
 		}
+
+	// Determine tooltip alignment
+		const determineTooltipAlignment = () => {
+			if(numberOfArtifactOptions === 1 && number === 1) {
+				return 'left'
+			}
+			if(numberOfArtifactOptions === 2) {
+				if(number === 1) {
+					return 'left'
+				}
+				else if(number === 3) {
+					return 'right'
+				}
+			}
+			if(numberOfArtifactOptions === 3) {
+				if(number === 1) {
+					return 'left'
+				}
+				else if(number === 3) {
+					return 'left'
+				}
+				else if(number === 5) {
+					return 'right'
+				}
+			}
+			if(numberOfArtifactOptions === 4) {
+				if(number === 1) {
+					return 'left'
+				}
+				else if(number === 3) {
+					return 'right'
+				}
+				else if(number === 5) {
+					return 'left'
+				}
+				else if(number === 7) {
+					return 'right'
+				}
+			}
+			if(numberOfArtifactOptions === 5) {
+				if(number === 1) {
+					return 'left'
+				}
+				else if(number === 3) {
+					return 'left'
+				}
+				else if(number === 5) {
+					return 'right'
+				}
+				else if(number === 7) {
+					return 'left'
+				}
+				else if(number === 9) {
+					return 'right'
+				}
+			}
+			return '';
+		}
+		const toolTipAlignment = determineTooltipAlignment()
 
 	// Artifact option label 
 		const artifactSet_label = build[`artifact_set_${number}_label` as keyof FullBuild];
@@ -48,6 +116,39 @@ export default function Artifact({
 			const artifactSet_2_two_piece: ArtifactSet["two_piece"] = String(build[`artifact_set_${number+1}_two_piece` as keyof FullBuild] ?? '');
 
 	return (
+		<>
+		{/* Artifact Alternative Option 1 - Minimal */}
+		{minimal &&
+		<div className={`artifact-option-${newNumber}`}>
+
+			{/* Artifact Set Image */}
+			{artifactSet_1 && !artifactSet_2 &&
+    	<img className="artifact-alternative-icon tooltip-on-hover" src={"./images/artifacts/flowers/" + artifactSet_1 +" Flower.webp"}/>}
+	    
+			{/* Artifact Set Split Image */}
+			{artifactSet_1 && artifactSet_2 &&
+			<>
+			<div className="artifact-alternative-split tooltip-on-hover">
+				<div className="clipping-mask-top">
+	    		<img className="artifact-alternative-icon" src={"./images/artifacts/flowers/" + artifactSet_1 +" Flower.webp"}/>
+		    </div>
+		    <div className="clipping-mask-bottom">
+		    	<img className="artifact-alternative-icon" src={"./images/artifacts/flowers/" + artifactSet_2 +" Flower.webp"}/>
+		  	</div>
+	  	</div>
+	  	</>}
+
+	    <Tooltip 
+	    	toolTipAlignment={toolTipAlignment}
+	    	artifactSet_1={artifactSet_1}
+	    	artifactSet_1_two_piece={artifactSet_1_two_piece}
+	    	artifactSet_1_four_piece={artifactSet_1_four_piece}
+	    	artifactSet_2={artifactSet_2}
+	    	artifactSet_2_two_piece={artifactSet_2_two_piece}
+	    />
+    </div>}
+
+		{!minimal &&
 		<div className={`artifact-set option-${newNumber}`}>
 			<div className="build-section tooltip-on-hover">
 
@@ -62,17 +163,7 @@ export default function Artifact({
 	  			<img className="artifact-icon-bottom" src={"./images/artifacts/flowers/" + artifactSet_2 +" Flower.webp"}/>
 	  		</div>}
 
-	  		{/* Artifact Set Split Multi Image (split) */}
-				{/*	{artifactSet_1 && build.artifact_logic === 'AND' &&
-				<>
-				<div className="clipping-mask-top">
-	  			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + artifactSet_1 +" Flower.webp"}/>
-	  		</div>
-	  		<div className="clipping-mask-bottom">
-	  			<img className="artifact-icon-split"  src={"./images/artifacts/flowers/" + artifactSet_2 +" Flower.webp"}/>
-	  		</div>
-	  		</>}*/}
-
+	  		{/* Artifact Set Text */}
 	      <div className="build-section-text">
 		      <h4>{
 		      	artifactSet_label ? artifactSet_label : 
@@ -80,24 +171,31 @@ export default function Artifact({
 		      </h4>
 	        <ul>
 	        	{artifactSet_1 && 
-	        	<li className={selectedArtifactSet.includes(artifactSet_1.toString()) ? 'highlighted' : ''}>
-	        		{artifactSet_1}{artifactSet_2 && <span className="artifact-logic"> ×2</span>}
+	        	<li className={
+	        		selectedArtifactSet.includes(artifactSet_1.toString()) ? 'highlighted' : 
+	        		matchingSets?.includes(artifactSet_1.toString()) && artifactSet_2 ? 'highlighted partial' : 
+	        		''}>
+	        		{artifactSet_1}{artifactSet_2 && <span className="artifact-logic">&nbsp;×2</span>}
 	        	</li>}
 	        	{artifactSet_2 && artifactSet_2 &&
-	        	<li className={selectedArtifactSet.includes(artifactSet_2.toString()) ? 'highlighted' : ''}>
-	        		{artifactSet_2}<span className="artifact-logic"> ×2</span>
+	        	<li className={selectedArtifactSet.includes(artifactSet_2.toString()) ? 'highlighted' : 
+	        		matchingSets?.includes(artifactSet_2.toString()) ? 'highlighted partial' :
+	        		''}>
+	        		{artifactSet_2}<span className="artifact-logic">&nbsp;×2</span>
 	        	</li>}
 	        </ul>
 	      </div>
 	    </div>
 
 	    <Tooltip 
+	    	toolTipAlignment={toolTipAlignment}
 	    	artifactSet_1={artifactSet_1}
 	    	artifactSet_1_two_piece={artifactSet_1_two_piece}
 	    	artifactSet_1_four_piece={artifactSet_1_four_piece}
 	    	artifactSet_2={artifactSet_2}
 	    	artifactSet_2_two_piece={artifactSet_2_two_piece}
 	    />
-		</div>
+		</div>}
+		</>
 	);
 }

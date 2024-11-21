@@ -37,18 +37,23 @@ $filter-width: 250px;
       filter: grayscale(0%) !important;
     }
   }
-  .highlighted.flatstat {
-    color: #99B199;
+  .highlighted.flatstat,
+  .highlighted.partial {
+    color: #99C599 !important;
     font-weight: 700;
   }
 
 // Reset/Clear buttons 
   button.reset-filters {
     border: none;
-    margin-top: 20px;
     padding: 10px;
     width: $filter-width;
     border-bottom: 1px solid #192019;
+    display: block;
+    margin: 10px auto;
+  }
+  button.reset-filters.error {
+    width: 100%;
   }
   button.clear-input {
     color: #999;

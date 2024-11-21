@@ -29,6 +29,11 @@ export interface RawBuild {
 	artifact_set_7: string;
 	artifact_set_8: string;
 
+	// Artifact option 5
+	artifact_set_9_label: string;
+	artifact_set_9: string;
+	artifact_set_10: string;
+
 	// Sands options
 	sands_1: string;
 	sands_2: string;
@@ -77,6 +82,9 @@ export interface FullBuild extends RawBuild {
 	artifact_set_7_two_piece: string | null;
 	artifact_set_7_four_piece: string | null;
 	artifact_set_8_two_piece: string | null;
+	artifact_set_9_two_piece: string | null;
+	artifact_set_9_four_piece: string | null;
+	artifact_set_10_two_piece: string | null;
 }
 
 export interface ArtifactSet {

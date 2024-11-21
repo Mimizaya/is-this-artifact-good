@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 // Datasets
 import { characterData } from '../data/character-data.ts';
 import { artifactSets } from '../data/artifact-data.ts';
-// import { elements } from '../data/elements.ts';
+import { elements } from '../data/elements.ts';
 
 // Type definitions
 import { 
@@ -33,7 +33,7 @@ export default function Results({
   buildsDataRaw: RawBuild[];
   selectedFilters: SelectedFilters;
   resetFilters: (filter: string | null) => void;
-  handleTabChange: any;
+  handleTabChange: (tabId: number, filter: string | null, value: string | null) => void;
   currentFilterTab: number;
   savedFilters: SavedFilters;
   isMenuOpen: boolean;
@@ -104,13 +104,13 @@ export default function Results({
         );
       }
   
-  // PREPARE: Add additional static data to builds 
-    const buildsDataEnriched = buildsDataRaw.map((build: RawBuild) => {
-
-      // Find the corresponding character data based on name
+  // ENRICH DATA: Add additional data to builds 
+    // 1. Create new array containing the enriched builds from the raw data 
+      const buildsDataEnriched = useMemo(() => {
+      return buildsDataRaw.map((build: RawBuild) => {
+    // 2. Find the corresponding character data based on character name 
       const characterInfo = characterData.find((character: Character) => character.name === build.character_name);
-
-      // Find the corresponding character data based on name
+    // 3. Find the corresponding artifact data based on set name 
       const artifactSet1Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_1);
       const artifactSet2Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_2);
       const artifactSet3Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_3);
@@ -119,48 +119,71 @@ export default function Results({
       const artifactSet6Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_6);
       const artifactSet7Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_7);
       const artifactSet8Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_8);
-
-      // If a match is found, merge the relevant data
+      const artifactSet9Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_9);
+      const artifactSet10Info = artifactSets.find((artifact: ArtifactSet) => artifact.name === build.artifact_set_10);
+    // 4. If a match is found, merge the relevant data 
       // Use `!` to assert that result is not null/undefined
-      return {
-        ...build,
-        element: characterInfo!.element,
-        rarity: characterInfo!.rarity,
-        banner_offset: characterInfo?.banner_offset,
+        return {
+          ...build,
+          element: characterInfo!.element,
+          rarity: characterInfo!.rarity,
+          banner_offset: characterInfo?.banner_offset,
 
-        artifact_set_1_two_piece: artifactSet1Info!.two_piece,
-        artifact_set_1_four_piece: artifactSet1Info!.four_piece,
+          artifact_set_1_two_piece: artifactSet1Info!.two_piece,
+          artifact_set_1_four_piece: artifactSet1Info!.four_piece,
 
-        artifact_set_2_two_piece: artifactSet2Info ? artifactSet2Info.two_piece : null,
+          artifact_set_2_two_piece: artifactSet2Info ? artifactSet2Info.two_piece : null,
 
-        artifact_set_3_two_piece: artifactSet3Info ? artifactSet3Info.two_piece : null,
-        artifact_set_3_four_piece: artifactSet3Info ? artifactSet3Info.four_piece : null,
+          artifact_set_3_two_piece: artifactSet3Info ? artifactSet3Info.two_piece : null,
+          artifact_set_3_four_piece: artifactSet3Info ? artifactSet3Info.four_piece : null,
 
-        artifact_set_4_two_piece: artifactSet4Info ? artifactSet4Info.two_piece : null,
-        
-        artifact_set_5_two_piece: artifactSet5Info ? artifactSet5Info.two_piece : null,
-        artifact_set_5_four_piece: artifactSet5Info ? artifactSet5Info.four_piece : null,
-        
-        artifact_set_6_two_piece: artifactSet6Info ? artifactSet6Info.two_piece : null,
-        
-        artifact_set_7_two_piece: artifactSet7Info ? artifactSet7Info.two_piece : null,
-        artifact_set_7_four_piece: artifactSet7Info ? artifactSet7Info.four_piece : null,
+          artifact_set_4_two_piece: artifactSet4Info ? artifactSet4Info.two_piece : null,
+          
+          artifact_set_5_two_piece: artifactSet5Info ? artifactSet5Info.two_piece : null,
+          artifact_set_5_four_piece: artifactSet5Info ? artifactSet5Info.four_piece : null,
+          
+          artifact_set_6_two_piece: artifactSet6Info ? artifactSet6Info.two_piece : null,
+          
+          artifact_set_7_two_piece: artifactSet7Info ? artifactSet7Info.two_piece : null,
+          artifact_set_7_four_piece: artifactSet7Info ? artifactSet7Info.four_piece : null,
 
-        artifact_set_8_two_piece: artifactSet8Info ? artifactSet8Info.two_piece : null,
+          artifact_set_8_two_piece: artifactSet8Info ? artifactSet8Info.two_piece : null,
 
-        artifact_option_1: [artifactSet1Info?.name, artifactSet2Info?.name],
-        artifact_option_2: [artifactSet3Info?.name, artifactSet4Info?.name],
-        artifact_option_3: [artifactSet5Info?.name, artifactSet6Info?.name],
-        artifact_option_4: [artifactSet7Info?.name, artifactSet8Info?.name],
-      };
-    });
+          artifact_set_9_two_piece: artifactSet9Info ? artifactSet9Info.two_piece : null,
+          artifact_set_9_four_piece: artifactSet9Info ? artifactSet9Info.four_piece : null,
+
+          artifact_set_10_two_piece: artifactSet10Info ? artifactSet10Info.two_piece : null,
+        };
+      });
+      }, [buildsDataRaw]);
+
+  // SORTING OPTIONS: Set the method of sorting
+    // 1. States (current & available methods, ascending/descending) 
+      const [sortingOption, setSortingOption] = useState<string>('Relevance');
+      const [sortingOptionsMenuOpen, setSortingOptionsMenuOpen] = useState<boolean>(false);
+      const [sortDescending, setSortDescending] = useState<boolean>(false)
+      const sortingOptions: string[] = [
+        'Relevance', 
+        'Character – A–Z', 
+        'Character – By Release',  
+        'Artifact Set – A–Z', 
+        'Artifact Set – By Release'];
+    // 2. Handle updating of selected method 
+      const handleChangeSortingOption = (option: string) => {
+        setSortingOption(option);
+        setSortingOptionsMenuOpen(!sortingOptionsMenuOpen);
+      }
+    // 3. Handle open/close sorting menu
+      const handleToggleSortingMenu = () => {
+        setSortingOptionsMenuOpen(!sortingOptionsMenuOpen);
+      }
 
   // SORT: Apply default sorting order 
     // 1. Get character and artifact order from data 
       const artifactOrder = artifactSets.map(artifact => artifact.name);
       const characterOrder = characterData.map(character => character.name);
     // 2. Get element order from data 
-      //const elementOrder = elements;
+      const elementOrder = elements;
     // 3. Swap artifact values to first in option, if selected 
       const swapArtifactSets = (build: any, selectedArtifactSet: string) => {
         if (build.artifact_set_2 === selectedArtifactSet) {
@@ -183,6 +206,11 @@ export default function Results({
           build.artifact_set_8 = build.artifact_set_7;
           build.artifact_set_7 = temp;
         }
+        if (build.artifact_set_10 === selectedArtifactSet) {
+          const temp = build.artifact_set_10;
+          build.artifact_set_10 = build.artifact_set_9;
+          build.artifact_set_9 = temp;
+        }
         return build;
       };
       const swappedBuilds = buildsDataEnriched.map((build: FullBuild) => swapArtifactSets(build, selectedArtifactSet[0]?.toString()));
@@ -194,37 +222,44 @@ export default function Results({
         const indexBCharacter = characterOrder.indexOf(b.character_name); 
         const indexAArtifact = artifactOrder.indexOf(a.artifact_set_1);
         const indexBArtifact = artifactOrder.indexOf(b.artifact_set_1);
-        //const indexAElement = elementOrder.indexOf(a.element);
-        //const indexBElement = elementOrder.indexOf(b.element);
+        const indexAElement = elementOrder.indexOf(a.element);
+        const indexBElement = elementOrder.indexOf(b.element);
 
         // If a character filter is checked, sort builds by internal build IDs
         if(selectedCharacter.length > 0) {
-          return a.ID - b.ID;
+         return sortDescending ? b.ID - a.ID : a.ID - b.ID;
         }
 
-        // If a element filter is checked, sort builds by character chronology
+        // If a element filter is checked, sort builds by elemental groups > character order
         if(selectedElements.length > 0) {
+          // Sort by artifact order
+          if (indexAElement !== indexBElement) {
+            return indexAElement - indexBElement;
+          }
+          // Sort by character order
           if (indexACharacter !== indexBCharacter) {
             return indexACharacter - indexBCharacter;
           }
+          // Sort by build IDs
+          return sortDescending ? b.ID - a.ID : a.ID - b.ID;
         }
 
-        // If an artifact set filter is checked, sort builds by character chronology, then by artifact
+        // If an artifact set filter is checked, sort builds by character order, then by artifact
         if(selectedArtifactSet.length > 0) {
-          // Sort by character chronology
+          // Sort by character order
           if (indexACharacter !== indexBCharacter) {
             return indexACharacter - indexBCharacter;
           }
-
           // Sort by artifact order
           if (indexAArtifact !== indexBArtifact) {
             return indexAArtifact - indexBArtifact;
           }
+          // Sort by build IDs
+          return sortDescending ? b.ID - a.ID : a.ID - b.ID;
         }
 
         // Default sorting. 
         else {
-
           // Sort by artifact order
           if (indexAArtifact !== indexBArtifact) {
             return indexAArtifact - indexBArtifact;
@@ -233,10 +268,8 @@ export default function Results({
           if (indexACharacter !== indexBCharacter) {
             return indexACharacter - indexBCharacter;
           }
-          // Sort by element order
-          //if (indexAElement !== indexBElement) {
-          //  return indexAElement - indexBElement;
-          //}
+          // Sort by build IDs
+          return sortDescending ? b.ID - a.ID : a.ID - b.ID;
 
           // Sort by name, alphabetical
           //return a.character_name.localeCompare(b.character_name);
@@ -245,16 +278,15 @@ export default function Results({
       });
 
   // FILTER: Apply user filters to main data 
-    const filteredResults = sortedBuilds.filter((build: FullBuild) => {
-      // Check pinned
+    // 1. Create new array containing the filtered builds from default sorted builds 
+      const filteredResults = sortedBuilds.filter((build: FullBuild) => { 
+    // 2. Check pinned builds 
       const isBuildPinned = selectedPinned.length === 0 || 
         selectedPinned.includes(build.ID);
-
-      // Check character
+    // 3. Check character 
       const isCharacterSelected = selectedCharacter.length === 0 || 
         selectedCharacter.includes(build.character_name);
-
-      // Check artifact set
+    // 4. Check artifact set 
       const isArtifactSetSelected = selectedArtifactSet.length === 0 || 
         selectedArtifactSet.includes(build.artifact_set_1) ||
         selectedArtifactSet.includes(build.artifact_set_2) ||
@@ -263,154 +295,153 @@ export default function Results({
         selectedArtifactSet.includes(build.artifact_set_5) ||
         selectedArtifactSet.includes(build.artifact_set_6) ||
         selectedArtifactSet.includes(build.artifact_set_7) ||
-        selectedArtifactSet.includes(build.artifact_set_8);
-
-      // Check sands
+        selectedArtifactSet.includes(build.artifact_set_8) ||
+        selectedArtifactSet.includes(build.artifact_set_9) ||
+        selectedArtifactSet.includes(build.artifact_set_10);
+    // 5. Check sands 
       const isSandsSelected = selectedSands.length === 0 || 
         selectedSands.includes(build.sands_1) ||
         selectedSands.includes(build.sands_2) ||
         selectedSands.includes(build.sands_3);
-
-      // Check goblet
+    // 6. Check goblet 
       const isGobletSelected = selectedGoblet.length === 0 || 
         selectedGoblet.includes(build.goblet_1) ||
         selectedGoblet.includes(build.goblet_2);
-
-      // Check circlet
+    // 7. Check circlet 
       const isCircletSelected = selectedCirclet.length === 0 || 
         selectedCirclet.includes(build.circlet_1) ||
         selectedCirclet.includes(build.circlet_2);
-
-      // Check substats
+    // 8. Check substats 
       const isSubstatsSelected = selectedSubstats.length === 0 || 
         selectedSubstats.includes(build.substats_1) ||
         selectedSubstats.includes(build.substats_2) ||
         selectedSubstats.includes(build.substats_3) ||
         selectedSubstats.includes(build.substats_4) ||
         selectedSubstats.includes(build.substats_5) ||
-        selectedSubstats.includes(build.substats_6) ||
         selectedSubstats.includes(build.flatstats_1) ||
         selectedSubstats.includes(build.flatstats_2);
-
-      // Check element
+    // 9. Check element 
       const isElementSelected = selectedElements.length === 0 || 
         selectedElements.includes(build.element);
+    // 10. Return results that match criteria (If pinned, push to front) 
+      // Always return pinned builds, plus any that match all filter criteria  
+        if (selectedPinned.length > 0) {
+          return isBuildPinned || (
+            isCharacterSelected &&
+            isArtifactSetSelected &&
+            isSandsSelected &&
+            isGobletSelected &&
+            isCircletSelected &&
+            isSubstatsSelected &&
+            isElementSelected
+          );
+        } else {
+          // If no builds are pinned, only return those that match all other criteria
+          return (
+            isCharacterSelected &&
+            isArtifactSetSelected &&
+            isSandsSelected &&
+            isGobletSelected &&
+            isCircletSelected &&
+            isSubstatsSelected &&
+            isElementSelected
+          );
+        }
+      });
 
-      // Always return pinned builds, plus any that match all filter criteria
-      if (selectedPinned.length > 0) {
-        return isBuildPinned || (
-          isCharacterSelected &&
-          isArtifactSetSelected &&
-          isSandsSelected &&
-          isGobletSelected &&
-          isCircletSelected &&
-          isSubstatsSelected &&
-          isElementSelected
-        );
-      } else {
-        // If no builds are pinned, only return those that match all other criteria
-        return (
-          isCharacterSelected &&
-          isArtifactSetSelected &&
-          isSandsSelected &&
-          isGobletSelected &&
-          isCircletSelected &&
-          isSubstatsSelected &&
-          isElementSelected
-        );
-      }
-    });
-
-  // ADD RESULT: Find matching 2-Piece Set Boni 
+  // MATCHING BUILDS: Add a new result for matching 2-Piece set boni 
     // 1. Get selected artifact and it's bonus 
       const selectedArtifact = artifactSets.find((set) => set.name === selectedArtifactSet[0]);
       const selectedBonus = selectedArtifact ? selectedArtifact.two_piece : null;
     // 2. Get sets that match the selected bonus 
       const matchingSets = artifactSets
         .filter((set) => set.two_piece === selectedBonus) // Filter sets with the same bonus
-        .filter((set) => set.name !== selectedArtifact?.name); // Exclude the selected set
+        .filter((set) => set.name !== selectedArtifact?.name) // Exclude the selected set
+        .map((set) => set.name);
     // 3. Get all builds that use a combination option with the selected bonus 
       const matchingBuilds = sortedBuilds.filter((build: FullBuild) => {
-        const artifactSet1 = matchingSets.some((set) => set.name === build.artifact_set_1);
-        const artifactSet2 = matchingSets.some((set) => set.name === build.artifact_set_2);
-        const artifactSet3 = matchingSets.some((set) => set.name === build.artifact_set_3);
-        const artifactSet4 = matchingSets.some((set) => set.name === build.artifact_set_4);
-        const artifactSet5 = matchingSets.some((set) => set.name === build.artifact_set_5);
-        const artifactSet6 = matchingSets.some((set) => set.name === build.artifact_set_6);
-        const artifactSet7 = matchingSets.some((set) => set.name === build.artifact_set_7);
-        const artifactSet8 = matchingSets.some((set) => set.name === build.artifact_set_8);
+        const artifactSet1 = matchingSets.includes(build.artifact_set_1);
+        const artifactSet2 = matchingSets.includes(build.artifact_set_2);
+        const artifactSet3 = matchingSets.includes(build.artifact_set_3);
+        const artifactSet4 = matchingSets.includes(build.artifact_set_4);
+        const artifactSet5 = matchingSets.includes(build.artifact_set_5);
+        const artifactSet6 = matchingSets.includes(build.artifact_set_6);
+        const artifactSet7 = matchingSets.includes(build.artifact_set_7);
+        const artifactSet8 = matchingSets.includes(build.artifact_set_8);
+        const artifactSet9 = matchingSets.includes(build.artifact_set_9);
+        const artifactSet10 = matchingSets.includes(build.artifact_set_10);
 
         const option1Combo = build.artifact_set_2;
         const option2Combo = build.artifact_set_4;
         const option3Combo = build.artifact_set_6;
         const option4Combo = build.artifact_set_8;
+        const option5Combo = build.artifact_set_10;
 
         const match1 = option1Combo && (artifactSet1 || artifactSet2)
         const match2 = option2Combo && (artifactSet3 || artifactSet4)
         const match3 = option3Combo && (artifactSet5 || artifactSet6)
         const match4 = option4Combo && (artifactSet7 || artifactSet8)
+        const match5 = option5Combo && (artifactSet9 || artifactSet10)
 
-        return match1 || match2 || match3 || match4
+        return match1 || match2 || match3 || match4 || match5
       });
     // 4. Get IDs of all builds in the main dataset 
       const mainBuildsIDs = filteredResults.map((build: FullBuild) => build.ID)
     // 5. Remove any builds that are already present the in main dataset based on IDs 
       const matchingBuildsFiltered = matchingBuilds.filter((build: FullBuild) => !mainBuildsIDs.includes(build.ID));
     
-  // FILTER: Apply user filters to additional data 
-    const filteredAdditionalResults = matchingBuildsFiltered.filter((build: FullBuild) => {
-
-      // Check character
+  // FILTER: Apply user filters to additional data
+    // 1. Create new array containing the filtered builds from matching builds 
+      const filteredAdditionalResults = matchingBuildsFiltered.filter((build: FullBuild) => {
+    // 2. Check character 
       const isCharacterSelected = selectedCharacter.length === 0 || 
         selectedCharacter.includes(build.character_name);
-
-      // Check sands
+    // 3. Check sands 
       const isSandsSelected = selectedSands.length === 0 || 
         selectedSands.includes(build.sands_1) ||
         selectedSands.includes(build.sands_2) ||
         selectedSands.includes(build.sands_3);
-
-      // Check goblet
+    // 4. Check goblet 
       const isGobletSelected = selectedGoblet.length === 0 || 
         selectedGoblet.includes(build.goblet_1) ||
         selectedGoblet.includes(build.goblet_2);
-
-      // Check circlet
+    // 5. Check circlet 
       const isCircletSelected = selectedCirclet.length === 0 || 
         selectedCirclet.includes(build.circlet_1) ||
         selectedCirclet.includes(build.circlet_2);
-
-      // Check substats
+    // 6. Check substats 
       const isSubstatsSelected = selectedSubstats.length === 0 || 
         selectedSubstats.includes(build.substats_1) ||
         selectedSubstats.includes(build.substats_2) ||
         selectedSubstats.includes(build.substats_3) ||
         selectedSubstats.includes(build.substats_4) ||
         selectedSubstats.includes(build.substats_5) ||
-        selectedSubstats.includes(build.substats_6) ||
         selectedSubstats.includes(build.flatstats_1) ||
         selectedSubstats.includes(build.flatstats_2);
-
-      // Check element
+    // 7. Check element 
       const isElementSelected = selectedElements.length === 0 || 
         selectedElements.includes(build.element);
+    // 8. Return results that match criteria 
+        return (
+          isCharacterSelected &&
+          isSandsSelected &&
+          isGobletSelected &&
+          isCircletSelected &&
+          isSubstatsSelected &&
+          isElementSelected
+        );
+      });
 
-      return (
-        isCharacterSelected &&
-        isSandsSelected &&
-        isGobletSelected &&
-        isCircletSelected &&
-        isSubstatsSelected &&
-        isElementSelected
-      );
-    });
+  // APPLY USER SELECTED SORTING: 
+    // 1. Assign filtered data to variable for further sorting 
+      let sortedResults = filteredResults;
+      let sortedAdditionalResults = filteredAdditionalResults;
 
-  // SORT: Sort both sets of data by relevancy 
+  // SORT DATA BY OPTION: Relevancy 
     // 1. Key maps. Establishes relevancy ranking 
-      const keyValueMapOne = {
+      const substatsKeyMap = {
         flatstats_2: selectedSubstats,
         flatstats_1: selectedSubstats,
-        substats_6: selectedSubstats,
         substats_5: selectedSubstats,
         substats_4: selectedSubstats,
         substats_3: selectedSubstats,
@@ -418,7 +449,7 @@ export default function Results({
         substats_1: selectedSubstats,
       };
 
-      const keyValueMapTwo = {
+      const artifactKeyMapMain = {
         circlet_3: selectedCirclet,
         circlet_2: selectedCirclet,
         circlet_1: selectedCirclet,
@@ -427,6 +458,8 @@ export default function Results({
         sands_3: selectedSands,
         sands_2: selectedSands,
         sands_1: selectedSands,
+        artifact_set_10: selectedArtifactSet,
+        artifact_set_9: selectedArtifactSet,
         artifact_set_8: selectedArtifactSet,
         artifact_set_7: selectedArtifactSet,
         artifact_set_6: selectedArtifactSet,
@@ -435,32 +468,111 @@ export default function Results({
         artifact_set_3: selectedArtifactSet,
         artifact_set_2: selectedArtifactSet,
         artifact_set_1: selectedArtifactSet,
-        //artifact_option_4: selectedArtifactSet,
-        //artifact_option_3: selectedArtifactSet,
-        //artifact_option_2: selectedArtifactSet,
-        //artifact_option_1: selectedArtifactSet,
+      };
+      const artifactKeyMapMatching = {
+        circlet_3: selectedCirclet,
+        circlet_2: selectedCirclet,
+        circlet_1: selectedCirclet,
+        goblet_2: selectedGoblet,
+        goblet_1: selectedGoblet,
+        sands_3: selectedSands,
+        sands_2: selectedSands,
+        sands_1: selectedSands,
+        artifact_set_10: matchingSets,
+        artifact_set_9: matchingSets,
+        artifact_set_8: matchingSets,
+        artifact_set_7: matchingSets,
+        artifact_set_6: matchingSets,
+        artifact_set_5: matchingSets,
+        artifact_set_4: matchingSets,
+        artifact_set_3: matchingSets,
+        artifact_set_2: matchingSets,
+        artifact_set_1: matchingSets,
       };
     // 2. Sort by specified key order 
-      const sortByMultipleKeys = (data: any, keyValueMap:  Record<string, string | string[]>, conditionFn: any) => {
+      const sortByMultipleKeysMain = (
+        data: any,
+        keyValueMap: Record<string, string | string[]>,
+        conditionFn: any
+      ) => {
         return Object.entries(keyValueMap).reduce((acc, [key, selectedValue]) => {
-
           const sortToFront = acc.filter((item: any) => {
+
+            // Skip sorting if the conditionFn is satisfied
             if (conditionFn(item, key)) {
               return false;
             }
             if (selectedValue) {
               return selectedValue.includes(item[key]);
             }
+            return false;
           });
 
           const sortToBack = acc.filter((item: any) => {
+            // Skip sorting if the conditionFn is satisfied
             if (conditionFn(item, key)) {
-              // If the condition is met, treat as alternative
               return true;
             }
             if (selectedValue) {
               return !selectedValue.includes(item[key]);
             }
+            return true;
+          });
+
+          return sortToFront.length > 0 ? [...sortToFront, ...sortToBack] : acc;
+        }, data);
+      };
+      const sortByMultipleKeysMatches = (
+        data: any,
+        keyValueMap: Record<string, string | string[]>,
+        conditionFn: any
+      ) => {
+        return Object.entries(keyValueMap).reduce((acc, [key, selectedValue]) => {
+          const sortToFront = acc.filter((item: any) => {
+
+            // Only sort for combinations artifact options
+            if (key.startsWith("artifact_set_")) {
+
+              // Get the set number from the key (e.g., artifact_set_10 -> 10)
+              const setNumber = parseInt(key.split('_')[2]);
+
+              // Check for the previous set in the sequence and handle accordingly
+              if (setNumber === 9 && (!item["artifact_set_10"] || item["artifact_set_10"].length === 0)) {
+                return false;  // Skip artifact_set_9 if artifact_set_10 is null/empty
+              }
+              if (setNumber === 7 && (!item["artifact_set_8"] || item["artifact_set_8"].length === 0)) {
+                return false;
+              }
+              if (setNumber === 5 && (!item["artifact_set_6"] || item["artifact_set_6"].length === 0)) {
+                return false;  // Skip artifact_set_7 if artifact_set_8 is empty
+              }     
+              if (setNumber === 3 && (!item["artifact_set_4"] || item["artifact_set_4"].length === 0)) {
+                return false;  // Skip artifact_set_7 if artifact_set_8 is empty
+              }
+              if (setNumber === 1 && (!item["artifact_set_2"] || item["artifact_set_2"].length === 0)) {
+                return false;  // Skip artifact_set_7 if artifact_set_8 is empty
+              }
+            }
+
+            // Skip sorting if the conditionFn is satisfied
+            if (conditionFn(item, key)) {
+              return false;
+            }
+            if (selectedValue) {
+              return selectedValue.includes(item[key]);
+            }
+            return false;
+          });
+
+          const sortToBack = acc.filter((item: any) => {
+            // Skip sorting if the conditionFn is satisfied
+            if (conditionFn(item, key)) {
+              return true;
+            }
+            if (selectedValue) {
+              return !selectedValue.includes(item[key]);
+            }
+            return true;
           });
 
           return sortToFront.length > 0 ? [...sortToFront, ...sortToBack] : acc;
@@ -470,6 +582,8 @@ export default function Results({
       const conditionFn = (item: any, key: string) => {
         // Define a map for the artifact sets that need to be compared for each key
         const higherSetsMap: Record<string, string[]> = {
+          'artifact_set_10': ['artifact_set_1', 'artifact_set_2', 'artifact_set_3', 'artifact_set_4', 'artifact_set_5', 'artifact_set_6', 'artifact_set_7', 'artifact_set_8'],
+          'artifact_set_9': ['artifact_set_1', 'artifact_set_2', 'artifact_set_3', 'artifact_set_4', 'artifact_set_5', 'artifact_set_6', 'artifact_set_7', 'artifact_set_8'],
           'artifact_set_8': ['artifact_set_1', 'artifact_set_2', 'artifact_set_3', 'artifact_set_4', 'artifact_set_5', 'artifact_set_6'],
           'artifact_set_7': ['artifact_set_1', 'artifact_set_2', 'artifact_set_3', 'artifact_set_4', 'artifact_set_5', 'artifact_set_6'],
           'artifact_set_6': ['artifact_set_1', 'artifact_set_2', 'artifact_set_3', 'artifact_set_4'],
@@ -487,7 +601,7 @@ export default function Results({
         return false;
       };
     // 4. Count matching substats 
-      const countMatchingSubstats = (item: any, selectedSubstats: any, maxSubstats = 6) => {
+      const countMatchingSubstats = (item: any, selectedSubstats: any, maxSubstats = 5, maxFlatstats = 2) => {
         let matchCount = 0;
 
         // Check for matches in each substats property
@@ -501,7 +615,7 @@ export default function Results({
           }
         }
         // Check for matches in each flat substats property
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= maxFlatstats; i++) {
           const key = `flatstats_${i}`;
           if (item[key]) {
             matchCount += selectedSubstats.filter((stat: string) => item[key] === stat).length;
@@ -510,43 +624,200 @@ export default function Results({
         return matchCount;
       };
     // 5. Apply relevancy sorting to main results 
-      let sortedResults = filteredResults;
-      sortedResults = sortByMultipleKeys(sortedResults, keyValueMapOne, conditionFn);
-      sortedResults.sort((a: FullBuild, b: FullBuild) => {
-        const aCount = countMatchingSubstats(a, selectedSubstats);
-        const bCount = countMatchingSubstats(b, selectedSubstats);
-        return bCount - aCount;
-      });
-      sortedResults = sortByMultipleKeys(sortedResults, keyValueMapTwo, conditionFn);
-    // 6. Split pinned builds and move them to the front 
+      if(sortingOption === 'Relevance') {
+        sortedResults = sortByMultipleKeysMain(sortedResults, substatsKeyMap, conditionFn);
+        sortedResults.sort((a: FullBuild, b: FullBuild) => {
+          const aCount = countMatchingSubstats(a, selectedSubstats);
+          const bCount = countMatchingSubstats(b, selectedSubstats);
+          return bCount - aCount;
+        });
+        sortedResults = sortByMultipleKeysMain(sortedResults, artifactKeyMapMain, conditionFn);
+      }
+    // 6. Apply relevancy sorting to additional results 
+      if(sortingOption === 'Relevance') {
+        sortedAdditionalResults = sortByMultipleKeysMatches(sortedAdditionalResults, substatsKeyMap, conditionFn);
+        sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
+          const aCount = countMatchingSubstats(a, selectedSubstats);
+          const bCount = countMatchingSubstats(b, selectedSubstats);
+          return bCount - aCount;
+        });
+        sortedAdditionalResults = sortByMultipleKeysMatches(sortedAdditionalResults, artifactKeyMapMatching, conditionFn);
+      } 
+  
+  // SORT DATA BY OPTION: Character
+    // 1. ALPHABETICAL
+      // 1. Apply sorting to main results 
+        if(sortingOption === 'Character – A–Z') {
+          sortedResults.sort((a: FullBuild, b: FullBuild) => {
+            if (a.character_name < b.character_name) {
+              return -1; // a comes before b
+            }
+            if (a.character_name > b.character_name) {
+              return 1; // b comes before a
+            }
+            return sortDescending ? b.ID - a.ID : a.ID - b.ID;
+          });
+        }
+      // 2. Apply sorting to additional results 
+        if(sortingOption === 'Character – A–Z') {
+          sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
+            if (a.character_name < b.character_name) {
+              return -1; // a comes before b
+            }
+            if (a.character_name > b.character_name) {
+              return 1; // b comes before a
+            }
+            return sortDescending ? b.ID - a.ID : a.ID - b.ID;
+          });
+        }
+    
+    // 2. CHRONOLOGICAL
+      // 1. Apply sorting to main results 
+        if(sortingOption === 'Character – By Release') {
+          sortedResults.sort((a: FullBuild, b: FullBuild) => {
+            const indexACharacter = characterOrder.indexOf(a.character_name);
+            const indexBCharacter = characterOrder.indexOf(b.character_name);
+
+            // Sort by character chronology
+            if (indexACharacter !== indexBCharacter) {
+              return indexACharacter - indexBCharacter;
+            }
+            return sortDescending ? b.ID - a.ID : a.ID - b.ID;
+          });
+        }
+      // 2. Apply sorting to additional results 
+        if(sortingOption === 'Character – By Release') {
+          sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
+            if (a.character_name < b.character_name) {
+              return -1; // a comes before b
+            }
+            if (a.character_name > b.character_name) {
+              return 1; // b comes before a
+            }
+            return sortDescending ? b.ID - a.ID : a.ID - b.ID;
+          });
+        }
+
+  // SORT DATA BY OPTION: Artifact Set
+    // 1. ALPHABETICAL
+      // 1. Apply sorting to main results 
+        if(sortingOption === 'Artifact Set – A–Z') {
+          sortedResults.sort((a: FullBuild, b: FullBuild) => {
+            if (a.artifact_set_1 < b.artifact_set_1) {
+              return -1; // a comes before b
+            }
+            if (a.artifact_set_1 > b.artifact_set_1) {
+              return 1; // b comes before a
+            }
+
+            // Sort by character chronology
+            const indexACharacter = characterOrder.indexOf(a.character_name);
+            const indexBCharacter = characterOrder.indexOf(b.character_name);
+            if(sortDescending) {
+              if (indexACharacter !== indexBCharacter) {
+                return indexBCharacter - indexACharacter;
+              }
+            }
+
+            return 0;
+          });
+        }
+      // 2. Apply sorting to additional results 
+        if(sortingOption === 'Artifact Set – A–Z') {
+          sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
+            if (a.artifact_set_1 < b.artifact_set_1) {
+              return -1; // a comes before b
+            }
+            if (a.artifact_set_1 > b.artifact_set_1) {
+              return 1; // b comes before a
+            }
+
+            // Sort by character chronology
+            const indexACharacter = characterOrder.indexOf(a.character_name);
+            const indexBCharacter = characterOrder.indexOf(b.character_name);
+            if(sortDescending) {
+              if (indexACharacter !== indexBCharacter) {
+                return indexBCharacter - indexACharacter;
+              }
+            }
+
+            return 0; // a and b are equal
+          });
+        }
+
+    // 2. CHRONOLOGICAL
+      // 1. Apply sorting to main results 
+        if(sortingOption === 'Artifact Set – By Release') {
+          sortedResults.sort((a: FullBuild, b: FullBuild) => {
+            const indexAArtifact = artifactOrder.indexOf(a.artifact_set_1);
+            const indexBArtifact = artifactOrder.indexOf(b.artifact_set_1);
+            // Sort by artifact order
+            if (indexAArtifact !== indexBArtifact) {
+              return indexAArtifact - indexBArtifact;
+            }
+
+            // Sort by character chronology
+            const indexACharacter = characterOrder.indexOf(a.character_name);
+            const indexBCharacter = characterOrder.indexOf(b.character_name);
+            if(sortDescending) {
+              if (indexACharacter !== indexBCharacter) {
+                return indexBCharacter - indexACharacter;
+              }
+            }
+
+            return 0; // If equal, return 0 to indicate no sorting needed
+          });
+        }
+      // 2. Apply sorting to additional results 
+        if(sortingOption === 'Artifact Set – By Release') {
+          sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
+            const indexAArtifact = artifactOrder.indexOf(a.artifact_set_1);
+            const indexBArtifact = artifactOrder.indexOf(b.artifact_set_1);
+            // Sort by artifact order
+            if (indexAArtifact !== indexBArtifact) {
+              return indexAArtifact - indexBArtifact;
+            }
+
+            // Sort by character chronology
+            const indexACharacter = characterOrder.indexOf(a.character_name);
+            const indexBCharacter = characterOrder.indexOf(b.character_name);
+            if(sortDescending) {
+              if (indexACharacter !== indexBCharacter) {
+                return indexBCharacter - indexACharacter;
+              }
+            }
+
+            return 0; // If equal, return 0 to indicate no sorting needed
+          });
+        }
+
+  // SORT ORDER: Ascending or Descending?
+    // 1. Handle change of sort order 
+      const handleToggleSortingOrder = () => {
+        setSortDescending(!sortDescending)
+      }
+    // 2. Apply order to results if ascending, else leave as default (descending) 
+      if(sortDescending) {
+        sortedResults = sortedResults.reverse();
+      }
+  
+  // PINNED BUILS: Move to front of results 
+    // 1. Split pinned builds from the main data 
       const pinnedBuilds = sortedResults.filter((pinned: FullBuild) => selectedPinned.includes(pinned.ID));
       const otherBuilds = sortedResults.filter((pinned: FullBuild) => !selectedPinned.includes(pinned.ID));
+    // 2. Combine pinned builds back with main data 
       const sortedMainResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
-    // 7. Apply relevancy sorting to  additional results 
-      let sortedAdditionalResults = filteredAdditionalResults;
-      sortedAdditionalResults = sortByMultipleKeys(sortedAdditionalResults, keyValueMapOne, conditionFn);
-      sortedAdditionalResults.sort((a: FullBuild, b: FullBuild) => {
-        const aCount = countMatchingSubstats(a, selectedSubstats);
-        const bCount = countMatchingSubstats(b, selectedSubstats);
-        return bCount - aCount;
-      });
-      sortedAdditionalResults = sortByMultipleKeys(sortedAdditionalResults, keyValueMapTwo, conditionFn);
 
-  // CHECK: Are there actually any filters applied? 
+  // CHECK: Are there actually any filters applied? (currently not in use) 
     //const noFilter = buildsDataRaw.length === sortedMainResults.length; // returns true if same length
+
+
 
   return (
     <section id="results">
 
       {/* Results Header */}
       <div className="results-header">
-        {/* Display number of builds found */}
-          {/*<h2>{
-            noFilter ? `Showing all ${sortedMainResults.length} builds` : 
-            sortedMainResults.length === 1 ? `Found 1 build matching filters` : 
-            sortedMainResults.length > 1 ? `Found ${sortedMainResults.length} builds matching filters` : 
-            'No builds matching current filters'}
-          </h2>*/}
         {/* Filter Tabs */} 
           {!isMobile &&
           <FilterTabs 
@@ -560,6 +831,7 @@ export default function Results({
         {/* Builds Filter Menu: What sections are shown? */} 
           <div id="filter-build">
             {/* Filter Options */}
+              <h4>Show build sections</h4>
               <div className="filter-build-options">
                 {buildSectionsOptions.map((section: string) => (
                   <button
@@ -582,11 +854,46 @@ export default function Results({
                 ))}
               </div>{/* End Filter Options */}
           </div>{/* End Builds Filter Menu */}
+          
+        {/* Selecting sorting option */}
+          <div id="select-sorting-option">
+            <h4>Sort results by</h4>
+            <div className="sorting-buttons">
+              <button onClick={() => handleToggleSortingMenu()}>
+                <img 
+                  className="sort-image"
+                  src="./images/icons/Icon Sort.webp"
+                />
+                <p>{sortingOption}</p>
+              </button>
+              <button onClick={() => handleToggleSortingOrder()}>
+                <img 
+                  className={sortDescending ? 'descending-image' : 'ascending-image'}
+                  src="./images/icons/Icon Sort Direction.webp"
+                />
+              </button>
+            </div>
+            {sortingOptionsMenuOpen &&
+            <ul>
+              {sortingOptions.map((option: string) => (
+                <li onClick={() => handleChangeSortingOption(option)}>{option}</li>
+              ))}
+            </ul>}
+          </div>
       </div>{/* End Results Header */}
 
       {/* Main Results Content */}
       <div id="main-content">
         <div id="results-content">
+
+
+        {/* Display number of builds found */}
+          {/*<h2 className="main-content-results-number">{
+            noFilter ? `Showing all ${sortedMainResults.length} builds` : 
+            sortedMainResults.length === 1 ? `Found 1 build matching filters` : 
+            sortedMainResults.length > 1 ? `Found ${sortedMainResults.length} builds matching filters` : 
+            'No builds matching current filters'}
+          </h2>*/}
 
         {!viewPinned ? (
           <>
@@ -601,6 +908,8 @@ export default function Results({
                 selectedPinned={selectedPinned}
                 selectedFilters={selectedFilters}
                 isMobile={isMobile}
+                isMenuOpen={isMenuOpen}
+                matchingSets={matchingSets}
               />
             ))}
           </>
@@ -617,38 +926,133 @@ export default function Results({
                 selectedPinned={selectedPinned}
                 selectedFilters={selectedFilters}
                 isMobile={isMobile}
+                isMenuOpen={isMenuOpen}
+                matchingSets={matchingSets}
               />
             ))}
           </>
         )}
 
-        {/* ERROR DISPLAY */}
-          {/* View pinned, but no pinned builds? */}
-          {viewPinned && pinnedBuilds.length === 0 &&
+        {/* No results display */}
+          {/* 1. View pinned */}
+          {
+            viewPinned && pinnedBuilds.length === 0 &&
             <div id="no-results">
+              <img
+                className="no-result-img"
+                src={'./option1.webp'}
+              />
               <h3>No pinned builds.<br /> You can pin a build by clicking the &#9733; icon.</h3>
             </div>}
-          {/* No results for main set? */}
-          {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && selectedArtifact &&
+          {/* 2. Only artifact set is selected */}
+          {
+            sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && 
+            selectedArtifactSet.length > 0 &&
+            selectedCharacter.length === 0 &&
+            selectedSands.length === 0 &&
+            selectedGoblet.length === 0 &&
+            selectedCirclet.length === 0 &&
+            selectedSubstats.length === 0 &&
+            selectedElements.length === 0 &&
             <div id="no-results">
-              <h3>No on-set results found for {selectedArtifact.name} with the selected stats.</h3>
-              <button className="reset-filters" onClick={() => resetFilters('artifact-set')}>Check for off-piece matches?</button>
+              <img
+                className="no-result-img surprised"
+                src={'./option4.webp'}
+              />
+              <h3>No one really wants {selectedArtifactSet}.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('artifact')}>Select something useful instead.</button>
             </div>}
-          {/* No artifact selected and no result? */}
-          {sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && !selectedArtifact &&
+          {/* 3. Artifact set is selected, character is not */}
+          {
+            sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && 
+            selectedCharacter.length === 0 &&
+            selectedArtifactSet.length > 0 &&
+            (
+              selectedSands.length > 0 ||
+              selectedGoblet.length > 0 ||
+              selectedCirclet.length > 0 ||
+              selectedSubstats.length > 0||
+              selectedElements.length > 0
+            ) &&
             <div id="no-results">
-              <h3>These are not the builds you're looking for...</h3>
-              <button className="reset-filters" onClick={() => resetFilters(null)}>Reset filters</button>
+              <img
+                className="no-result-img sad"
+                src={'./option3.webp'}
+              />
+              {selectedElements.length === 0 &&
+              <>
+              <h3>No on-set results found for {selectedArtifactSet} with the current filter selection.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('artifact')}>Check for off-piece matches</button></>}
+
+              {selectedElements.length > 0 &&
+              <>
+              <h3>{selectedArtifactSet} isn't used by any {selectedElements.join(' or ')} characters.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('view-artifact')}>View builds using {selectedArtifactSet}</button></>}
+
+            </div>}
+          {/* 4. Character is selected + any combination */}
+          {
+            sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && 
+            selectedCharacter.length > 0 &&
+            (
+              selectedArtifactSet.length > 0 || 
+              selectedSands.length > 0 ||
+              selectedGoblet.length > 0 ||
+              selectedCirclet.length > 0 ||
+              selectedSubstats.length > 0 ||
+              selectedElements.length > 0
+            ) &&
+            <div id="no-results">
+              <img
+                className="no-result-img sad"
+                src={'./option3.webp'}
+              />
+
+              {/* 1. No artifact set or element */}
+              {selectedArtifactSet.length === 0 && selectedElements.length === 0 &&
+              <>
+              <h3>{selectedCharacter} doesn't have any builds matching the current filters.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
+              </>}
+
+              {/* 2. Artifact set, but no element */}
+              {selectedArtifactSet.length > 0 && selectedElements.length === 0 &&
+              <>
+              <h3>{selectedCharacter} does not use {selectedArtifactSet}.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
+              <button className="reset-filters error" onClick={() => resetFilters('view-artifact')}>View builds using {selectedArtifactSet}</button>
+              </>}
+
+              {/* 3. Element selected */}
+              {selectedElements.length > 0 &&
+              <>
+              <h3>{selectedCharacter}. {selectedElements.join(' or ')}? Paimon is confused.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
+              <button className="reset-filters error" onClick={() => resetFilters('view-elements')}>View {selectedElements.join(' and ')} characters</button>
+              </>}
+
+            </div>}
+          {/* 5. No artifact nor character selected */}
+          {
+            sortedMainResults.length === 0 && sortedAdditionalResults.length === 0 && 
+            selectedArtifactSet.length === 0 &&
+            selectedCharacter.length === 0 &&
+            <div id="no-results">
+              <img
+                className="no-result-img"
+                src={'./option1.webp'}
+              />
+              <h3>Paimon looked everywhere, but she couldn't find anything...</h3>
+              <button className="reset-filters error" onClick={() => resetFilters(null)}>Clear all filters</button>
             </div>}
 
-          </div>{/* End Main Results Content */}
+        </div>{/* End Main Results Content */}
         
         {/* Additional results - Partial matches based on 2-piece set bonus */}
           {sortedAdditionalResults.length > 0 &&
           <div id="additional-results-wrapper">
             <div className="additional-results-text">
               <h3 className="additional-results-content-header">
-                {sortedAdditionalResults.length} Partial match{sortedAdditionalResults.length > 1 && 'es'}: <br />
                 Matching 2&ndash;Piece Set Bonus
               </h3>
               <p>{selectedArtifact?.name} 2&ndash;Piece Set Bonus: <b>{selectedArtifact?.two_piece}</b></p>
@@ -666,12 +1070,14 @@ export default function Results({
                   selectedPinned={selectedPinned}
                   selectedFilters={selectedFilters}
                   isMobile={isMobile}
+                  isMenuOpen={isMenuOpen}
+                  matchingSets={matchingSets}
                 />
               ))}
             </div>
           </div>}{/* End Additional results */}
-        </div>{/* End Main Content */}
 
+      </div>{/* End Main Content */}
       <Footer />
     </section>
   );

@@ -1,14 +1,14 @@
-export const artifactSands = ['HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 'Energy Recharge'];
+export const artifactSands = [ 'ATK%', 'DEF%', 'HP%', 'Elemental Mastery', 'Energy Recharge'];
 
 export const artifactGoblet = [
-			'HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 
+			'ATK%', 'DEF%', 'HP%', 'Elemental Mastery', 
 			'Physical DMG Bonus', 'Hydro DMG Bonus', 
 			'Pyro DMG Bonus', 'Cryo DMG Bonus', 
 			'Dendro DMG Bonus', 'Electro DMG Bonus',
 			'Anemo DMG Bonus', 'Geo DMG Bonus',
 		];
 
-export const artifactCirclet = ['HP%', 'DEF%', 'ATK%', 'Elemental Mastery', 'CRIT Rate', 'CRIT DMG', 'Healing Bonus'];
+export const artifactCirclet = ['ATK%', 'DEF%', 'HP%', 'CRIT Rate', 'CRIT DMG', 'Elemental Mastery', 'Healing Bonus'];
 
 export const artifactSets = [
 	{

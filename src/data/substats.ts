@@ -1,1 +1,1 @@
-export const substats = ['HP%', 'ATK%', 'DEF%', 'Elemental Mastery', 'Energy Recharge', 'CRIT Rate', 'CRIT DMG', 'Flat HP', 'Flat ATK', 'Flat DEF',];
+export const substats = ['ATK%', 'DEF%', 'HP%', 'CRIT Rate', 'CRIT DMG', 'Elemental Mastery', 'Energy Recharge', 'Flat ATK', 'Flat DEF', 'Flat HP',];

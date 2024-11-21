@@ -12,6 +12,7 @@ $filter-padding: 20px;
   section#filter {
     width: 85%;
     transition: all 0.3s ease-out;
+    padding: $filter-padding / 2;
 
     div#filter-tabs {
       position: fixed;
@@ -29,6 +30,7 @@ $filter-padding: 20px;
         height: 50px;
 
         button.filter-select {
+          color: #FFF;
           background: none;
           width: 100%;
           height: 100%;
@@ -38,7 +40,7 @@ $filter-padding: 20px;
           text-align: center;
 
           img {
-            height: 90%;
+            height: 85%;
             margin-right: 4px;
             margin-left: 0px;
           }
@@ -49,16 +51,31 @@ $filter-padding: 20px;
             white-space: nowrap;
           }
         }
-
       }
       div.filter-tab.highlighted {
         background-color: #222222;
       }
-      button.filter-new {
+      button.filter-new, button.filter-pinned, button.filter-suggestion {
+        color: #FFF;
         width: 100%;
         height: 50px;
         border: none;
         background-color: #191919;
+        font-size: 1.1em;
+      }
+      button.filter-pinned.highlighted {
+        background-color: lighten(#242424, 7%);
+        color: gold;
+      }
+      button.filter-suggestion {
+        img {
+          height: 85%;
+          margin-right: 4px;
+          margin-left: 0px;
+        }
+        p {
+          display: none;
+        }
       }
     }
     div#filter-tabs.closed {
@@ -93,6 +110,7 @@ $filter-padding: 20px;
 // Applicable to big screen sizes
 @media screen and (min-width: 601px) {
   section#filter {
+    padding: $filter-padding/2 $filter-padding $filter-padding $filter-padding;
     width: $filter-width + ($filter-padding *2) + 10; // +10 for scrollbar  
 
     div.dropdown-wrapper, ul.dropdown-menu, div.search-bar, label {
@@ -128,14 +146,12 @@ section#filter {
   left: 0;
   overflow-y: scroll;
   scrollbar-width: thin;
-  padding: $filter-padding;
   font-size: 1em;
 
 
   // Filter section: Artifacts 
     div#filter-artifact {
     }
-
   // Filter section: Other 
     div#filter-other { 
       margin-top: 30px;
@@ -147,7 +163,6 @@ section#filter {
         font-size: 2em;
       }
     }
-
   // Filter mainstats 
     div.filter-artifact-mainstats {
       div.filter-option {
@@ -168,7 +183,6 @@ section#filter {
           margin-right: 7px;
           filter: grayscale(100%);
         }
-
       // Search Bar Wrapper 
         div.search-bar {
           height: 44px;
@@ -185,16 +199,19 @@ section#filter {
             width: $filter-width;
           }
         }
-
       // Labels (substats etc.) 
         label {
           transition: all 0.3s ease-out;
           display: flex;
-          padding: 5px;
+          padding: 4px 5px 5px 5px;
           background-color: #252525;
           border-bottom: 1px solid #192019;
           box-shadow: 1px 3px 5px #202020;
           user-select: none;
+
+          img {
+            margin-top: 1px;
+          }
 
           input {
             display: none;
@@ -207,7 +224,7 @@ section#filter {
         }
     }
 
-  // Dropdown Menus 
+  // Dropdown Menu Toggle 
     div.dropdown-wrapper {
       position: relative;
       overflow: hidden;
@@ -240,37 +257,65 @@ section#filter {
       div.dropdown:hover {
         background-color: lighten(#242424, 5%);
       }
+      div.dropdown.open {
+        font-weight: 700;
+        color: #FFF;
+        background-color: lighten(#242424, 5%);
+      }
     }
-
   // Dropdown Menu List 
     ul.dropdown-menu {
       list-style-type: none;
       margin: 0;
       padding: 0;
-      position: relative;
-      z-index: 10;
+      position: absolute;
+      z-index: 9999;
       color: rgba(255, 255, 255, 0.87);
       background-color: #222222;
-      box-shadow: 1px 3px 5px #191919;
+      box-shadow: 0px 20px 20px #191919;
       border-bottom: 1px solid #192019;
+      margin-bottom: 20px;
+      padding-bottom: 5px;
+      max-height: calc(100vh - 180px);
       overflow-y: scroll;
       scrollbar-width: thin;
-      height: 500px;
 
+      li:last-of-type {
+        border-bottom: none;
+      }
       li {
         transition: all 0.3s ease-out;
-        height: 44px;
+        height: 40px;
         cursor: pointer;
         display: flex;
         align-items: center;
-        border-bottom: 1px solid #192019;
+        border-bottom: 1px solid #191919;
         position: relative;
+        overflow: hidden;
 
         img {
-          height: 90%;
+          height: 80%;
+          margin-left: 5px;
+          margin-right: 8px;
+        }        
+        img.artifact {
+          height: 100%;
+        }
+        img.character {
+          height: 100%;
+          border-radius: 100%;
+        }
+        img.element {
+          height: 65%;
+          margin-left: 9px;
+          margin-right: 11px;
         }
         p {
-          padding: 8px;
+          font-size: 0.95em;
+          padding-right: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
       li:hover {

@@ -14,7 +14,8 @@ import Results from './ui/Results.tsx';
 // Filter Functions
 import { 
   updateFiltersSingleSelect,
-  updateFiltersMultiSelect,
+  updateFiltersSubstats,
+  updateFiltersElements,
 } from './utility/functions'
 
 // Type definitions
@@ -24,10 +25,10 @@ export default function App() {
 
   // IMPORT DATA: Handle CSV data
     // 1. Data version 
-      const VERSION = '1.4';
-    // 2. State to store data
+      const VERSION = '1.1';
+    // 2. State to store data 
       const [rawData, setRawData] = useState<RawBuild[]>([]);
-    // 3. Parse and set data to state and localstorage
+    // 3. Parse and set data to state and localstorage 
       useEffect(() => {
         // Check if localstorage data exists
         const storedData = localStorage.getItem('csvData');
@@ -82,7 +83,10 @@ export default function App() {
         selectedSubstats,
         selectedElements
       };
-    // 3. Handle changes to filter states 
+    // 3. Determine number of selected substats 
+      const substatsToRemove = ['CRIT Rate/DMG', 'CRIT Rate (Favonius)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Melt)'];
+      const numberOfSubstats = selectedSubstats.filter(substat => !substatsToRemove.includes(substat)).length;
+    // 4. Handle changes to filter states 
       const handleCharacterChange = (name: string) => {
         updateFiltersSingleSelect(name, setSelectedCharacter);
       };
@@ -104,19 +108,43 @@ export default function App() {
       }
 
       const handleSubstatsChange = (stat: string) => {
-        updateFiltersMultiSelect(stat, setSelectedSubstats);
+        updateFiltersSubstats(stat, setSelectedSubstats, numberOfSubstats);
       }
 
       const handleElementsChange = (element: string) => {
-        updateFiltersMultiSelect(element, setSelectedElements);
+        updateFiltersElements(element, setSelectedElements);
       };
-    // 4. Handle clearing of filters
+    // 5. Handle clearing of filters 
       const resetFilters = (filter: string | null) => {
         if(filter === 'artifact') {
           setSelectedArtifactSet([]);
         }
         else if(filter === 'character') {
           setSelectedCharacter([]);
+        }
+        else if(filter === 'view-character') {
+          setSelectedArtifactSet([]);
+          setSelectedSands([]);
+          setSelectedGoblet([]);
+          setSelectedCirclet([]);
+          setSelectedSubstats([]);
+          setSelectedElements([]);
+        }
+        else if(filter === 'view-artifact') {
+          setSelectedCharacter([]);
+          setSelectedSands([]);
+          setSelectedGoblet([]);
+          setSelectedCirclet([]);
+          setSelectedSubstats([]);
+          setSelectedElements([]);
+        }
+        else if(filter === 'view-elements') {
+          setSelectedArtifactSet([]);
+          setSelectedCharacter([]);
+          setSelectedSands([]);
+          setSelectedGoblet([]);
+          setSelectedCirclet([]);
+          setSelectedSubstats([]);
         }
         else {
           setSelectedArtifactSet([]);
@@ -128,7 +156,7 @@ export default function App() {
           setSelectedElements([]);
         }
       }
-    // 5. Swipe detection for opening menu (Mobile) 
+    // 6. Swipe detection for opening menu (Mobile) 
       // State to store open/closed
       const [isMenuOpen, setIsMenuOpen] = useState(true);
 
@@ -194,11 +222,14 @@ export default function App() {
         ]);
     // 3. Change tab: Load information 
       const [viewPinned, setViewPinned] = useState(false);
-      const handleTabChange = (tabId: number, artifact: string | null) => {
+      const handleTabChange = (tabId: number, filter: string | null, value: string | null) => {
         setCurrentFilterTab(tabId);
-
-        if(artifact) {
-          setSelectedArtifactSet([artifact]);
+        if(filter) {
+          if(filter === 'artifact'){
+            if(value) {
+              setSelectedArtifactSet([value]);
+            }
+          }
         }
         if(tabId === 0) {
           setViewPinned(true)
@@ -207,7 +238,7 @@ export default function App() {
           setViewPinned(false)
         }
         
-        if(!artifact) {
+        if(!filter) {
           // Load filters from the saved state of the current tab
           const filtersForTab = savedFilters[tabId] || {}; // Default to empty if no saved filters for the tab
           setSelectedCharacter(filtersForTab.selectedCharacter || []);

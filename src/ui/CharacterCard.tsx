@@ -6,6 +6,8 @@ import { FullBuild, SelectedFilters } from '../types/types';
 // UI
 import Artifact from './Artifact.tsx'
 
+// Functions
+import { parseText } from '../utility/functions'
 
 export default function CharacterCard({
   build,
@@ -15,6 +17,8 @@ export default function CharacterCard({
   selectedPinned,
   selectedFilters,
   isMobile,
+  isMenuOpen,
+  matchingSets,
 } : {
   build: FullBuild;
   buildSectionsOptions: string[];
@@ -23,6 +27,8 @@ export default function CharacterCard({
   selectedPinned: number[];
   selectedFilters: SelectedFilters;
   isMobile: boolean;
+  isMenuOpen: boolean;
+	matchingSets: string[];
 }) {
 
   // SELECTED FILTERS
@@ -47,7 +53,24 @@ export default function CharacterCard({
 			const showCirclet = buildSectionsVisible.includes('Circlet') || buildSectionsVisible.includes('All');
 			const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
 			const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
-		// 2. Set default state based on mobile or not 
+		// 2. Handle click on banner (visibility / expanded view toggle) 
+		  const [isBuildVisible, setIsBuildVisible] = useState<boolean>(false);
+			const [expanded, setExpanded] = useState<boolean>(false);
+		  const handleBannerClick = () => {
+
+		  		// Banner click on mobile
+				  if (isMobile) {
+				  	if (!isMenuOpen) {
+				    	setIsBuildVisible(prev => !prev);
+				    }
+				  }
+
+				  // Banner click on PC
+					else if (filterApplied) {
+				    setExpanded(prev => !prev)
+				  }
+				}
+		// 3. Set default state based on mobile or not 
 		  useLayoutEffect(() => {
 		  	if(isMobile) {
 		  		setIsBuildVisible(false)
@@ -56,11 +79,6 @@ export default function CharacterCard({
 		  		setIsBuildVisible(true)
 		  	}
 		  }, [isMobile]);
-	  // 3. Handle clicks to toggle build content section (Mobile) 
-		  const [isBuildVisible, setIsBuildVisible] = useState<boolean>();
-		  const toggleBuildVisibility = () => {
-		    setIsBuildVisible(prev => !prev);
-		  };
 
 	// ABOUT: Handle minimize/maximize
 		// 1. States & Refs 
@@ -74,6 +92,7 @@ export default function CharacterCard({
 			  if (aboutSection) {
 			    const aboutSectionHeight = aboutSection.scrollHeight;
 
+
 			    if (aboutSectionHeight >= 85) {
 			      setAboutIsExpandable(true);
 			      setAboutIsExpanded(false);
@@ -82,7 +101,7 @@ export default function CharacterCard({
 			      setAboutIsExpandable(false);
 			    }
 			  }
-			}, [filterApplied, isBuildVisible]);
+			}, [filterApplied, isBuildVisible, buildSectionsVisible]);
 		// 3. Handle maximizing of about section on click 
 			const handleAboutIsExpanded = (e: any) => {
 				e.preventDefault();
@@ -115,11 +134,52 @@ export default function CharacterCard({
 			    setPortraitImgSrc(portraitPlaceholderImage);  // Set the image to placeholder if original image fails
 			  };
 
+		// ARTIFACT: Find number of different options
+			const getMaxArtifactSetNumber = (build: FullBuild) => {
+			  // Define the mapping for artifact sets to numbers
+			  const artifactSetMapping = {
+			    9: 5,
+			    7: 4,
+			    5: 3,
+			    3: 2,
+			    1: 1
+			  };
+
+			  // Array of artifact sets to check
+			  const artifactSets = [
+			    build.artifact_set_9,
+			    build.artifact_set_7,
+			    build.artifact_set_5,
+			    build.artifact_set_3,
+			    build.artifact_set_1
+			  ];
+
+			  // Iterate through the artifactSets array and find the highest valid mapped number
+			  let highestNumber = 0; // Default to 0 if none found
+
+			  artifactSets.forEach((artifact, index) => {
+			    if (artifact) {
+			      // Get the key from the artifactSets (9, 7, 5, etc.)
+			      const artifactSetKey = [9, 7, 5, 3, 1][index];  // Explicitly map index to key 9, 7, 5, 3, 1
+			      const mappedNumber = artifactSetMapping[artifactSetKey as 1 | 3 | 5 | 7 | 9];
+
+			      // Update highestNumber if the current mappedNumber is higher
+			      highestNumber = Math.max(highestNumber, mappedNumber);
+			    }
+			  });
+
+			  return highestNumber;
+			};
+			const numberOfArtifactOptions = getMaxArtifactSetNumber(build)
+
 	return (
-		<div className={filterApplied ? 'character-card small' : 'character-card full'}>
+		<div className={`character-card ${filterApplied ? (expanded ? 'full expanded' : 'small') : 'full'}`}>
 
 		{/* Build header wrapper */}
-      <div onClick={() => isMobile && toggleBuildVisibility()} className={`build-header rarity-${build.rarity}`}>
+      <div 
+      	className={`build-header rarity-${build.rarity}`}
+				onClick={() => handleBannerClick()}
+      >
 
       	{/* Element symbol */}
 					<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
@@ -135,7 +195,7 @@ export default function CharacterCard({
 								bottom: 
 								!filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset : '60px') : 
 								!filterApplied && isMobile ? (build.banner_offset ? build.banner_offset / 1.5 +2 : '60px') :
-								filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset / 2 : '35px') :
+								filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset / 2.1 : '35px') :
 								'60px'
 							}}
 							/>
@@ -143,7 +203,7 @@ export default function CharacterCard({
 
 				{/* Profile Pictures */}
 					{/* Traveler build and no filters (i.e. big format display) */}
-					{build.character_name.includes('Traveler') && !filterApplied
+					{build.character_name.includes('Traveler') && (!filterApplied || expanded)
 						?
 						<>
 							{/* Specific images for Traveler to include both of them */}
@@ -155,7 +215,10 @@ export default function CharacterCard({
 							{/* Single picture for everyone else (also for traveler in small format display) */}
 							<img 
 								className="character-portrait" 
-								src={portraitImgSrc} 
+								src={
+									build.character_name.includes('Traveler') ? "./images/characters/portraits/Aether.webp" :
+									portraitImgSrc
+								} 
 								onError={handlePortraitError}
 								alt={build.character_name}/>
 						</>
@@ -168,10 +231,11 @@ export default function CharacterCard({
 	        </div>
 
         {/* Pin Build Button */}
+	      
 	        <div className="pin-build">
 	        	<button 
 	        		className={selectedPinned.includes(build.ID) ? 'pin-build-button active' : 'pin-build-button'}
-	        		onClick={(e) => handleSelectedPinned(e, build.ID)}
+	        		onClick={(e) => (!isMobile || (isMobile && !isMenuOpen)) && handleSelectedPinned(e, build.ID)}
 	        		>&#9733; {/* Star Icon */}
 	        		</button>
 	        </div>
@@ -183,9 +247,10 @@ export default function CharacterCard({
       <div className="build-content">
 
       {/* Artifact Sets */}
-      	{showArtifactSets &&
+      	{(showArtifactSets || expanded) &&
       	<>
       	<div className={
+      		build.artifact_set_9 ? 'artifact-options-5' : 
       		build.artifact_set_7 ? 'artifact-options-4' : 
       		build.artifact_set_5 ? 'artifact-options-3' : 
       		build.artifact_set_3 ? 'artifact-options-2' : 
@@ -193,55 +258,106 @@ export default function CharacterCard({
       	}>
 
 	      {/* Artifact Option 1: Sets 1 & 2 */}
-	      <Artifact
-	      	number={1}
-	      	build={build}
-	      	selectedArtifactSet={selectedArtifactSet}
-	      />
-
+		      <Artifact
+						minimal={false}
+		      	numberOfArtifactOptions={numberOfArtifactOptions}
+		      	number={1}
+		      	build={build}
+		      	selectedArtifactSet={selectedArtifactSet}
+					  matchingSets={matchingSets}
+		      />
 	      {/* Artifact Option 2: Sets 3 & 4 */}
-			  {build.artifact_set_3 && !filterApplied &&
-	      <Artifact 
-	      	number={3}
-	      	build={build}
-	      	selectedArtifactSet={selectedArtifactSet}
-	      />}
-	      
+				  {build.artifact_set_3 && (!filterApplied || expanded) &&
+		      <Artifact
+						minimal={false}
+		      	numberOfArtifactOptions={numberOfArtifactOptions}
+		      	number={3}
+		      	build={build}
+		      	selectedArtifactSet={selectedArtifactSet}
+					  matchingSets={matchingSets}
+		      />}
 				{/* Artifact Option 3: Sets 5 & 6 */}
-				{build.artifact_set_5 && !filterApplied &&
-				<Artifact 
-	      	number={5}
-	      	build={build}
-	      	selectedArtifactSet={selectedArtifactSet}
-	      />}
-
+					{build.artifact_set_5 && (!filterApplied || expanded) &&
+					<Artifact
+						minimal={false}
+		      	numberOfArtifactOptions={numberOfArtifactOptions}
+		      	number={5}
+		      	build={build}
+		      	selectedArtifactSet={selectedArtifactSet}
+					  matchingSets={matchingSets}
+		      />}
 				{/* Artifact Option 4: Sets 7 & 8 */}
-				{build.artifact_set_7 && !filterApplied &&
-				<Artifact 
-	      	number={7}
-	      	build={build}
-	      	selectedArtifactSet={selectedArtifactSet}
-	      />}
-
+					{build.artifact_set_7 && (!filterApplied || expanded) &&
+					<Artifact
+						minimal={false}
+		      	numberOfArtifactOptions={numberOfArtifactOptions}
+		      	number={7}
+		      	build={build}
+		      	selectedArtifactSet={selectedArtifactSet}
+					  matchingSets={matchingSets}
+		      />}
+				{/* Artifact Option 5: Sets 9 & 10 */}
+					{build.artifact_set_9 && (!filterApplied || expanded) &&
+					<Artifact
+						minimal={false}
+		      	numberOfArtifactOptions={numberOfArtifactOptions}
+		      	number={9}
+		      	build={build}
+		      	selectedArtifactSet={selectedArtifactSet}
+					  matchingSets={matchingSets}
+		      />}
 
 				{/* Alternative Artifact Options Wrapper: Minimal view (Images only) */}
-			    {build.artifact_set_3 && filterApplied &&
-	      	<div className="artifact-set-alternative">
+			    {build.artifact_set_3 && filterApplied && !expanded &&
+	      	<div className="artifact-set-alternatives">
 
-	      		{/* Artifact Option 2 - Minimal */}
-	      		{build.artifact_set_3 &&
-		        <img className="artifact-icon-alt-1-small" src={"./images/artifacts/flowers/" + build.artifact_set_3 +" Flower.webp"}/>}
-
-						{/* Artifact Option 3 - Minimal */}
-			    	{build.artifact_set_5 &&
-		        <img className="artifact-icon-alt-2-small" src={"./images/artifacts/flowers/" + build.artifact_set_5 +" Flower.webp"}/>}
+	      		{/* Artifact Alternative Option 1 - Minimal */}
+		      		{build.artifact_set_3 &&
+								<Artifact 
+									minimal={true}
+					      	numberOfArtifactOptions={numberOfArtifactOptions}
+					      	number={3}
+					      	build={build}
+					      	selectedArtifactSet={selectedArtifactSet}
+					      	matchingSets={matchingSets}
+					      />}
+						{/* Artifact Alternative Option 2 - Minimal */}
+				    	{build.artifact_set_5 &&
+								<Artifact 
+									minimal={true}
+					      	numberOfArtifactOptions={numberOfArtifactOptions}
+					      	number={5}
+					      	build={build}
+					      	selectedArtifactSet={selectedArtifactSet}
+					      	matchingSets={matchingSets}
+					      />}
+						{/* Artifact Alternative Option 3 - Minimal */}
+				    	{build.artifact_set_7 &&
+								<Artifact 
+									minimal={true}
+					      	numberOfArtifactOptions={numberOfArtifactOptions}
+					      	number={7}
+					      	build={build}
+					      	selectedArtifactSet={selectedArtifactSet}
+					      	matchingSets={matchingSets}
+					      />}
+						{/* Artifact Alternative Option 4 - Minimal */}
+				    	{build.artifact_set_9 &&
+								<Artifact 
+									minimal={true}
+					      	numberOfArtifactOptions={numberOfArtifactOptions}
+					      	number={9}
+					      	build={build}
+					      	selectedArtifactSet={selectedArtifactSet}
+					      	matchingSets={matchingSets}
+					      />}
 
 			    </div>}{/* End Alternative Artifact Option Wrapper - Minimal view */}
 		    </div>
 			  </>}
 
 	    {/* About */}
-      	{showAbout && 
+      	{(showAbout || expanded) && 
       	<>
 				<div className="about">
 	      	<div 
@@ -281,8 +397,8 @@ export default function CharacterCard({
 		  {/* Artifact Types */}
 	      <div className="artifact-types">
 
-	      	{/* Sands */}
-	      	{showSands &&
+	      {/* Sands */}
+	      	{(showSands || expanded) &&
 	      	<>
 		      <div className="build-section">
 	        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set_1 +" Sands.webp"}/>
@@ -290,16 +406,16 @@ export default function CharacterCard({
 	        	<div className="build-section-text">
 			      	<h4>Sands</h4>
 			        <ol>
-			          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{build.sands_1}</li>}
-			          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{build.sands_2}</li>}
-			          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{build.sands_3}</li>}
+			          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{parseText(build.sands_1)}</li>}
+			          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{parseText(build.sands_2)}</li>}
+			          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{parseText(build.sands_3)}</li>}
 			        </ol>
 			      </div>
 			     </div>
 			    </>}
 
 			  {/* Goblet */}
-	      	{showGoblet && 
+	      	{(showGoblet || expanded) && 
 	      	<>
 		      <div className="build-section">
 	        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set_1 +" Goblet.webp"}/>
@@ -307,15 +423,15 @@ export default function CharacterCard({
 	        	<div className="build-section-text">
 		      		<h4>Goblet</h4>
 		        	<ol>
-		          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{build.goblet_1}</li>}
-		          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{build.goblet_2}</li>}
+		          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{parseText(build.goblet_1)}</li>}
+		          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{parseText(build.goblet_2)}</li>}
 		        	</ol>
 			      </div>
 		      </div>
 			    </>}
 
 			  {/* Circlet */}
-	      	{showCirclet && 
+	      	{(showCirclet || expanded) && 
 	      	<>
 					<div className="build-section">
 	        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set_1 +" Circlet.webp"}/>
@@ -323,9 +439,9 @@ export default function CharacterCard({
 			      <div className="build-section-text">
 				      <h4>Circlet</h4>
 			        <ol>
-			          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{build.circlet_1}</li>}
-			          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{build.circlet_2}</li>}
-			          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{build.circlet_3}</li>}
+			          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{parseText(build.circlet_1)}</li>}
+			          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{parseText(build.circlet_2)}</li>}
+			          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{parseText(build.circlet_3)}</li>}
 			        </ol>
 			      </div>
 		      </div>
@@ -334,7 +450,7 @@ export default function CharacterCard({
 	      </div>{/* End Artifact Types */}	    
 
 	    {/* Substats */}
-      	{showSubstats && 
+      	{(showSubstats || expanded) && 
       	<>
 	      <div className="substats">
 	      	<div className="build-section">
@@ -343,12 +459,11 @@ export default function CharacterCard({
 			      <h4>Substats Priority</h4>
 			        <ol>
 			        	{/* Normal substats: Always visible */}
-			          {build.substats_1 && <li className={selectedSubstats.includes(build.substats_1) ? 'highlighted' : ''}>{build.substats_1}</li>}
-			          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{build.substats_2}</li>}
-			          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{build.substats_3}</li>}
-			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{build.substats_4}</li>}
-			          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{build.substats_5}</li>}
-			          {build.substats_6 && <li className={selectedSubstats.includes(build.substats_6) ? 'highlighted' : ''}>{build.substats_6}</li>}
+			          {build.substats_1 && <li className={selectedSubstats.includes(build.substats_1) ? 'highlighted' : ''}>{parseText(build.substats_1)}</li>}
+			          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{parseText(build.substats_2)}</li>}
+			          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{parseText(build.substats_3)}</li>}
+			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{parseText(build.substats_4)}</li>}
+			          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{parseText(build.substats_5)}</li>}
 
 			          {/* Flat substats: Visible only when filtered for */}
 			          {build.flatstats_1 && selectedSubstats.includes(build.flatstats_1) && <li className={selectedSubstats.includes(build.flatstats_1) ? 'highlighted flatstat' : ''}>{build.flatstats_1}</li>}
@@ -361,7 +476,7 @@ export default function CharacterCard({
 		   	}
 
 		  {/* ER Recommendation */}
-      	{showERRecommendation && 
+      	{(showERRecommendation || expanded) && 
       	<>
 	      <div className="er-recommendation">
 	      	<div className="build-section">

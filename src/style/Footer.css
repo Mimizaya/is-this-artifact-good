@@ -1,8 +1,6 @@
 @media screen and (max-width: 600px) {
   footer {
-    height: 80px;
-    margin-right: 10px;
-    margin-left: 10px;
+    height: 100px;
   }
   footer p {
     font-size: 0.6em;
@@ -10,7 +8,7 @@
 }
 @media screen and (min-width: 601px) {
   footer {
-    height: 80px;
+    height: 100px;
     margin-right: 20px;
   }
   footer p {
@@ -21,9 +19,20 @@ footer {
   padding-top: 20px;
   border-top: 1px solid #333;
 }
+footer p.link {
+  padding-bottom: 6px;
+  color: #999;
+}
+footer p.link a:link, footer p.link a:visited {
+  color: #BBB;
+}
+footer p.link a:hover {
+  color: #DDD;
+}
 footer p {
   padding: 0px 10px;
   color: #999;
+  line-height: 1.3;
 }
 
 /*# sourceMappingURL=Footer.css.map */

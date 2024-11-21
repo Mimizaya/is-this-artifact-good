@@ -8,6 +8,7 @@
   section#filter {
     width: 85%;
     transition: all 0.3s ease-out;
+    padding: 10px;
   }
   section#filter div#filter-tabs {
     position: fixed;
@@ -25,6 +26,7 @@
     height: 50px;
   }
   section#filter div#filter-tabs div.filter-tab button.filter-select {
+    color: #FFF;
     background: none;
     width: 100%;
     height: 100%;
@@ -34,7 +36,7 @@
     text-align: center;
   }
   section#filter div#filter-tabs div.filter-tab button.filter-select img {
-    height: 90%;
+    height: 85%;
     margin-right: 4px;
     margin-left: 0px;
   }
@@ -47,11 +49,25 @@
   section#filter div#filter-tabs div.filter-tab.highlighted {
     background-color: #222222;
   }
-  section#filter div#filter-tabs button.filter-new {
+  section#filter div#filter-tabs button.filter-new, section#filter div#filter-tabs button.filter-pinned, section#filter div#filter-tabs button.filter-suggestion {
+    color: #FFF;
     width: 100%;
     height: 50px;
     border: none;
     background-color: #191919;
+    font-size: 1.1em;
+  }
+  section#filter div#filter-tabs button.filter-pinned.highlighted {
+    background-color: #363636;
+    color: gold;
+  }
+  section#filter div#filter-tabs button.filter-suggestion img {
+    height: 85%;
+    margin-right: 4px;
+    margin-left: 0px;
+  }
+  section#filter div#filter-tabs button.filter-suggestion p {
+    display: none;
   }
   section#filter div#filter-tabs.closed {
     left: -15%;
@@ -81,6 +97,7 @@
 }
 @media screen and (min-width: 601px) {
   section#filter {
+    padding: 10px 20px 20px 20px;
     width: 300px;
   }
   section#filter div.dropdown-wrapper, section#filter ul.dropdown-menu, section#filter div.search-bar, section#filter label {
@@ -112,7 +129,6 @@ section#filter {
   left: 0;
   overflow-y: scroll;
   scrollbar-width: thin;
-  padding: 20px;
   font-size: 1em;
 }
 section#filter div#filter-other {
@@ -151,11 +167,14 @@ section#filter div.filter-option div.search-bar input.search-input {
 section#filter div.filter-option label {
   transition: all 0.3s ease-out;
   display: flex;
-  padding: 5px;
+  padding: 4px 5px 5px 5px;
   background-color: #252525;
   border-bottom: 1px solid #192019;
   box-shadow: 1px 3px 5px #202020;
   user-select: none;
+}
+section#filter div.filter-option label img {
+  margin-top: 1px;
 }
 section#filter div.filter-option label input {
   display: none;
@@ -196,34 +215,63 @@ section#filter div.dropdown-wrapper div.dropdown p {
 section#filter div.dropdown-wrapper div.dropdown:hover {
   background-color: #313131;
 }
+section#filter div.dropdown-wrapper div.dropdown.open {
+  font-weight: 700;
+  color: #FFF;
+  background-color: #313131;
+}
 section#filter ul.dropdown-menu {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  position: relative;
-  z-index: 10;
+  position: absolute;
+  z-index: 9999;
   color: rgba(255, 255, 255, 0.87);
   background-color: #222222;
-  box-shadow: 1px 3px 5px #191919;
+  box-shadow: 0px 20px 20px #191919;
   border-bottom: 1px solid #192019;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  max-height: calc(100vh - 180px);
   overflow-y: scroll;
   scrollbar-width: thin;
-  height: 500px;
+}
+section#filter ul.dropdown-menu li:last-of-type {
+  border-bottom: none;
 }
 section#filter ul.dropdown-menu li {
   transition: all 0.3s ease-out;
-  height: 44px;
+  height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #192019;
+  border-bottom: 1px solid #191919;
   position: relative;
+  overflow: hidden;
 }
 section#filter ul.dropdown-menu li img {
-  height: 90%;
+  height: 80%;
+  margin-left: 5px;
+  margin-right: 8px;
+}
+section#filter ul.dropdown-menu li img.artifact {
+  height: 100%;
+}
+section#filter ul.dropdown-menu li img.character {
+  height: 100%;
+  border-radius: 100%;
+}
+section#filter ul.dropdown-menu li img.element {
+  height: 65%;
+  margin-left: 9px;
+  margin-right: 11px;
 }
 section#filter ul.dropdown-menu li p {
-  padding: 8px;
+  font-size: 0.95em;
+  padding-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 section#filter ul.dropdown-menu li:hover {
   background-color: #313131;

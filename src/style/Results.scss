@@ -1,6 +1,6 @@
 $filter-width: 250px;
 $filter-padding: 20px;
-$header-height: 125px;
+$header-height: 145px;
 
 // Applicable to small screen sizes
 @media screen and (max-width: 600px) {
@@ -21,9 +21,13 @@ $header-height: 125px;
       width: 100%;
       padding-top: 20px;
     }
+
+
   }
 
   div#additional-results-wrapper {
+    margin-right: 0 !important;
+
     div.additional-results-text {
       h3, p {
         padding: 0px 10px;
@@ -76,12 +80,13 @@ $header-height: 125px;
           button.filter-select {
             background: none;
             border: none;
-            width: 160px;
+            width: 0; // no width, allow flex-grow from 0
             height: 40px;
             cursor: pointer;
             text-align: left;
             display: flex;
             align-items: center;
+            flex-grow: 1;
 
             img {
               height: 90%;
@@ -89,7 +94,6 @@ $header-height: 125px;
               margin-left: 2px;
             }
             p {
-              width: 100%;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
@@ -101,6 +105,7 @@ $header-height: 125px;
             width: 40px;
             height: 40px;
             cursor: pointer;
+            flex-shrink: 0;
           }
           button.filter-close:hover {
             background-color: lighten(#242424, 10%);
@@ -120,6 +125,7 @@ $header-height: 125px;
         button.filter-new, 
         button.filter-pinned, 
         button.filter-suggestion {
+          color: #FFF;
           border: none;
           width: 40px;
           border-radius: 5px;
@@ -169,12 +175,24 @@ $header-height: 125px;
         }
       }
     }
-    div#results-content {
-      padding-top: $header-height + 20;
+    div#main-content {
+
+      div#results-content {
+        padding-top: $header-height + 20;
+
+        h2.main-content-results-number {
+          position: absolute;
+          top: $header-height + 10;
+          color: #CCC;
+          font-size: 1em;
+          margin-left: 4px;
+        }
+      }
     }
     div#results-content, div#additional-results-wrapper, footer {
       margin-left: $filter-width + ($filter-padding *2) + 30;
     }
+
     div#additional-results-wrapper {
       div.additional-results-text {
         h3, p {
@@ -182,7 +200,6 @@ $header-height: 125px;
           color: #CCC;
         }
         h3 {
-          margin-top: 40px;
           margin-bottom: 5px;
           font-size: 1.1em;
         }
@@ -225,14 +242,15 @@ section#results {
     // Filter visible build sections
       div#filter-build {
         height: 40px;
-        position: absolute;
-        top: $header-height - 60px;
+        position: relative;
+        top: $header-height - 75px;
 
-        h3 {
+        h4 {
           color: #CCC;
           font-size: 1em;
           font-weight: 700;
           margin-bottom: 3px;
+          margin-left: 4px;
         }
 
       // List filter build options
@@ -261,6 +279,7 @@ section#results {
             margin-right: 5px;
             margin-bottom: 5px;
             display: flex;
+            white-space: nowrap;
 
             img {
               margin-right: 2px;
@@ -269,36 +288,130 @@ section#results {
           }
         }
       }
+    // Select sorting option
+      div#select-sorting-option {
+        position: absolute;
+        top: $header-height - 75px;
+        height: 40px;
+        //width: 150px;
+        left: 1170px;
+
+        h4 {
+          color: #CCC;
+          font-size: 1em;
+          font-weight: 700;
+          margin-bottom: 3px;
+          margin-left: 4px;
+        }
+
+        div.sorting-buttons {
+          display: flex;
+
+          button {
+            height: 100%;
+            width: 100%;
+            color: #CCC;
+            background-color: #242424;
+            font-family: inherit;
+            border: none;
+            padding: 10px 13px 8px 8px;
+            transition: all 0.3s ease-out;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 1px;
+            display: flex;
+            cursor: pointer;
+
+            img.sort-image,
+            img.ascending-image,, 
+            img.descending-image, {
+              height: 20px;
+              margin-right: 2px;
+            }
+            img.ascending-image, {
+              transform: rotate(180deg);
+            }
+            p {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+          button:hover {
+            background-color: lighten(#242424, 7%);
+            color: #FFF;
+          }
+        }
+        ul {
+          //position: absolute;
+          //width: 200px;
+          box-shadow: 5px 13px 20px #151515;
+
+          li {
+            cursor: pointer;
+            height: unset;
+            width: 100%;
+            color: #CCC;
+            background-color:#242424;
+            border-bottom: 1px solid #202020;
+            font-family: inherit;
+            padding: 8px 13px;
+            transition: all 0.3s ease-out;
+            border-radius: 5px;
+            display: flex;
+            font-size: 0.9em;
+          }
+          li:hover {
+            background-color: lighten(#242424, 7%);
+            color: #FFF;
+          }
+        }
+      }
     }
 
   // Results main content wrapper 
     div#main-content {
-      min-height: calc(100% - 130px); // 80 pixel footer + 50 margin bottom
+      min-height: calc(100% - 150px); // 100 pixel footer + 50 margin bottom
       margin-bottom: 50px;
     }
     div#results-content {
       display: flex;
       flex-wrap: wrap;
       align-items: start;
+      margin-right: 20px;
 
       // Error container, no results
       div#no-results {
         text-align: center;
-        margin: 0 auto;
-        margin-top: 35vh;
+        width: 350px;
+        margin: 150px auto;
+
+        img.no-result-img {
+          height: 200px;
+        }
+        img.no-result-img.sad {
+          position: relative;
+          left: -20px;
+        }
+        img.no-result-img.surprised {
+        }
       }
     }
 
   // Extra results, 2-piece bonus matches 
-    div#additional-results-wrapper {
+    div#additional-results-wrapper {  
+      border-top: 1px solid #333;
+      margin-top: 50px;
+      margin-right: 20px;
 
       h3.additional-results-content-header {
-        margin-top: 10px;
+        margin-top: 20px;
       }
       div#additional-results-content {
         display: flex;
         flex-wrap: wrap;
         width: 100%;
+        align-items: start;
       }
     }
 }

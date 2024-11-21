@@ -1,8 +1,13 @@
 export const characterData = [
-		{
+	{
 		name: 'Chasca',
 		rarity: 5,
 		element: 'Anemo',
+	},
+	{
+		name: 'Ororon',
+		rarity: 4,
+		element: 'Electro',
 	},
 	{
 		name: 'Xilonen',
@@ -479,6 +484,12 @@ export const characterData = [
 		name: 'Amber',
 		rarity: 4,
 		element: 'Pyro',
+		banner_offset: 97,
+	},	
+	{
+		name: 'Traveler',
+		rarity: 5,
+		element: '',
 	},
 	{
 		name: 'Hydro Traveler',
@@ -499,6 +510,7 @@ export const characterData = [
 		name: 'Geo Traveler',
 		rarity: 5,
 		element: 'Geo',
+		banner_offset: 120,
 	},
 	{
 		name: 'Anemo Traveler',

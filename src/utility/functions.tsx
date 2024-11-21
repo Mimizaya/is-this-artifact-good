@@ -2,39 +2,47 @@ import React from 'react';
 
 // Parse raw text data and replace markers with HTML tags 
 export const parseText = (text: string) => {
-
-  // Create a regex to capture the tags and text inbetween
-  const regex = /([^<]+)|(<i>)(.*?)(<\/i>)|(<b>)(.*?)(<\/b>)/g;
+  // Create a regex to capture normal text, <i> tags, <b> tags, and content in parentheses
+  const regex = /([^<()]+)|(<i>)(.*?)(<\/i>)|(<b>)(.*?)(<\/b>)|\(([^)]+)\)/g;
 
   const result = [];
   let match;
 
   // Loop through all matches in the text
-  while((match = regex.exec(text)) !== null) {
-  	const regularText = match[1];
+  while ((match = regex.exec(text)) !== null) {
+    const regularText = match[1]; // Normal text (not in tags or parentheses)
+    const italicOpenTag = match[2]; // Opening <i> tag
+    const italicText = match[3]; // Content inside <i> tags
+    const italicCloseTag = match[4]; // Closing </i> tag
 
-  	const italicOpenTag = match[2];
-  	const italicText = match[3];
-  	const italicCloseTag = match[4];
+    const boldOpenTag = match[5]; // Opening <b> tag
+    const boldText = match[6]; // Content inside <b> tags
+    const boldCloseTag = match[7]; // Closing </b> tag
 
-  	const boldOpenTag = match[5];
-  	const boldText = match[6];
-  	const boldCloseTag = match[7];
+    const parenthesesText = match[8]; // Text inside parentheses
 
-  	// If no tags are found, just return the plain text
-  	if(regularText) {
+    // If normal text is found, push it to the result
+    if (regularText) {
       result.push(regularText);
     }
+
     // If an <i> tag is found, wrap the content in <i>
-    else if(italicOpenTag && italicCloseTag) {
+    else if (italicOpenTag && italicCloseTag) {
       result.push(<i key={result.length}>{italicText}</i>);
-    } 
+    }
+    
     // If a <b> tag is found, wrap the content in <b>
-    else if(boldOpenTag && boldCloseTag) {
+    else if (boldOpenTag && boldCloseTag) {
       result.push(<b key={result.length}>{boldText}</b>);
-    } 
+    }
+
+    // If parentheses content is found, wrap it in <span> with class "parentheses"
+    else if (parenthesesText) {
+      result.push(<span className="parentheses" key={result.length}>({parenthesesText})</span>);
+    }
   }
-  return result
+
+  return result;
 };
 
 export const updateFiltersSingleSelect = (
@@ -49,7 +57,7 @@ export const updateFiltersSingleSelect = (
     setState(['HP%', 'HP% (C1)'])
   }
   else if (value === 'Elemental Mastery') {
-    setState(['Elemental Mastery', 'Elemental Mastery (Vape)', 'Elemental Mastery (Quicken)'])
+    setState(['Elemental Mastery', 'EM (Vaporize)', 'EM (Quicken)'])
   }
   else if (value === 'CRIT Rate') {
     setState(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])
@@ -57,14 +65,18 @@ export const updateFiltersSingleSelect = (
   else if (value === 'CRIT DMG') {
     setState(['CRIT DMG', 'CRIT Rate/DMG'])
   }
+  else if (value === 'Traveler') {
+    setState(['Traveler','Hydro Traveler', 'Dendro Traveler', 'Electro Traveler', 'Geo Traveler', 'Anemo Traveler'])
+  }
   else {
     setState([value]);
   }
 };
 
-export const updateFiltersMultiSelect = (
+export const updateFiltersSubstats = (
   value: string,
   setState: React.Dispatch<React.SetStateAction<string[]>>,
+  numberOfSubstats: number,
 ) => {
 
   // If filtering for 'CRIT Rate' or 'CRIT DMG', also add the consolidated 'CRIT Rate/DMG'
@@ -79,7 +91,7 @@ export const updateFiltersMultiSelect = (
       // Create a new selection based on the current state
       let newSelection = isSelected
         ? prev.filter((n) => n !== value) // Remove the stat if it's already selected
-        : [...prev, value]; // Add the stat if it's not already selected
+        : numberOfSubstats < 4 ? [...prev, value] : [...prev]; // Add the stat if it's not already selected
 
       // If "CRIT Rate" is selected and "CRIT Rate (Favonius)" is not already included, add it
       if (value === 'CRIT Rate' && !isSelected && !isCritRateFavoniusIncluded) {
@@ -109,27 +121,27 @@ export const updateFiltersMultiSelect = (
 
       // Check if the stat is already selected
       const isSelected = prev.includes(value);
-      const isVapeIncluded = prev.includes('Elemental Mastery (Vape)');
-      const isQuickenIncluded = prev.includes('Elemental Mastery (Quicken)');
-      const isMeltIncluded = prev.includes('Elemental Mastery (Melt)');
+      const isVapeIncluded = prev.includes('EM (Vaporize)');
+      const isQuickenIncluded = prev.includes('EM (Quicken)');
+      const isMeltIncluded = prev.includes('EM (Melt)');
 
       // Create a new selection based on the current state
       let newSelection = isSelected
         ? prev.filter((n) => n !== value) // Remove the stat if it's already selected
-        : [...prev, value]; // Add the stat if it's not already selected
+        : numberOfSubstats < 4 ? [...prev, value] : [...prev] // Add the stat if it's not already selected
 
       // Add to selection
       if (!isSelected && !isVapeIncluded && !isQuickenIncluded && !isMeltIncluded) {
-        newSelection.push('Elemental Mastery (Vape)');
-        newSelection.push('Elemental Mastery (Quicken)');
-        newSelection.push('Elemental Mastery (Melt)');
+        newSelection.push('EM (Vaporize)');
+        newSelection.push('EM (Quicken)');
+        newSelection.push('EM (Melt)');
       }
 
       // Remove from selection
       if (!newSelection.includes('Elemental Mastery')) {
-        newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Vape)');
-        newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Quicken)');
-        newSelection = newSelection.filter((n) => n !== 'Elemental Mastery (Melt)');
+        newSelection = newSelection.filter((n) => n !== 'EM (Vaporize)');
+        newSelection = newSelection.filter((n) => n !== 'EM (Quicken)');
+        newSelection = newSelection.filter((n) => n !== 'EM (Melt)');
       }
 
       return newSelection;
@@ -139,7 +151,17 @@ export const updateFiltersMultiSelect = (
   // All other stats
   else {
     setState((prev) =>
-      prev.includes(value) ? prev.filter((n) => n !== value) : [...prev, value]
+      prev.includes(value) ? prev.filter((n) => n !== value) 
+      : numberOfSubstats < 4 ? [...prev, value] : [...prev]
     );
   }
+};
+export const updateFiltersElements = (
+  value: string,
+  setState: React.Dispatch<React.SetStateAction<string[]>>,
+) => {
+    setState((prev) =>
+      prev.includes(value) ? prev.filter((n) => n !== value) 
+      : [...prev, value]
+    );
 };

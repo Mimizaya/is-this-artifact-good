@@ -14,18 +14,22 @@
     opacity: 1;
   }
 }
-div.tooltip-on-hover:hover + div.artifact-info.tooltip,
-div.tooltip-on-hover:hover + div.artifact-info.tooltip-alt {
+div.character-card.full div.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
+div.character-card.full div.tooltip-on-hover:hover + div.artifact-info.tooltip-right {
   display: block;
 }
-
-div.artifact-info.tooltip {
+div.character-card.full div.artifact-info.tooltip-left {
+  left: 0;
+}
+div.character-card.full div.artifact-info.tooltip-right {
+  right: 0;
+}
+div.character-card.full div.artifact-info.tooltip-left, div.character-card.full div.artifact-info.tooltip-right {
   display: none;
   position: absolute;
-  left: 10px;
-  top: 10px;
+  top: 0;
   z-index: 9999;
-  width: 455px;
+  width: 461px;
   border-bottom: 1px solid #202020;
   font-size: 0.95em;
   box-shadow: 5px 5px 10px #222222;
@@ -38,30 +42,107 @@ div.artifact-info.tooltip {
   animation-duration: 0.2s;
   animation-iteration-count: 1;
 }
-div.artifact-info.tooltip div.tooltip-part {
+div.character-card.full div.artifact-info.tooltip-left div.tooltip-part, div.character-card.full div.artifact-info.tooltip-right div.tooltip-part {
   display: flex;
 }
-div.artifact-info.tooltip div.tooltip-part img {
+div.character-card.full div.artifact-info.tooltip-left div.tooltip-part img, div.character-card.full div.artifact-info.tooltip-right div.tooltip-part img {
   margin-top: 8px;
   margin-left: 4px;
   height: 50px;
   width: 50px;
 }
-div.artifact-info.tooltip div.tooltip-part div.tooltip-text {
+div.character-card.full div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text, div.character-card.full div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text {
   margin-top: 10px;
   padding-left: 5px;
   padding-right: 30px;
 }
-div.artifact-info.tooltip div.tooltip-part div.tooltip-text h4 {
+div.character-card.full div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text h4, div.character-card.full div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text h4 {
   font-size: 1em;
   font-weight: 600;
 }
-div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
+div.character-card.full div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text p, div.character-card.full div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text p {
   color: #DDD;
   font-size: 0.9em;
   margin-bottom: 15px;
 }
 
+div.character-card.small div.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
+div.character-card.small div.tooltip-on-hover:hover + div.artifact-info.tooltip-right,
+div.character-card.small img.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
+div.character-card.small img.tooltip-on-hover:hover + div.artifact-info.tooltip-right {
+  display: block;
+}
+div.character-card.small div.artifact-info.tooltip-left,
+div.character-card.small div.artifact-info.tooltip-right {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 275px;
+  border-bottom: 1px solid #202020;
+  font-size: 1em;
+  box-shadow: 5px 5px 10px #222222;
+  background-color: #282828;
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+  pointer-events: none;
+  padding: 4px;
+  animation-name: fade-in;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+}
+div.character-card.small div.artifact-info.tooltip-left div.tooltip-part,
+div.character-card.small div.artifact-info.tooltip-right div.tooltip-part {
+  display: block;
+  position: relative;
+}
+div.character-card.small div.artifact-info.tooltip-left div.tooltip-part img,
+div.character-card.small div.artifact-info.tooltip-right div.tooltip-part img {
+  position: absolute;
+  top: -7px;
+  right: 0;
+  height: 50px;
+}
+div.character-card.small div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text,
+div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text {
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+div.character-card.small div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text h3,
+div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text h3 {
+  font-size: 1em;
+  margin-bottom: 5px;
+  padding-right: 50px;
+}
+div.character-card.small div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text h4,
+div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text h4 {
+  font-size: 0.8em;
+  font-weight: 700;
+}
+div.character-card.small div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text p,
+div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text p {
+  color: #DDD;
+  font-size: 0.8em;
+  margin-bottom: 8px;
+}
+
+@media screen and (max-width: 600px) {
+  div.character-card.full div.artifact-info.tooltip-left,
+  div.character-card.full div.artifact-info.tooltip-right {
+    width: 100%;
+  }
+  div.character-card.full div.artifact-info.tooltip-left div.tooltip-part img,
+  div.character-card.full div.artifact-info.tooltip-right div.tooltip-part img {
+    height: 41.6666666667px;
+    width: 41.6666666667px;
+  }
+  div.character-card.full div.artifact-info.tooltip-left div.tooltip-part div.tooltip-text,
+  div.character-card.full div.artifact-info.tooltip-right div.tooltip-part div.tooltip-text {
+    font-size: 0.9em;
+  }
+}
 @media screen and (max-width: 600px) {
   div.character-card.full {
     width: 100%;
@@ -97,7 +178,7 @@ div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
     font-size: 1.2em;
   }
   div.character-card.full div.build-header div.character-title h3 {
-    font-size: 1em;
+    font-size: 0.9em;
   }
   div.character-card.full div.build-content {
     animation-name: fade-in;
@@ -105,22 +186,28 @@ div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
     animation-iteration-count: 1;
   }
   div.character-card.full div.build-content div.build-section img.artifact-icon {
-    height: 33.3333333333px;
-    width: 33.3333333333px;
+    height: 41.6666666667px;
+    width: 41.6666666667px;
   }
   div.character-card.full div.build-content div.build-section img.artifact-icon-simple {
-    height: 30px;
-    width: 30px;
+    height: 37.5px;
+    width: 37.5px;
   }
-  div.character-card.full div.build-content div.build-section img.artifact-icon-top {
-    height: 25px;
-    width: 25px;
+  div.character-card.full div.build-content div.build-section div.artifact-icons-double {
+    height: 41.6666666667px;
+    width: 41.6666666667px;
   }
-  div.character-card.full div.build-content div.build-section img.artifact-icon-bottom {
-    height: 25px;
-    width: 25px;
-    top: 26px;
-    left: 11px;
+  div.character-card.full div.build-content div.build-section div.artifact-icons-double img.artifact-icon-top {
+    height: 33.3333333333px;
+    width: 33.3333333333px;
+    top: -5px;
+    left: 0px;
+  }
+  div.character-card.full div.build-content div.build-section div.artifact-icons-double img.artifact-icon-bottom {
+    height: 33.3333333333px;
+    width: 33.3333333333px;
+    top: -25px;
+    left: 7px;
   }
   div.character-card.full div.build-content div.build-section div.build-section-text {
     font-size: 0.85em;
@@ -137,36 +224,11 @@ div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
   div.character-card.full div.about button {
     width: 100%;
   }
-  div.artifact-info.tooltip {
-    width: 100%;
-  }
-  div.artifact-info.tooltip div.tooltip-part img {
-    margin-top: 8px;
-    height: 33.3333333333px;
-    width: 50px;
-  }
-  div.artifact-info.tooltip div.tooltip-part div.tooltip-text {
-    margin-top: 10px;
-    padding-left: 5px;
-    padding-right: 30px;
-  }
-  div.artifact-info.tooltip div.tooltip-part div.tooltip-text h3 {
-    font-size: 1em;
-  }
-  div.artifact-info.tooltip div.tooltip-part div.tooltip-text h4 {
-    font-size: 0.9em;
-    font-weight: 600;
-  }
-  div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
-    color: #DDD;
-    font-size: 0.8em;
-    margin-bottom: 15px;
-  }
 }
 @media screen and (min-width: 601px) {
   div.character-card.full {
     width: 475px;
-    margin: 25px;
+    margin: 18px 24px;
   }
   div.character-card.full div.build-header {
     width: 485px;
@@ -184,29 +246,59 @@ div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
   div.character-card.full div.build-header div.pin-build {
     top: -5px;
   }
+  div.character-card.full div.build-header div.pin-build button.pin-build-button:hover {
+    color: #ccac00;
+    cursor: pointer;
+  }
+  div.character-card.full div.build-section {
+    height: 100%;
+  }
   div.character-card.full div.artifact-types {
-    margin-right: 10px;
-    width: 222.5px;
+    margin-right: 7px;
+    width: 227px;
+  }
+  div.character-card.full div.artifact-options-1 div.artifact-set.option-1 {
+    width: 100%;
+  }
+  div.character-card.full div.artifact-options-2,
+  div.character-card.full div.artifact-options-3,
+  div.character-card.full div.artifact-options-4,
+  div.character-card.full div.artifact-options-5 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 7px;
+  }
+  div.character-card.full div.artifact-options-2 div.build-section,
+  div.character-card.full div.artifact-options-3 div.build-section,
+  div.character-card.full div.artifact-options-4 div.build-section,
+  div.character-card.full div.artifact-options-5 div.build-section {
+    margin-bottom: 0;
+  }
+  div.character-card.full div.artifact-options-3 div.artifact-set.option-1, div.character-card.full div.artifact-options-5 div.artifact-set.option-1 {
+    grid-column: span 2;
   }
   div.character-card.full div.substats {
-    width: 222.5px;
+    width: 227px;
   }
   div.character-card.full div.er-recommendation {
-    width: 222.5px;
+    width: 227px;
+  }
+  div.character-card.full div.about div.build-section-text {
+    max-width: 401px;
   }
   div.character-card.full div.about button {
-    width: 455px;
+    width: 471.5px;
   }
   div.character-card.small {
     width: 275px;
-    margin: 20px;
+    margin: 18px;
   }
   div.character-card.small div.build-header {
     width: 275px;
     height: 66.6666666667px;
     position: relative;
     left: 0;
-    margin-bottom: 5px;
   }
   div.character-card.small div.build-header div.character-banner-wrapper {
     height: 66.6666666667px;
@@ -244,59 +336,172 @@ div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
     font-weight: 600;
   }
   div.character-card.small div.build-header div.character-title h3.build-name {
+    width: 196.3333333333px;
     font-size: 0.9em;
     position: relative;
     top: -5px;
     margin: 0;
     font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  div.character-card.small div.build-header div.pin-build {
+    position: absolute;
+    top: -5px;
+    font-size: 0.8em;
+  }
+  div.character-card.small div.build-header div.pin-build button.pin-build-button:hover {
+    color: #ccac00;
+    cursor: pointer;
+  }
+  div.character-card.small div.build-content {
+    padding: 0;
+  }
+  div.character-card.small div.build-content div.build-section {
+    height: 100%;
+    margin: 0;
   }
   div.character-card.small div.build-content div.build-section div.build-section-text h4 {
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
   div.character-card.small div.build-content div.build-section div.build-section-text p, div.character-card.small div.build-content div.build-section div.build-section-text li {
     color: #FFF;
-    font-size: 0.95em;
+    font-size: 1em;
   }
   div.character-card.small div.build-content div.build-section div.build-section-text p.highlighted, div.character-card.small div.build-content div.build-section div.build-section-text li.highlighted {
     color: lightgreen;
   }
+  div.character-card.small div.build-content div.artifact-options-1,
+  div.character-card.small div.build-content div.artifact-options-2,
+  div.character-card.small div.build-content div.artifact-options-3,
+  div.character-card.small div.build-content div.artifact-options-4,
+  div.character-card.small div.build-content div.artifact-options-5 {
+    display: flex;
+  }
   div.character-card.small div.build-content div.artifact-options-1 div.artifact-set,
   div.character-card.small div.build-content div.artifact-options-2 div.artifact-set,
   div.character-card.small div.build-content div.artifact-options-3 div.artifact-set,
-  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set {
+  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set,
+  div.character-card.small div.build-content div.artifact-options-5 div.artifact-set {
+    position: relative;
+    flex-grow: 1;
+  }
+  div.character-card.small div.build-content div.artifact-option-1,
+  div.character-card.small div.build-content div.artifact-option-2,
+  div.character-card.small div.build-content div.artifact-option-3,
+  div.character-card.small div.build-content div.artifact-option-4,
+  div.character-card.small div.build-content div.artifact-option-5 {
+    background-color: #252525;
+    border-bottom: 1px solid #192019;
+    border-left: 1px solid #192019;
+    box-shadow: 1px 3px 5px #202020;
+    border-radius: 5px;
+  }
+  div.character-card.small div.build-content div.artifact-option-1 img.artifact-alternative-icon,
+  div.character-card.small div.build-content div.artifact-option-2 img.artifact-alternative-icon,
+  div.character-card.small div.build-content div.artifact-option-3 img.artifact-alternative-icon,
+  div.character-card.small div.build-content div.artifact-option-4 img.artifact-alternative-icon,
+  div.character-card.small div.build-content div.artifact-option-5 img.artifact-alternative-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  div.character-card.small div.build-content div.artifact-option-1 div.artifact-alternative-split,
+  div.character-card.small div.build-content div.artifact-option-2 div.artifact-alternative-split,
+  div.character-card.small div.build-content div.artifact-option-3 div.artifact-alternative-split,
+  div.character-card.small div.build-content div.artifact-option-4 div.artifact-alternative-split,
+  div.character-card.small div.build-content div.artifact-option-5 div.artifact-alternative-split {
+    width: 100%;
+    height: 100%;
     position: relative;
   }
-  div.character-card.small div.build-content div.artifact-options-1 div.artifact-set.option-1,
-  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set.option-1,
-  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set.option-1,
-  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set.option-1 {
-    grid-column: span 2;
-  }
-  div.character-card.small div.build-content div.artifact-options-1 div.artifact-set-alternative,
-  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set-alternative,
-  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternative,
-  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternative {
-    width: 30px;
+  div.character-card.small div.build-content div.artifact-option-1 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-1 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-2 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-2 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-3 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-3 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-4 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-4 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-5 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-5 div.artifact-alternative-split div.clipping-mask-bottom {
     position: absolute;
-    top: 10px;
-    left: 220px;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
-  div.character-card.small div.build-content div.artifact-options-1 div.artifact-set-alternative img.artifact-icon-alt-1-small, div.character-card.small div.build-content div.artifact-options-1 div.artifact-set-alternative img.artifact-icon-alt-2-small,
-  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set-alternative img.artifact-icon-alt-1-small,
-  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set-alternative img.artifact-icon-alt-2-small,
-  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternative img.artifact-icon-alt-1-small,
-  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternative img.artifact-icon-alt-2-small,
-  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternative img.artifact-icon-alt-1-small,
-  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternative img.artifact-icon-alt-2-small {
-    height: 35px;
-    position: relative;
-    left: 20px;
+  div.character-card.small div.build-content div.artifact-option-1 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-2 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-3 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-4 div.artifact-alternative-split div.clipping-mask-top,
+  div.character-card.small div.build-content div.artifact-option-5 div.artifact-alternative-split div.clipping-mask-top {
+    top: -1px;
+    left: -1px;
+    clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
   }
-  div.character-card.small div.build-content div.artifact-options-1 div.artifact-set-alternative img.artifact-icon-alt-2-small,
-  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set-alternative img.artifact-icon-alt-2-small,
-  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternative img.artifact-icon-alt-2-small,
-  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternative img.artifact-icon-alt-2-small {
-    top: -10px;
+  div.character-card.small div.build-content div.artifact-option-1 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-2 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-3 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-4 div.artifact-alternative-split div.clipping-mask-bottom,
+  div.character-card.small div.build-content div.artifact-option-5 div.artifact-alternative-split div.clipping-mask-bottom {
+    top: 1px;
+    left: 1px;
+    clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+  }
+  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set-alternatives {
+    display: grid;
+    grid-template-columns: 40px;
+    grid-template-rows: 1fr 1fr;
+  }
+  div.character-card.small div.build-content div.artifact-options-2 div.artifact-set-alternatives div.artifact-option-2 {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternatives {
+    display: grid;
+    grid-template-columns: 40px;
+    grid-template-rows: 1fr 1fr;
+  }
+  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternatives div.artifact-option-2 {
+    max-height: 44px;
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  div.character-card.small div.build-content div.artifact-options-3 div.artifact-set-alternatives div.artifact-option-3 {
+    max-height: 44px;
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternatives {
+    display: grid;
+    grid-template-columns: 40px 40px;
+    grid-template-rows: 1fr 40px;
+  }
+  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternatives div.artifact-option-2 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternatives div.artifact-option-3 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  div.character-card.small div.build-content div.artifact-options-4 div.artifact-set-alternatives div.artifact-option-4 {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  div.character-card.small div.build-content div.artifact-options-5 div.artifact-set-alternatives {
+    display: grid;
+    grid-template-columns: 40px 40px;
+    grid-template-rows: 40px 40px;
+  }
+  div.character-card.small div.build-content div.artifact-options-5 div.artifact-option-2,
+  div.character-card.small div.build-content div.artifact-options-5 div.artifact-option-3,
+  div.character-card.small div.build-content div.artifact-options-5 div.artifact-option-4,
+  div.character-card.small div.build-content div.artifact-options-5 div.artifact-option-5 {
+    grid-column: span 1;
+    grid-row: span 1;
   }
   div.character-card.small div.build-content div.about button {
     width: 100%;
@@ -308,7 +513,7 @@ div.artifact-info.tooltip div.tooltip-part div.tooltip-text p {
 div.character-card {
   position: relative;
   background-color: #222222;
-  box-shadow: 1px 3px 5px #191919;
+  box-shadow: 1px 3px 5px #1c1c1c;
   border-radius: 5px;
 }
 div.character-card div.build-header {
@@ -321,11 +526,15 @@ div.character-card div.build-header img.character-portrait, div.character-card d
   border-radius: 10px;
   padding: 0;
   margin-left: 15px;
+  pointer-events: none;
+  user-select: none;
 }
 div.character-card div.build-header img.character-portrait-two {
   position: absolute;
   right: 20px;
   bottom: -5px;
+  pointer-events: none;
+  user-select: none;
 }
 div.character-card div.build-header img.character-element {
   height: 50px;
@@ -334,6 +543,8 @@ div.character-card div.build-header img.character-element {
   z-index: 2;
   top: -15px;
   left: -20px;
+  pointer-events: none;
+  user-select: none;
 }
 div.character-card div.build-header div.character-banner-wrapper {
   width: 100%;
@@ -345,13 +556,15 @@ div.character-card div.build-header div.character-banner-wrapper {
   opacity: 0.7;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 div.character-card div.build-header div.character-banner-wrapper img.character-banner {
   width: 100%;
   position: relative;
   bottom: 60px;
+  pointer-events: none;
+  user-select: none;
 }
 div.character-card div.build-header div.character-title {
   position: absolute;
@@ -381,40 +594,44 @@ div.character-card div.build-header div.pin-build button.pin-build-button {
   font-size: 2em;
   text-shadow: 1px 1px 5px #333;
 }
-div.character-card div.build-header div.pin-build button.pin-build-button:hover {
-  color: #ccac00;
-  cursor: pointer;
-}
 div.character-card div.build-header div.pin-build button.pin-build-button.active {
   color: gold;
 }
 div.character-card div.build-content {
   margin-left: 0;
   margin-top: 3px;
-  padding: 10px;
+  padding: 7px;
   position: relative;
 }
 div.character-card div.build-content div.build-section {
   display: flex;
-  height: 100%;
   position: relative;
   background-color: #252525;
   padding: 10px 6px 12px 6px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #192019;
+  margin-bottom: 7px;
+  border-bottom: 1px solid #1D1D1D;
   font-size: 0.95em;
   box-shadow: 1px 3px 5px #202020;
   border-radius: 5px;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 div.character-card div.build-content div.build-section img.artifact-icon {
   z-index: 3;
   height: 50px;
   width: 50px;
   opacity: 1;
+  pointer-events: none;
+  user-select: none;
+  flex-shrink: 0;
 }
 div.character-card div.build-content div.build-section div.artifact-icons-double {
   height: 50px;
   width: 50px;
+  align-self: center;
+  pointer-events: none;
+  user-select: none;
+  flex-shrink: 0;
 }
 div.character-card div.build-content div.build-section div.artifact-icons-double img.artifact-icon-top,
 div.character-card div.build-content div.build-section div.artifact-icons-double img.artifact-icon-bottom {
@@ -426,42 +643,22 @@ div.character-card div.build-content div.build-section div.artifact-icons-double
   z-index: 5;
 }
 div.character-card div.build-content div.build-section div.artifact-icons-double img.artifact-icon-bottom {
-  position: absolute;
+  position: relative;
   z-index: 4;
-  top: 30px;
-  left: 15px;
-}
-div.character-card div.build-content div.build-section div.clipping-mask-top,
-div.character-card div.build-content div.build-section div.clipping-mask-bottom {
-  position: absolute;
-  z-index: 4;
-  height: 50px;
-  width: 50px;
-  overflow: hidden;
-}
-div.character-card div.build-content div.build-section div.clipping-mask-top img.artifact-icon-split,
-div.character-card div.build-content div.build-section div.clipping-mask-bottom img.artifact-icon-split {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-div.character-card div.build-content div.build-section div.clipping-mask-top {
-  top: 5px;
-  left: 2px;
-  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
-}
-div.character-card div.build-content div.build-section div.clipping-mask-bottom {
-  top: 7px;
-  left: 3px;
-  clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+  top: -25px;
+  left: 12px;
 }
 div.character-card div.build-content div.build-section img.artifact-icon-simple {
   opacity: 0.7;
   height: 45px;
   width: 45px;
+  pointer-events: none;
+  user-select: none;
 }
 div.character-card div.build-content div.build-section div.build-section-text {
   padding-left: 5px;
+  padding-right: 5px;
+  align-self: center;
 }
 div.character-card div.build-content div.build-section div.build-section-text h4 {
   font-size: 0.9em;
@@ -470,10 +667,16 @@ div.character-card div.build-content div.build-section div.build-section-text h4
 }
 div.character-card div.build-content div.build-section div.build-section-text p, div.character-card div.build-content div.build-section div.build-section-text li {
   font-weight: 400;
+  position: relative;
 }
 div.character-card div.build-content div.build-section div.build-section-text span.artifact-logic {
   font-weight: 400;
   color: rgba(255, 255, 255, 0.87);
+}
+div.character-card div.build-content div.build-section div.build-section-text span.parentheses {
+  font-size: 0.9em;
+  font-weight: 400;
+  color: #BBB;
 }
 div.character-card div.build-content div.build-section div.build-section-text .highlighted {
   font-weight: 700;
@@ -489,24 +692,16 @@ div.character-card div.build-content div.constellation img {
   width: 100%;
   height: 100%;
 }
-div.character-card div.build-content div.artifact-options-1 div.artifact-set.option-1 {
-  width: 100%;
+div.character-card div.build-content div.artifact-set {
+  position: relative;
 }
-div.character-card div.build-content div.artifact-options-2,
-div.character-card div.build-content div.artifact-options-3,
-div.character-card div.build-content div.artifact-options-4 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 10px;
+div.character-card div.build-content div.artifact-set li {
+  padding-top: 3px;
+  line-height: 1.1;
+  padding-bottom: 3px;
 }
-div.character-card div.build-content div.artifact-options-2 div.build-section,
-div.character-card div.build-content div.artifact-options-3 div.build-section,
-div.character-card div.build-content div.artifact-options-4 div.build-section {
-  margin-bottom: 0;
-}
-div.character-card div.build-content div.artifact-options-3 div.artifact-set.option-1 {
-  grid-column: span 2;
+div.character-card div.build-content div.artifact-set img.artifact-icon {
+  align-self: center;
 }
 div.character-card div.build-content div.artifact-types {
   float: left;
@@ -522,8 +717,12 @@ div.character-card div.build-content div.about {
   line-height: 1.35;
   clear: both;
 }
+div.character-card div.build-content div.about div.build-section-text {
+  align-self: unset;
+}
 div.character-card div.build-content div.about button {
   position: absolute;
+  z-index: 10;
   left: 0;
   bottom: 0;
   background: linear-gradient(transparent 0%, #252525 75%, #252525 100%);
@@ -533,7 +732,7 @@ div.character-card div.build-content div.about button {
 div.character-card div.build-content div.about button span {
   color: #999;
   position: relative;
-  top: 10px;
+  top: 11px;
 }
 div.character-card div.build-content div.about button:hover {
   cursor: pointer;

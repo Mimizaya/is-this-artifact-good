@@ -14,6 +14,7 @@ dist-ssr
 backup
 
 # Editor directories and files
+assets
 .vscode/*
 !.vscode/extensions.json
 .idea
