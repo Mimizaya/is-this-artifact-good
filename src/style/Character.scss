@@ -42,7 +42,6 @@ $primary-color: #242424;
 
 // Tooltip display logic 
 
-
 // General rules 
 div.character-card.full {
   div.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
@@ -246,6 +245,20 @@ div.character-card.small {
       animation-duration: 0.3s;
       animation-iteration-count: 1;
 
+      div.build-section {
+        margin-bottom: 5px;
+
+        p, li {
+          font-size: 1em;
+        }
+        li {
+          line-height: 1.1;
+          padding-bottom: 4px;
+        }
+      }
+
+
+
       // Icon sizes
         div.build-section {
           img.artifact-icon {
@@ -282,8 +295,8 @@ div.character-card.small {
 
   // Artifact types - Sands, Goblet, Circlet 
     div.artifact-types {
-      width: calc(50% - 10px);
-      margin-right: 10px;
+      width: calc(50% - 5px);
+      margin-right: 5px;
       float: left;
     }
   // Substats, ER Recommendation

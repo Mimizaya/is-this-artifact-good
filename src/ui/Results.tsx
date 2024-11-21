@@ -437,8 +437,8 @@ export default function Results({
       let sortedResults = filteredResults;
       let sortedAdditionalResults = filteredAdditionalResults;
 
-  // SORT DATA BY OPTION: Relevancy 
-    // 1. Key maps. Establishes relevancy ranking 
+  // SORT DATA BY OPTION: Relevance
+    // 1. Key maps. Establish relevancy rankings 
       const substatsKeyMap = {
         flatstats_2: selectedSubstats,
         flatstats_1: selectedSubstats,
@@ -808,16 +808,11 @@ export default function Results({
     // 2. Combine pinned builds back with main data 
       const sortedMainResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
 
-  // CHECK: Are there actually any filters applied? (currently not in use) 
-    //const noFilter = buildsDataRaw.length === sortedMainResults.length; // returns true if same length
-
-
-
   return (
     <section id="results">
 
       {/* Results Header */}
-      <div className="results-header">
+      <header id="results-header">
         {/* Filter Tabs */} 
           {!isMobile &&
           <FilterTabs 
@@ -828,7 +823,7 @@ export default function Results({
             selectedFilters={selectedFilters}
             savedFilters={savedFilters}
           />}{/* End Filter Tabs */}
-        {/* Builds Filter Menu: What sections are shown? */} 
+        {/* Builds filter menu: What sections are shown? */} 
           <div id="filter-build">
             {/* Filter Options */}
               <h4>Show build sections</h4>
@@ -854,8 +849,7 @@ export default function Results({
                 ))}
               </div>{/* End Filter Options */}
           </div>{/* End Builds Filter Menu */}
-          
-        {/* Selecting sorting option */}
+        {/* Select sorting option */}
           <div id="select-sorting-option">
             <h4>Sort results by</h4>
             <div className="sorting-buttons">
@@ -880,24 +874,14 @@ export default function Results({
               ))}
             </ul>}
           </div>
-      </div>{/* End Results Header */}
+      </header>{/* End Results Header */}
 
       {/* Main Results Content */}
       <div id="main-content">
-        <div id="results-content">
-
-
-        {/* Display number of builds found */}
-          {/*<h2 className="main-content-results-number">{
-            noFilter ? `Showing all ${sortedMainResults.length} builds` : 
-            sortedMainResults.length === 1 ? `Found 1 build matching filters` : 
-            sortedMainResults.length > 1 ? `Found ${sortedMainResults.length} builds matching filters` : 
-            'No builds matching current filters'}
-          </h2>*/}
 
         {!viewPinned ? (
           <>
-          {/* Show build(s) that match filter(s) */}
+            {/* MAIN RESULTS */}
             {sortedMainResults.map((build: FullBuild) => (
               <CharacterCard
                 key={build.ID}
@@ -912,11 +896,19 @@ export default function Results({
                 matchingSets={matchingSets}
               />
             ))}
-          </>
-        ) : (
-          <>
-          {/* Show only pinned builds */}
-            {pinnedBuilds.map((build: FullBuild) => (
+
+            {/* ADDITIONAL RESULTS */}
+            {sortedAdditionalResults.length > 0 &&
+            <>
+            <div className="additional-results-text">
+              <h3>
+                Matching 2&ndash;Piece Set Bonus
+              </h3>
+              <p>{selectedArtifact?.name}: <b>{selectedArtifact?.two_piece}</b></p>
+              <p>The following builds use the same 2&ndash;piece set bonus. You can use {selectedArtifact?.name} to substitute the highlighted sets.</p>
+            </div>
+
+            {sortedAdditionalResults.map((build: FullBuild) => (
               <CharacterCard
                 key={build.ID}
                 build={build}
@@ -930,6 +922,26 @@ export default function Results({
                 matchingSets={matchingSets}
               />
             ))}
+            </>}
+
+          </>
+        ) : (
+          <>
+          {/* Show only pinned builds */}
+          {pinnedBuilds.map((build: FullBuild) => (
+            <CharacterCard
+              key={build.ID}
+              build={build}
+              handleSelectedPinned={handleSelectedPinned}
+              buildSectionsOptions={buildSectionsOptions}
+              buildSectionsVisible={buildSectionsVisible}
+              selectedPinned={selectedPinned}
+              selectedFilters={selectedFilters}
+              isMobile={isMobile}
+              isMenuOpen={isMenuOpen}
+              matchingSets={matchingSets}
+            />
+          ))}
           </>
         )}
 
@@ -971,7 +983,7 @@ export default function Results({
               selectedSands.length > 0 ||
               selectedGoblet.length > 0 ||
               selectedCirclet.length > 0 ||
-              selectedSubstats.length > 0||
+              selectedSubstats.length > 0 ||
               selectedElements.length > 0
             ) &&
             <div id="no-results">
@@ -1008,27 +1020,19 @@ export default function Results({
                 src={'./option3.webp'}
               />
 
-              {/* 1. No artifact set or element */}
-              {selectedArtifactSet.length === 0 && selectedElements.length === 0 &&
+              {/* 1. No artifact set selected */}
+              {selectedArtifactSet.length === 0 &&
               <>
               <h3>{selectedCharacter} doesn't have any builds matching the current filters.</h3>
               <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
               </>}
 
-              {/* 2. Artifact set, but no element */}
-              {selectedArtifactSet.length > 0 && selectedElements.length === 0 &&
+              {/* 2. Selected an artifact set */}
+              {selectedArtifactSet.length > 0 &&
               <>
               <h3>{selectedCharacter} does not use {selectedArtifactSet}.</h3>
               <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
               <button className="reset-filters error" onClick={() => resetFilters('view-artifact')}>View builds using {selectedArtifactSet}</button>
-              </>}
-
-              {/* 3. Element selected */}
-              {selectedElements.length > 0 &&
-              <>
-              <h3>{selectedCharacter}. {selectedElements.join(' or ')}? Paimon is confused.</h3>
-              <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
-              <button className="reset-filters error" onClick={() => resetFilters('view-elements')}>View {selectedElements.join(' and ')} characters</button>
               </>}
 
             </div>}
@@ -1042,42 +1046,12 @@ export default function Results({
                 className="no-result-img"
                 src={'./option1.webp'}
               />
-              <h3>Paimon looked everywhere, but she couldn't find anything...</h3>
+              <h3>Paimon looked everywhere, but she couldn't find what you're looking for...</h3>
               <button className="reset-filters error" onClick={() => resetFilters(null)}>Clear all filters</button>
             </div>}
 
-        </div>{/* End Main Results Content */}
-        
-        {/* Additional results - Partial matches based on 2-piece set bonus */}
-          {sortedAdditionalResults.length > 0 &&
-          <div id="additional-results-wrapper">
-            <div className="additional-results-text">
-              <h3 className="additional-results-content-header">
-                Matching 2&ndash;Piece Set Bonus
-              </h3>
-              <p>{selectedArtifact?.name} 2&ndash;Piece Set Bonus: <b>{selectedArtifact?.two_piece}</b></p>
-              <p>The builds listed below use the same 2&ndash;Piece Set Bonus and their listed set can be freely exchanged for any other set with the same bonus.</p>
-            </div>
-            <div id="additional-results-content">
-              {/* Show build(s) that match filter(s) */}
-              {sortedAdditionalResults.map((build: FullBuild) => (
-                <CharacterCard
-                  key={build.ID}
-                  build={build}
-                  handleSelectedPinned={handleSelectedPinned}
-                  buildSectionsOptions={buildSectionsOptions}
-                  buildSectionsVisible={buildSectionsVisible}
-                  selectedPinned={selectedPinned}
-                  selectedFilters={selectedFilters}
-                  isMobile={isMobile}
-                  isMenuOpen={isMenuOpen}
-                  matchingSets={matchingSets}
-                />
-              ))}
-            </div>
-          </div>}{/* End Additional results */}
-
       </div>{/* End Main Content */}
+      
       <Footer />
     </section>
   );

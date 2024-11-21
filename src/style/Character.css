@@ -185,6 +185,16 @@ div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.to
     animation-duration: 0.3s;
     animation-iteration-count: 1;
   }
+  div.character-card.full div.build-content div.build-section {
+    margin-bottom: 5px;
+  }
+  div.character-card.full div.build-content div.build-section p, div.character-card.full div.build-content div.build-section li {
+    font-size: 1em;
+  }
+  div.character-card.full div.build-content div.build-section li {
+    line-height: 1.1;
+    padding-bottom: 4px;
+  }
   div.character-card.full div.build-content div.build-section img.artifact-icon {
     height: 41.6666666667px;
     width: 41.6666666667px;
@@ -213,8 +223,8 @@ div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.to
     font-size: 0.85em;
   }
   div.character-card.full div.artifact-types {
-    width: calc(50% - 10px);
-    margin-right: 10px;
+    width: calc(50% - 5px);
+    margin-right: 5px;
     float: left;
   }
   div.character-card.full div.substats, div.character-card.full div.er-recommendation {
