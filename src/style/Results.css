@@ -234,6 +234,7 @@ section#results header#results-header div#select-sorting-option {
   position: absolute;
   top: 70px;
   height: 40px;
+  width: 240px;
   left: 850px;
 }
 section#results header#results-header div#select-sorting-option h4 {
@@ -246,9 +247,15 @@ section#results header#results-header div#select-sorting-option h4 {
 section#results header#results-header div#select-sorting-option div.sorting-buttons {
   display: flex;
 }
+section#results header#results-header div#select-sorting-option div.sorting-buttons button.option {
+  width: 200px;
+  margin-right: 5px;
+}
+section#results header#results-header div#select-sorting-option div.sorting-buttons button.order {
+  width: 40px;
+}
 section#results header#results-header div#select-sorting-option div.sorting-buttons button {
   height: 100%;
-  width: 100%;
   color: #CCC;
   background-color: #242424;
   font-family: inherit;
@@ -256,7 +263,6 @@ section#results header#results-header div#select-sorting-option div.sorting-butt
   padding: 10px 13px 8px 8px;
   transition: all 0.3s ease-out;
   border-radius: 5px;
-  margin-right: 5px;
   margin-bottom: 1px;
   display: flex;
   cursor: pointer;

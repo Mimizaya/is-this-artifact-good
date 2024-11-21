@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 
 // Datasets
 import { characterData } from '../data/character-data.ts';
@@ -158,7 +158,7 @@ export default function Results({
       }, [buildsDataRaw]);
 
   // SORTING OPTIONS: Set the method of sorting
-    // 1. States (current & available methods, ascending/descending) 
+    // 1. States/refs (current & available methods, ascending/descending, ref for menu) 
       const [sortingOption, setSortingOption] = useState<string>('Relevance');
       const [sortingOptionsMenuOpen, setSortingOptionsMenuOpen] = useState<boolean>(false);
       const [sortDescending, setSortDescending] = useState<boolean>(false)
@@ -168,15 +168,34 @@ export default function Results({
         'Character – By Release',  
         'Artifact Set – A–Z', 
         'Artifact Set – By Release'];
+      const sortingOptionsMenuOpenRef = useRef<HTMLInputElement>(null);
     // 2. Handle updating of selected method 
       const handleChangeSortingOption = (option: string) => {
         setSortingOption(option);
         setSortingOptionsMenuOpen(!sortingOptionsMenuOpen);
       }
-    // 3. Handle open/close sorting menu
+    // 3. Handle open/close sorting menu 
       const handleToggleSortingMenu = () => {
         setSortingOptionsMenuOpen(!sortingOptionsMenuOpen);
       }
+    // 4. Listen for clicks outside of menu if opened 
+      useEffect(() => {
+        // Add the event listener when the dropdown is open
+        if (sortingOptionsMenuOpen) {
+          document.addEventListener('mousedown', handleClickOutside);
+        }
+        // Cleanup the event listener on component unmount or when dropdown closes
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [sortingOptionsMenuOpen]);
+    // 5. Handle clicks outside menu 
+      const handleClickOutside = (event: any) => {
+        // Check if the click was outside the dropdown and button
+        if (sortingOptionsMenuOpenRef.current && !sortingOptionsMenuOpenRef.current.contains(event.target)) {
+          setSortingOptionsMenuOpen(false);
+        }
+      };
 
   // SORT: Apply default sorting order 
     // 1. Get character and artifact order from data 
@@ -850,17 +869,17 @@ export default function Results({
               </div>{/* End Filter Options */}
           </div>{/* End Builds Filter Menu */}
         {/* Select sorting option */}
-          <div id="select-sorting-option">
+          <div id="select-sorting-option" ref={sortingOptionsMenuOpenRef}>
             <h4>Sort results by</h4>
             <div className="sorting-buttons">
-              <button onClick={() => handleToggleSortingMenu()}>
+              <button className="option" onClick={() => handleToggleSortingMenu()}>
                 <img 
                   className="sort-image"
                   src="./images/icons/Icon Sort.webp"
                 />
                 <p>{sortingOption}</p>
               </button>
-              <button onClick={() => handleToggleSortingOrder()}>
+              <button className="order" onClick={() => handleToggleSortingOrder()}>
                 <img 
                   className={sortDescending ? 'descending-image' : 'ascending-image'}
                   src="./images/icons/Icon Sort Direction.webp"

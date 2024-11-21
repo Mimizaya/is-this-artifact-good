@@ -97,20 +97,22 @@ export default function Filter({
         // Add the event listener when the dropdown is open
         if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
           document.addEventListener('mousedown', handleClickOutside);
+          document.addEventListener('keydown', handleClickOutside);
         }
         // Cleanup the event listener on component unmount or when dropdown closes
         return () => {
           document.removeEventListener('mousedown', handleClickOutside);
+          document.addEventListener('keydown', handleClickOutside);
         };
       }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
     // 4. Handle clicks outside menu 
       const handleClickOutside = (event: any) => {
         // Check if the click was outside the dropdown and button
-        if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target)) {
+        if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target) || event.key === 'Enter') {
           setCharacterDropDownOpen(false);
           setCharacterQuery('');
         }
-        if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target)) {
+        if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target) || event.key === 'Enter') {
           setArtifactSetDropDownOpen(false);
           setArtifactQuery('');
         }
@@ -199,6 +201,78 @@ export default function Filter({
           }
         }
       }, [artifactQuery]);
+
+  // SCROLL: Save scroll distance and return if applicable
+    // 1. Use a ref to persist the scroll position without causing re-renders 
+      const currentScrollRef = useRef<number>(0);
+    // 2. Effect to store scroll position when dropdown is opened 
+      useEffect(() => {
+        if (characterDropDownOpen || artifactSetDropDownOpen) {
+          // Save the scroll position of the results section when the dropdown opens
+          const resultsSection = document.getElementById('results');
+          if (resultsSection) {
+            currentScrollRef.current = resultsSection.scrollTop;
+          }
+        }
+      }, [characterDropDownOpen, artifactSetDropDownOpen]);
+    // 3. Effect to detect changes and scroll when content is rendered 
+      useEffect(() => {
+        const resultsSection = document.getElementById('results');
+        if (characterDropDownOpen) {
+          if (resultsSection) {
+            // Initialize a MutationObserver to detect changes in the #results content
+            const observer = new MutationObserver(() => {
+              // Once content is updated, scroll to the right position
+              if (filteredCharacterData.length > 1) {
+                resultsSection.scrollTo({
+                  top: currentScrollRef.current,
+                  behavior: 'smooth',
+                });
+              } else if (filteredCharacterData.length === 1) {
+                resultsSection.scrollTo({
+                  top: 0,
+                  behavior: 'auto',
+                });
+              }
+              // Disconnect observer once the scroll has happened
+              observer.disconnect();
+            });
+
+            // Start observing the results section for changes
+            observer.observe(resultsSection, {
+              childList: true, // Observe child elements being added or removed
+              subtree: true, // Observe all descendants
+            });
+          }
+        }
+        else if (artifactSetDropDownOpen) {
+          if (resultsSection) {
+            // Initialize a MutationObserver to detect changes in the #results content
+            const observer = new MutationObserver(() => {
+              // Once content is updated, scroll to the right position
+              if (filteredArtifacts.length > 1) {
+                resultsSection.scrollTo({
+                  top: currentScrollRef.current,
+                  behavior: 'smooth',
+                });
+              } else if (filteredArtifacts.length === 1) {
+                resultsSection.scrollTo({
+                  top: 0,
+                  behavior: 'auto',
+                });
+              }
+              // Disconnect observer once the scroll has happened
+              observer.disconnect();
+            });
+
+            // Start observing the results section for changes
+            observer.observe(resultsSection, {
+              childList: true, // Observe child elements being added or removed
+              subtree: true, // Observe all descendants
+            });
+          }
+        }
+      }, [characterDropDownOpen, artifactSetDropDownOpen, filteredCharacterData, filteredArtifacts]);
 
   // SEARCH: Focus input when menu open
     // 1. Refs 
