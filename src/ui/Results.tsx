@@ -923,7 +923,7 @@ export default function Results({
               <h3>
                 Matching 2&ndash;Piece Set Bonus
               </h3>
-              <p>{selectedArtifact?.name}: <b>{selectedArtifact?.two_piece}</b></p>
+              <p className="selected-bonus"><b>{selectedArtifact?.two_piece}</b> from {selectedArtifact?.name}</p>
               <p>The following builds use the same 2&ndash;piece set bonus. You can use {selectedArtifact?.name} to substitute the highlighted sets.</p>
             </div>
 

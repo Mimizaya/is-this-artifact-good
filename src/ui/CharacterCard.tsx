@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 
 // Type definitions
 import { FullBuild, SelectedFilters } from '../types/types';
@@ -86,7 +86,7 @@ export default function CharacterCard({
 			const [aboutIsExpanded, setAboutIsExpanded] = useState<boolean>();
 			const aboutSectionRef = useRef<HTMLInputElement>(null);
 		// 2. Set state based on content height. Expandable or not? 
-			useEffect(() => {
+			useLayoutEffect(() => {
 			  const aboutSection = aboutSectionRef.current;
 
 			  if (aboutSection) {
@@ -101,7 +101,7 @@ export default function CharacterCard({
 			      setAboutIsExpandable(false);
 			    }
 			  }
-			}, [filterApplied, isBuildVisible, buildSectionsVisible]);
+			}, [filterApplied, isBuildVisible, buildSectionsVisible, expanded]);
 		// 3. Handle maximizing of about section on click 
 			const handleAboutIsExpanded = (e: any) => {
 				e.preventDefault();
@@ -310,7 +310,6 @@ export default function CharacterCard({
 				{/* Alternative Artifact Options Wrapper: Minimal view (Images only) */}
 			    {build.artifact_set_3 && filterApplied && !expanded &&
 	      	<div className="artifact-set-alternatives">
-
 	      		{/* Artifact Alternative Option 1 - Minimal */}
 		      		{build.artifact_set_3 &&
 								<Artifact 
@@ -351,7 +350,6 @@ export default function CharacterCard({
 					      	selectedArtifactSet={selectedArtifactSet}
 					      	matchingSets={matchingSets}
 					      />}
-
 			    </div>}{/* End Alternative Artifact Option Wrapper - Minimal view */}
 		    </div>
 			  </>}
@@ -396,57 +394,53 @@ export default function CharacterCard({
 
 		  {/* Artifact Types */}
 	      <div className="artifact-types">
-
-	      {/* Sands */}
-	      	{(showSands || expanded) &&
-	      	<>
-		      <div className="build-section">
-	        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set_1 +" Sands.webp"}/>
-	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
-	        	<div className="build-section-text">
-			      	<h4>Sands</h4>
-			        <ol>
-			          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{parseText(build.sands_1)}</li>}
-			          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{parseText(build.sands_2)}</li>}
-			          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{parseText(build.sands_3)}</li>}
-			        </ol>
+		      {/* Sands */}
+		      	{(showSands || expanded) &&
+		      	<>
+			      <div className="build-section">
+		        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set_1 +" Sands.webp"}/>
+		        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
+		        	<div className="build-section-text">
+				      	<h4>Sands</h4>
+				        <ol>
+				          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{parseText(build.sands_1)}</li>}
+				          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{parseText(build.sands_2)}</li>}
+				          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{parseText(build.sands_3)}</li>}
+				        </ol>
+				      </div>
+				     </div>
+				    </>}
+				  {/* Goblet */}
+		      	{(showGoblet || expanded) && 
+		      	<>
+			      <div className="build-section">
+		        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set_1 +" Goblet.webp"}/>
+		        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
+		        	<div className="build-section-text">
+			      		<h4>Goblet</h4>
+			        	<ol>
+			          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{parseText(build.goblet_1)}</li>}
+			          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{parseText(build.goblet_2)}</li>}
+			        	</ol>
+				      </div>
 			      </div>
-			     </div>
-			    </>}
-
-			  {/* Goblet */}
-	      	{(showGoblet || expanded) && 
-	      	<>
-		      <div className="build-section">
-	        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set_1 +" Goblet.webp"}/>
-	        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
-	        	<div className="build-section-text">
-		      		<h4>Goblet</h4>
-		        	<ol>
-		          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{parseText(build.goblet_1)}</li>}
-		          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{parseText(build.goblet_2)}</li>}
-		        	</ol>
+				    </>}
+				  {/* Circlet */}
+		      	{(showCirclet || expanded) && 
+		      	<>
+						<div className="build-section">
+		        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set_1 +" Circlet.webp"}/>
+							{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
+				      <div className="build-section-text">
+					      <h4>Circlet</h4>
+				        <ol>
+				          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{parseText(build.circlet_1)}</li>}
+				          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{parseText(build.circlet_2)}</li>}
+				          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{parseText(build.circlet_3)}</li>}
+				        </ol>
+				      </div>
 			      </div>
-		      </div>
-			    </>}
-
-			  {/* Circlet */}
-	      	{(showCirclet || expanded) && 
-	      	<>
-					<div className="build-section">
-	        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set_1 +" Circlet.webp"}/>
-						{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
-			      <div className="build-section-text">
-				      <h4>Circlet</h4>
-			        <ol>
-			          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{parseText(build.circlet_1)}</li>}
-			          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{parseText(build.circlet_2)}</li>}
-			          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{parseText(build.circlet_3)}</li>}
-			        </ol>
-			      </div>
-		      </div>
-		      </>}
-
+			      </>}
 	      </div>{/* End Artifact Types */}	    
 
 	    {/* Substats */}
@@ -474,7 +468,6 @@ export default function CharacterCard({
 		    </div>
 	      </>
 		   	}
-
 		  {/* ER Recommendation */}
       	{(showERRecommendation || expanded) && 
       	<>

@@ -231,7 +231,7 @@ section#results {
           margin-left: 4px;
         }
 
-      // List filter build options
+      // Show build options
         div.filter-build-options {
           height: 100%;
           display: flex;
@@ -274,6 +274,7 @@ section#results {
         width: 240px;
         left: 850px;
 
+      // Header (Sort results by)
         h4 {
           color: #CCC;
           font-size: 1em;
@@ -282,16 +283,20 @@ section#results {
           margin-left: 4px;
         }
 
+      // Wrapper for both buttons, selected and inverse order
         div.sorting-buttons {
           display: flex;
 
+        // Select option button
           button.option {
             width: 200px;
             margin-right: 5px;
           }
+        // Toggle order button
           button.order {
             width: 40px;
           }
+        // General for both buttons
           button {
             height: 100%;
             color: #CCC;
@@ -305,6 +310,7 @@ section#results {
             display: flex;
             cursor: pointer;
 
+          // Images
             img.sort-image,
             img.ascending-image,, 
             img.descending-image, {
@@ -314,22 +320,28 @@ section#results {
             img.ascending-image, {
               transform: rotate(180deg);
             }
+          // Text
             p {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
             }
           }
+
+        // General for both buttons:hover
           button:hover {
             background-color: lighten(#242424, 7%);
             color: #FFF;
           }
         }
+
+      // The dropdown list
         ul {
           //position: absolute;
           //width: 200px;
           box-shadow: 5px 13px 20px #151515;
 
+        // Each dropdown item
           li {
             cursor: pointer;
             height: unset;
@@ -355,8 +367,7 @@ section#results {
   // Main content 
     div#main-content {
       
-
-      // Error container, no results
+    // Error container, no results
       div#no-results {
         text-align: center;
         width: 500px;
@@ -374,8 +385,8 @@ section#results {
         button {
           width: 60%;
         }
-      }
-      
+      } 
+    // Addition results - Explanatory text
       div.additional-results-text {
         margin-top: 50px;
         border-top: 1px solid #333;
@@ -386,6 +397,9 @@ section#results {
         }
         h3 {
           margin-top: 20px;
+        }
+        p.selected-bonus {
+          //padding-bottom: 4px;
         }
       }
     }

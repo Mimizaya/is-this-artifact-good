@@ -226,7 +226,7 @@ export default function Filter({
               if (filteredCharacterData.length > 1) {
                 resultsSection.scrollTo({
                   top: currentScrollRef.current,
-                  behavior: 'smooth',
+                  behavior: 'auto',
                 });
               } else if (filteredCharacterData.length === 1) {
                 resultsSection.scrollTo({
@@ -253,7 +253,7 @@ export default function Filter({
               if (filteredArtifacts.length > 1) {
                 resultsSection.scrollTo({
                   top: currentScrollRef.current,
-                  behavior: 'smooth',
+                  behavior: 'auto',
                 });
               } else if (filteredArtifacts.length === 1) {
                 resultsSection.scrollTo({
