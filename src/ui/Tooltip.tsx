@@ -1,5 +1,5 @@
 // Functions
-import { parseText } from '../utility/functions'
+import { parseText } from '../utility/functions';
 
 // Type definitions
 import { ArtifactSet } from '../types/types';

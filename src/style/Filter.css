@@ -9,13 +9,14 @@
     width: 85%;
     transition: all 0.3s ease-out;
     padding: 10px;
+    padding-top: 40px;
   }
   section#filter div#filter-tabs {
     position: fixed;
     display: block;
     width: 15%;
     left: 85%;
-    top: 0;
+    top: 40px;
     transition: all 0.3s ease-out;
   }
   section#filter div#filter-tabs div.filter-tab {
@@ -37,8 +38,7 @@
   }
   section#filter div#filter-tabs div.filter-tab button.filter-select img {
     height: 85%;
-    margin-right: 4px;
-    margin-left: 0px;
+    margin: 0 auto;
   }
   section#filter div#filter-tabs div.filter-tab button.filter-select p {
     padding-left: 6px;

@@ -39,7 +39,7 @@ export default function Artifact({
 			newNumber = 5;
 		}
 
-	// Determine tooltip alignment
+	// Determine tooltip alignment 
 		const determineTooltipAlignment = () => {
 			if(numberOfArtifactOptions === 1 && number === 1) {
 				return 'left'
@@ -102,17 +102,17 @@ export default function Artifact({
 		const artifactSet_label = build[`artifact_set_${number}_label` as keyof FullBuild];
 
 	// Artifact set 1 info 
-		// 1. Artifact name
+		// 1. Artifact name 
 			const artifactSet_1: ArtifactSet["name"] = String(build[`artifact_set_${number}` as keyof FullBuild] ?? '');
-		// 2. Artifact 2-piece bonus description
+		// 2. Artifact 2-piece bonus description 
 			const artifactSet_1_two_piece: ArtifactSet["two_piece"] = String(build[`artifact_set_${number}_two_piece` as keyof FullBuild] ?? '');
-		// 3. Artifact 4-piece bonus description
+		// 3. Artifact 4-piece bonus description 
 			const artifactSet_1_four_piece: ArtifactSet["four_piece"] = String(build[`artifact_set_${number}_four_piece` as keyof FullBuild] ?? '');
 
 	// Artifact set 2 info 
-		// 1. Artifact name
+		// 1. Artifact name 
 			const artifactSet_2: ArtifactSet["name"] = String(build[`artifact_set_${number+1}` as keyof FullBuild] ?? '');
-		// 2. Artifact 2-piece bonus description
+		// 2. Artifact 2-piece bonus description 
 			const artifactSet_2_two_piece: ArtifactSet["two_piece"] = String(build[`artifact_set_${number+1}_two_piece` as keyof FullBuild] ?? '');
 
 	return (

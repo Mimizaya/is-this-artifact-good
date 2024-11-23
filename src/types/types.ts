@@ -1,5 +1,6 @@
 export interface Character {
 	name: string;
+	alias: string | null;
 	rarity: number;
 	element: string;
 }
@@ -54,7 +55,6 @@ export interface RawBuild {
 	substats_3: string;
 	substats_4: string;
 	substats_5: string;
-	substats_6: string;
 	flatstats_1: string;
 	flatstats_2: string;
 
@@ -64,6 +64,7 @@ export interface RawBuild {
 
 	// About
 	note: string;
+
 }
 
 export interface FullBuild extends RawBuild {

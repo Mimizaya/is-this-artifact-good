@@ -843,6 +843,7 @@ export default function Results({
             savedFilters={savedFilters}
           />}{/* End Filter Tabs */}
         {/* Builds filter menu: What sections are shown? */} 
+          {!isMobile &&
           <div id="filter-build">
             {/* Filter Options */}
               <h4>Show build sections</h4>
@@ -867,8 +868,9 @@ export default function Results({
                   </button>
                 ))}
               </div>{/* End Filter Options */}
-          </div>{/* End Builds Filter Menu */}
-        {/* Select sorting option */}
+          </div>}{/* End Builds Filter Menu */}
+        {/* Select sorting option */} 
+          {!isMobile &&
           <div id="select-sorting-option" ref={sortingOptionsMenuOpenRef}>
             <h4>Sort results by</h4>
             <div className="sorting-buttons">
@@ -892,7 +894,7 @@ export default function Results({
                 <li onClick={() => handleChangeSortingOption(option)}>{option}</li>
               ))}
             </ul>}
-          </div>
+          </div>}
       </header>{/* End Results Header */}
 
       {/* Main Results Content */}
@@ -942,7 +944,6 @@ export default function Results({
               />
             ))}
             </>}
-
           </>
         ) : (
           <>
@@ -990,7 +991,7 @@ export default function Results({
                 className="no-result-img surprised"
                 src={'./option4.webp'}
               />
-              <h3>No one really wants {selectedArtifactSet}.</h3>
+              <h3>No one wants {selectedArtifactSet}? Inconceivable!</h3>
               <button className="reset-filters error" onClick={() => resetFilters('artifact')}>Select something useful instead.</button>
             </div>}
           {/* 3. Artifact set is selected, character is not */}
@@ -1042,8 +1043,8 @@ export default function Results({
               {/* 1. No artifact set selected */}
               {selectedArtifactSet.length === 0 &&
               <>
-              <h3>{selectedCharacter} doesn't have any builds matching the current filters.</h3>
-              <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter}</button>
+              <h3>{selectedCharacter[0]} doesn't have any builds matching the current filters.</h3>
+              <button className="reset-filters error" onClick={() => resetFilters('view-character')}>View builds for {selectedCharacter[0]}</button>
               </>}
 
               {/* 2. Selected an artifact set */}

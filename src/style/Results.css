@@ -6,11 +6,8 @@
   section#results div#no-results {
     padding: 0px 20px;
   }
-  section#results header#results-header {
-    display: none;
-  }
   section#results div#main-content {
-    margin: 20px 0 50px 0;
+    margin: 60px 0 50px 0;
     display: flex;
     flex-wrap: wrap;
     align-content: start;

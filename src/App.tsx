@@ -10,6 +10,7 @@ import buildData from './data/builds-data.csv';
 // UI components
 import Filter from './ui/Filter.tsx';
 import Results from './ui/Results.tsx';
+import MobileHeader from './ui/MobileHeader.tsx';
 
 // Filter Functions
 import { 
@@ -84,11 +85,26 @@ export default function App() {
         selectedElements
       };
     // 3. Determine number of selected substats 
-      const substatsToRemove = ['CRIT Rate/DMG', 'CRIT Rate (Favonius)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Melt)'];
+      const substatsToRemove = ['CRIT Rate/DMG', 'CRIT Rate (Favonius)', 'EM (Vaporize)', 'EM (Vape/Melt)', 'EM (Quicken)', 'EM (Melt)', 'EM (Aggravate)'];
       const numberOfSubstats = selectedSubstats.filter(substat => !substatsToRemove.includes(substat)).length;
     // 4. Handle changes to filter states 
       const handleCharacterChange = (name: string) => {
         updateFiltersSingleSelect(name, setSelectedCharacter);
+
+        // If another character besides Traveler is selected, reset elements selection.
+        // Don't reset if just clearing the name.
+        if(!name.includes('Traveler') && name !== 'clear selection') {
+          resetFilters('elements')
+        }
+      };
+
+      const handleElementsChange = (element: string) => {
+        updateFiltersElements(element, setSelectedElements);
+
+        // If selecting an element, reset character unless it's the Traveler.
+        if(!selectedCharacter.includes('Traveler')) {
+          resetFilters('character')
+        }
       };
 
       const handleArtifactSetChange = (set: string) => {
@@ -110,10 +126,6 @@ export default function App() {
       const handleSubstatsChange = (stat: string) => {
         updateFiltersSubstats(stat, setSelectedSubstats, numberOfSubstats);
       }
-
-      const handleElementsChange = (element: string) => {
-        updateFiltersElements(element, setSelectedElements);
-      };
     // 5. Handle clearing of filters 
       const resetFilters = (filter: string | null) => {
         if(filter === 'artifact') {
@@ -121,6 +133,9 @@ export default function App() {
         }
         else if(filter === 'character') {
           setSelectedCharacter([]);
+        }
+        else if(filter === 'elements') {
+          setSelectedElements([]);
         }
         else if(filter === 'view-character') {
           setSelectedArtifactSet([]);
@@ -161,9 +176,9 @@ export default function App() {
       const [isMenuOpen, setIsMenuOpen] = useState(true);
 
       // Toggle menu on button click
-      /* const toggleMenu = () => {
+      const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
-      };*/
+      };
     
       // Refs for storing touch positions
       const touchStartX = useRef(0); // Store the start position of the touch
@@ -279,6 +294,12 @@ export default function App() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}>
+
+        {isMobile &&
+        <MobileHeader 
+          toggleMenu={toggleMenu}
+          isMenuOpen={isMenuOpen}
+        />}
 
         <Filter 
           isMobile={isMobile}

@@ -128,16 +128,17 @@ export default function Filter({
       };
 
   // SEARCH: Character 
-    // 1. State to hold query
+    // 1. State to hold query 
       const [characterQuery, setCharacterQuery] = useState<string>('');
-    // 2. Update query on input
+    // 2. Update query on input 
       const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCharacterQuery(e.target.value)
       }
-    // 3. Filter and sort the list based on query
+    // 3. Filter and sort the list based on query 
       const filteredCharacterData = characterData
       .filter((character: Character) =>
-        character.name.toLowerCase().includes(characterQuery.toLowerCase())
+        character.name.toLowerCase().includes(characterQuery.toLowerCase()) ||
+        character.alias?.toLowerCase().includes(characterQuery.toLowerCase())
       )
       .sort((a, b) => {
         const queryLower = characterQuery.toLowerCase();

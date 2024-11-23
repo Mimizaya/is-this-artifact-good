@@ -134,41 +134,24 @@ export default function CharacterCard({
 			    setPortraitImgSrc(portraitPlaceholderImage);  // Set the image to placeholder if original image fails
 			  };
 
-		// ARTIFACT: Find number of different options
+		// ARTIFACT: Find number of different options 
 			const getMaxArtifactSetNumber = (build: FullBuild) => {
-			  // Define the mapping for artifact sets to numbers
-			  const artifactSetMapping = {
-			    9: 5,
-			    7: 4,
-			    5: 3,
-			    3: 2,
-			    1: 1
-			  };
-
-			  // Array of artifact sets to check
-			  const artifactSets = [
-			    build.artifact_set_9,
-			    build.artifact_set_7,
-			    build.artifact_set_5,
-			    build.artifact_set_3,
-			    build.artifact_set_1
-			  ];
-
-			  // Iterate through the artifactSets array and find the highest valid mapped number
-			  let highestNumber = 0; // Default to 0 if none found
-
-			  artifactSets.forEach((artifact, index) => {
-			    if (artifact) {
-			      // Get the key from the artifactSets (9, 7, 5, etc.)
-			      const artifactSetKey = [9, 7, 5, 3, 1][index];  // Explicitly map index to key 9, 7, 5, 3, 1
-			      const mappedNumber = artifactSetMapping[artifactSetKey as 1 | 3 | 5 | 7 | 9];
-
-			      // Update highestNumber if the current mappedNumber is higher
-			      highestNumber = Math.max(highestNumber, mappedNumber);
-			    }
-			  });
-
-			  return highestNumber;
+				if(build.artifact_set_9) {
+					return 5;
+				}
+				else if(build.artifact_set_7) {
+					return 4;
+				}
+				else if(build.artifact_set_5) {
+					return 3;
+				}
+				else if(build.artifact_set_3) {
+					return 2;
+				}
+				else if(build.artifact_set_1) {
+					return 1;
+				}
+				return 0;
 			};
 			const numberOfArtifactOptions = getMaxArtifactSetNumber(build)
 
@@ -176,15 +159,10 @@ export default function CharacterCard({
 		<div className={`character-card ${filterApplied ? (expanded ? 'full expanded' : 'small') : 'full'}`}>
 
 		{/* Build header wrapper */}
-      <div 
-      	className={`build-header rarity-${build.rarity}`}
-				onClick={() => handleBannerClick()}
-      >
-
-      	{/* Element symbol */}
+      <div className={`build-header rarity-${build.rarity}`} onClick={() => handleBannerClick()}>
+      	{/* 1. Element symbol */} 
 					<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
-					
-				{/* Banner */}
+				{/* 2. Banner */} 
 					<div className="character-banner-wrapper">
 						<img
 							className="character-banner" 
@@ -195,13 +173,14 @@ export default function CharacterCard({
 								bottom: 
 								!filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset : '60px') : 
 								!filterApplied && isMobile ? (build.banner_offset ? build.banner_offset / 1.5 +2 : '60px') :
-								filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset / 2.1 : '35px') :
+
+								filterApplied && !isMobile && !expanded ? (build.banner_offset ? build.banner_offset / 2.1 : '35px') :
+								filterApplied && !isMobile && expanded ? (build.banner_offset ? build.banner_offset : '60px') :
 								'60px'
 							}}
 							/>
 					</div>
-
-				{/* Profile Pictures */}
+				{/* 3. Profile Pictures */} 
 					{/* Traveler build and no filters (i.e. big format display) */}
 					{build.character_name.includes('Traveler') && (!filterApplied || expanded)
 						?
@@ -223,276 +202,286 @@ export default function CharacterCard({
 								alt={build.character_name}/>
 						</>
 					}
-        
-        {/* Titles - Name and Build */}
+        {/* 4. Titles - Name and Build */} 
 	        <div className="character-title">
 	        	<h2 className={selectedCharacter.includes(build.character_name) ? 'character-name highlighted' : 'character-name'}>{build.character_name}</h2>
 	        	<h3 className="build-name">{build.build_name}</h3>
 	        </div>
-
-        {/* Pin Build Button */}
-	      
+        {/* 5. Pin Build Button */} 
 	        <div className="pin-build">
 	        	<button 
 	        		className={selectedPinned.includes(build.ID) ? 'pin-build-button active' : 'pin-build-button'}
 	        		onClick={(e) => (!isMobile || (isMobile && !isMenuOpen)) && handleSelectedPinned(e, build.ID)}
 	        		>&#9733; {/* Star Icon */}
 	        		</button>
-	        </div>
-        
-    	</div>{/* End of Header wrapper */}
+	        </div> 
+    	</div>{/* End build header wrapper */}
       
     {/* Build content wrapper */}
 	    {isBuildVisible &&
       <div className="build-content">
+	      {/* 1. Artifact Sets */} 
+	      	{(showArtifactSets || expanded) &&
+	      	<>
+	      	<div className={
+	      		build.artifact_set_9 ? 'artifact-options-5' : 
+	      		build.artifact_set_7 ? 'artifact-options-4' : 
+	      		build.artifact_set_5 ? 'artifact-options-3' : 
+	      		build.artifact_set_3 ? 'artifact-options-2' : 
+	      		'artifact-options-1'
+	      	}>
 
-      {/* Artifact Sets */}
-      	{(showArtifactSets || expanded) &&
-      	<>
-      	<div className={
-      		build.artifact_set_9 ? 'artifact-options-5' : 
-      		build.artifact_set_7 ? 'artifact-options-4' : 
-      		build.artifact_set_5 ? 'artifact-options-3' : 
-      		build.artifact_set_3 ? 'artifact-options-2' : 
-      		'artifact-options-1'
-      	}>
+		      {/* Artifact Option 1: Sets 1 & 2 */}
+			      <Artifact
+							minimal={false}
+			      	numberOfArtifactOptions={numberOfArtifactOptions}
+			      	number={1}
+			      	build={build}
+			      	selectedArtifactSet={selectedArtifactSet}
+						  matchingSets={matchingSets}
+			      />
+		      {/* Artifact Option 2: Sets 3 & 4 */}
+					  {build.artifact_set_3 && (!filterApplied || expanded) &&
+			      <Artifact
+							minimal={false}
+			      	numberOfArtifactOptions={numberOfArtifactOptions}
+			      	number={3}
+			      	build={build}
+			      	selectedArtifactSet={selectedArtifactSet}
+						  matchingSets={matchingSets}
+			      />}
+					{/* Artifact Option 3: Sets 5 & 6 */}
+						{build.artifact_set_5 && (!filterApplied || expanded) &&
+						<Artifact
+							minimal={false}
+			      	numberOfArtifactOptions={numberOfArtifactOptions}
+			      	number={5}
+			      	build={build}
+			      	selectedArtifactSet={selectedArtifactSet}
+						  matchingSets={matchingSets}
+			      />}
+					{/* Artifact Option 4: Sets 7 & 8 */}
+						{build.artifact_set_7 && (!filterApplied || expanded) &&
+						<Artifact
+							minimal={false}
+			      	numberOfArtifactOptions={numberOfArtifactOptions}
+			      	number={7}
+			      	build={build}
+			      	selectedArtifactSet={selectedArtifactSet}
+						  matchingSets={matchingSets}
+			      />}
+					{/* Artifact Option 5: Sets 9 & 10 */}
+						{build.artifact_set_9 && (!filterApplied || expanded) &&
+						<Artifact
+							minimal={false}
+			      	numberOfArtifactOptions={numberOfArtifactOptions}
+			      	number={9}
+			      	build={build}
+			      	selectedArtifactSet={selectedArtifactSet}
+						  matchingSets={matchingSets}
+			      />}
 
-	      {/* Artifact Option 1: Sets 1 & 2 */}
-		      <Artifact
-						minimal={false}
-		      	numberOfArtifactOptions={numberOfArtifactOptions}
-		      	number={1}
-		      	build={build}
-		      	selectedArtifactSet={selectedArtifactSet}
-					  matchingSets={matchingSets}
-		      />
-	      {/* Artifact Option 2: Sets 3 & 4 */}
-				  {build.artifact_set_3 && (!filterApplied || expanded) &&
-		      <Artifact
-						minimal={false}
-		      	numberOfArtifactOptions={numberOfArtifactOptions}
-		      	number={3}
-		      	build={build}
-		      	selectedArtifactSet={selectedArtifactSet}
-					  matchingSets={matchingSets}
-		      />}
-				{/* Artifact Option 3: Sets 5 & 6 */}
-					{build.artifact_set_5 && (!filterApplied || expanded) &&
-					<Artifact
-						minimal={false}
-		      	numberOfArtifactOptions={numberOfArtifactOptions}
-		      	number={5}
-		      	build={build}
-		      	selectedArtifactSet={selectedArtifactSet}
-					  matchingSets={matchingSets}
-		      />}
-				{/* Artifact Option 4: Sets 7 & 8 */}
-					{build.artifact_set_7 && (!filterApplied || expanded) &&
-					<Artifact
-						minimal={false}
-		      	numberOfArtifactOptions={numberOfArtifactOptions}
-		      	number={7}
-		      	build={build}
-		      	selectedArtifactSet={selectedArtifactSet}
-					  matchingSets={matchingSets}
-		      />}
-				{/* Artifact Option 5: Sets 9 & 10 */}
-					{build.artifact_set_9 && (!filterApplied || expanded) &&
-					<Artifact
-						minimal={false}
-		      	numberOfArtifactOptions={numberOfArtifactOptions}
-		      	number={9}
-		      	build={build}
-		      	selectedArtifactSet={selectedArtifactSet}
-					  matchingSets={matchingSets}
-		      />}
+					{/* Alternative Artifact Options Wrapper: Minimal view (Images only) */}
+				    {build.artifact_set_3 && filterApplied && !expanded &&
+		      	<div className="artifact-set-alternatives">
+		      		{/* Artifact Alternative Option 1 - Minimal */}
+			      		{build.artifact_set_3 &&
+									<Artifact 
+										minimal={true}
+						      	numberOfArtifactOptions={numberOfArtifactOptions}
+						      	number={3}
+						      	build={build}
+						      	selectedArtifactSet={selectedArtifactSet}
+						      	matchingSets={matchingSets}
+						      />}
+							{/* Artifact Alternative Option 2 - Minimal */}
+					    	{build.artifact_set_5 &&
+									<Artifact 
+										minimal={true}
+						      	numberOfArtifactOptions={numberOfArtifactOptions}
+						      	number={5}
+						      	build={build}
+						      	selectedArtifactSet={selectedArtifactSet}
+						      	matchingSets={matchingSets}
+						      />}
+							{/* Artifact Alternative Option 3 - Minimal */}
+					    	{build.artifact_set_7 &&
+									<Artifact 
+										minimal={true}
+						      	numberOfArtifactOptions={numberOfArtifactOptions}
+						      	number={7}
+						      	build={build}
+						      	selectedArtifactSet={selectedArtifactSet}
+						      	matchingSets={matchingSets}
+						      />}
+							{/* Artifact Alternative Option 4 - Minimal */}
+					    	{build.artifact_set_9 &&
+									<Artifact 
+										minimal={true}
+						      	numberOfArtifactOptions={numberOfArtifactOptions}
+						      	number={9}
+						      	build={build}
+						      	selectedArtifactSet={selectedArtifactSet}
+						      	matchingSets={matchingSets}
+						      />}
+				    </div>}{/* End Alternative Artifact Option Wrapper - Minimal view */}
+			    </div>
+				  </>}
+		    {/* 2. About */} 
+	      	{(showAbout || expanded) && 
+	      	<>
+					<div className="about">
+		      	<div 
+		      		ref={aboutSectionRef} 
+		      		className={aboutIsExpanded ? 'build-section expanded' : 'build-section minimized'}>
 
-				{/* Alternative Artifact Options Wrapper: Minimal view (Images only) */}
-			    {build.artifact_set_3 && filterApplied && !expanded &&
-	      	<div className="artifact-set-alternatives">
-	      		{/* Artifact Alternative Option 1 - Minimal */}
-		      		{build.artifact_set_3 &&
-								<Artifact 
-									minimal={true}
-					      	numberOfArtifactOptions={numberOfArtifactOptions}
-					      	number={3}
-					      	build={build}
-					      	selectedArtifactSet={selectedArtifactSet}
-					      	matchingSets={matchingSets}
-					      />}
-						{/* Artifact Alternative Option 2 - Minimal */}
-				    	{build.artifact_set_5 &&
-								<Artifact 
-									minimal={true}
-					      	numberOfArtifactOptions={numberOfArtifactOptions}
-					      	number={5}
-					      	build={build}
-					      	selectedArtifactSet={selectedArtifactSet}
-					      	matchingSets={matchingSets}
-					      />}
-						{/* Artifact Alternative Option 3 - Minimal */}
-				    	{build.artifact_set_7 &&
-								<Artifact 
-									minimal={true}
-					      	numberOfArtifactOptions={numberOfArtifactOptions}
-					      	number={7}
-					      	build={build}
-					      	selectedArtifactSet={selectedArtifactSet}
-					      	matchingSets={matchingSets}
-					      />}
-						{/* Artifact Alternative Option 4 - Minimal */}
-				    	{build.artifact_set_9 &&
-								<Artifact 
-									minimal={true}
-					      	numberOfArtifactOptions={numberOfArtifactOptions}
-					      	number={9}
-					      	build={build}
-					      	selectedArtifactSet={selectedArtifactSet}
-					      	matchingSets={matchingSets}
-					      />}
-			    </div>}{/* End Alternative Artifact Option Wrapper - Minimal view */}
-		    </div>
-			  </>}
+		      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set_1 +" Plume.webp"}/>
 
-	    {/* About */}
-      	{(showAbout || expanded) && 
-      	<>
-				<div className="about">
-	      	<div 
-	      		ref={aboutSectionRef} 
-	      		className={aboutIsExpanded ? 'build-section expanded' : 'build-section minimized'}>
+		      		{aboutIsExpandable &&
+		      		<button onClick={(e) => handleAboutIsExpanded(e)}>
+		      			{aboutIsExpanded ? <span>&#9650;</span> : <span>&#9660;</span>}  
+		      		</button>}
+		      		<div className="build-section-text">
+			      		<h4>About</h4>
 
-	      		<img className="artifact-icon" src={"./images/artifacts/plumes/" + build.artifact_set_1 +" Plume.webp"}/>
+			      		{/* About: First paragraph */}
+					      {build.note &&
+					      <p>{build.note}</p>}
 
-	      		{aboutIsExpandable &&
-	      		<button onClick={(e) => handleAboutIsExpanded(e)}>
-	      			{aboutIsExpanded ? <span>&#9650;</span> : <span>&#9660;</span>}  
-	      		</button>}
-	      		<div className="build-section-text">
-		      		<h4>About</h4>
+			      		{/* About: Second paragraph */}
+					      {/*{build.note &&*/}
+					      {/*<p>{build.note}</p>}*/}
 
-		      		{/* About: First paragraph */}
-				      {build.note &&
-				      <p>{build.note}</p>}
+			      		{/* About: Third paragraph */}
+					      {/*{build.note &&*/}
+					      {/*<p>{build.note}</p>}*/}
 
-		      		{/* About: Second paragraph */}
-				      {/*{build.note &&*/}
-				      {/*<p>{build.note}</p>}*/}
+					      {/* Placeholder if no about exists */}
+					      {!build.note &&
+					    	<p>This is a build. You can build this character like this. It's one of the builds with artifacts and stats and stuff.</p>}
 
-		      		{/* About: Third paragraph */}
-				      {/*{build.note &&*/}
-				      {/*<p>{build.note}</p>}*/}
-
-				      {/* Placeholder if no about exists */}
-				      {!build.note &&
-				    	<p>This is a build. You can build this character like this. It's one of the builds with artifacts and stats and stuff.</p>}
-
-			      </div>
-			  	</div>
-	      </div>
-		    </>}
-
-		  {/* Artifact Types */}
-	      <div className="artifact-types">
-		      {/* Sands */}
-		      	{(showSands || expanded) &&
-		      	<>
-			      <div className="build-section">
-		        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set_1 +" Sands.webp"}/>
-		        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
-		        	<div className="build-section-text">
-				      	<h4>Sands</h4>
-				        <ol>
-				          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{parseText(build.sands_1)}</li>}
-				          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{parseText(build.sands_2)}</li>}
-				          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{parseText(build.sands_3)}</li>}
-				        </ol>
 				      </div>
-				     </div>
-				    </>}
-				  {/* Goblet */}
-		      	{(showGoblet || expanded) && 
-		      	<>
-			      <div className="build-section">
-		        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set_1 +" Goblet.webp"}/>
-		        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
-		        	<div className="build-section-text">
-			      		<h4>Goblet</h4>
-			        	<ol>
-			          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{parseText(build.goblet_1)}</li>}
-			          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{parseText(build.goblet_2)}</li>}
-			        	</ol>
-				      </div>
-			      </div>
-				    </>}
-				  {/* Circlet */}
-		      	{(showCirclet || expanded) && 
-		      	<>
-						<div className="build-section">
-		        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set_1 +" Circlet.webp"}/>
-							{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
-				      <div className="build-section-text">
-					      <h4>Circlet</h4>
-				        <ol>
-				          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{parseText(build.circlet_1)}</li>}
-				          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{parseText(build.circlet_2)}</li>}
-				          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{parseText(build.circlet_3)}</li>}
-				        </ol>
-				      </div>
-			      </div>
-			      </>}
-	      </div>{/* End Artifact Types */}	    
-
-	    {/* Substats */}
-      	{(showSubstats || expanded) && 
-      	<>
-	      <div className="substats">
-	      	<div className="build-section">
-	      		<img className="artifact-icon-simple" src={"./images/icons/Icon Substats.webp"}/>
-		      	<div className="build-section-text">
-			      <h4>Substats Priority</h4>
-			        <ol>
-			        	{/* Normal substats: Always visible */}
-			          {build.substats_1 && <li className={selectedSubstats.includes(build.substats_1) ? 'highlighted' : ''}>{parseText(build.substats_1)}</li>}
-			          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{parseText(build.substats_2)}</li>}
-			          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{parseText(build.substats_3)}</li>}
-			          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{parseText(build.substats_4)}</li>}
-			          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{parseText(build.substats_5)}</li>}
-
-			          {/* Flat substats: Visible only when filtered for */}
-			          {build.flatstats_1 && selectedSubstats.includes(build.flatstats_1) && <li className={selectedSubstats.includes(build.flatstats_1) ? 'highlighted flatstat' : ''}>{build.flatstats_1}</li>}
-			          {build.flatstats_2 && selectedSubstats.includes(build.flatstats_2) && <li className={selectedSubstats.includes(build.flatstats_2) ? 'highlighted flatstat' : ''}>{build.flatstats_2}</li>}
-			        </ol>
-			      </div>
+				  	</div>
 		      </div>
-		    </div>
-	      </>
-		   	}
-		  {/* ER Recommendation */}
-      	{(showERRecommendation || expanded) && 
-      	<>
-	      <div className="er-recommendation">
-	      	<div className="build-section">
-		      	<img className="artifact-icon-simple" src={"./images/icons/Icon Energy Recharge.webp"}/>
-		      	<div className="build-section-text">
-				      <h4>ER Recommendation</h4>
-				        <ul>
-				        	{/* No data */}
-				        	{build.er_min === '' && build.er_max === '' && <li>No data</li>}
+			    </>}
+			  {/* 3. Artifact Types */} 
+		      <div className="artifact-types">
+			      {/* Sands */}
+			      	{(showSands || expanded) &&
+			      	<>
+				      <div className="build-section">
+			        	<img className="artifact-icon"  src={"./images/artifacts/sands/" + build.artifact_set_1 +" Sands.webp"}/>
+			        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Sands.webp"}/>*/}
+			        	<div className="build-section-text">
+					      	<h4>Sands</h4>
+					        <ol>
+					          {build.sands_1 && <li className={selectedSands.includes(build.sands_1) ? 'highlighted' : ''}>{parseText(build.sands_1)}</li>}
+					          {build.sands_2 && <li className={selectedSands.includes(build.sands_2) ? 'highlighted' : ''}>{parseText(build.sands_2)}</li>}
+					          {build.sands_3 && <li className={selectedSands.includes(build.sands_3) ? 'highlighted' : ''}>{parseText(build.sands_3)}</li>}
+					        </ol>
+					      </div>
+					     </div>
+					    </>}
 
-				        	{/* Not applicable */}
-				          {build.er_min === 'n/a' && build.er_max === 'n/a' && <li>No requirement</li>}
+					  {/* Goblet */}
+			      	{(showGoblet || expanded) && 
+			      	<>
+				      <div className="build-section">
+			        	<img className="artifact-icon"  src={"./images/artifacts/goblets/" + build.artifact_set_1 +" Goblet.webp"}/>
+			        	{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Goblet.webp"}/>*/}
+			        	<div className="build-section-text">
+				      		<h4>Goblet</h4>
+				        	<ol>
+				          	{build.goblet_1 && <li className={selectedGoblet.includes(build.goblet_1) ? 'highlighted' : ''}>{parseText(build.goblet_1)}</li>}
+				          	{build.goblet_2 && <li className={selectedGoblet.includes(build.goblet_2) ? 'highlighted' : ''}>{parseText(build.goblet_2)}</li>}
+				        	</ol>
+					      </div>
+				      </div>
+					    </>}
 
-				          {/* Has value */}
-				          {build.er_min !== 'n/a' && build.er_min !== '' && build.er_max !== 'n/a' && build.er_max !== '' && <li>{build.er_min}&ndash;{build.er_max}%</li>}
-				        </ul>
-	     		 	</div>
-      		</div>
-      	</div>
-	      </>
-		   	}
+					  {/* Circlet */}
+			      	{(showCirclet || expanded) && 
+			      	<>
+							<div className="build-section">
+			        	<img className="artifact-icon"  src={"./images/artifacts/circlets/" + build.artifact_set_1 +" Circlet.webp"}/>
+								{/*<img className="artifact-icon"  src={"./images/artifacts/Icon Circlet.webp"}/>*/}
+					      <div className="build-section-text">
+						      <h4>Circlet</h4>
+					        <ol>
+					          {build.circlet_1 && <li className={selectedCirclet.includes(build.circlet_1) ? 'highlighted' : ''}>{parseText(build.circlet_1)}</li>}
+					          {build.circlet_2 && <li className={selectedCirclet.includes(build.circlet_2) ? 'highlighted' : ''}>{parseText(build.circlet_2)}</li>}
+					          {build.circlet_3 && <li className={selectedCirclet.includes(build.circlet_3) ? 'highlighted' : ''}>{parseText(build.circlet_3)}</li>}
+					        </ol>
+					      </div>
+				      </div>
+				      </>}
+		      </div>{/* End Artifact Types */}	    
+		    {/* 4. Substats */} 
+	      	{(showSubstats || expanded) && 
+	      	<>
+		      <div className="substats">
+		      	<div className="build-section">
+		      		<img className="artifact-icon-simple" src={"./images/icons/Icon Substats.webp"}/>
+			      	<div className="build-section-text">
+				      <h4>Substats Priority</h4>
+				        <ol>
+				        	{/* Normal substats: Always visible */}
+				          {build.substats_1 && <li className={selectedSubstats.includes(build.substats_1) ? 'highlighted' : ''}>{parseText(build.substats_1)}</li>}
+				          {build.substats_2 && <li className={selectedSubstats.includes(build.substats_2) ? 'highlighted' : ''}>{parseText(build.substats_2)}</li>}
+				          {build.substats_3 && <li className={selectedSubstats.includes(build.substats_3) ? 'highlighted' : ''}>{parseText(build.substats_3)}</li>}
+				          {build.substats_4 && <li className={selectedSubstats.includes(build.substats_4) ? 'highlighted' : ''}>{parseText(build.substats_4)}</li>}
+				          {build.substats_5 && <li className={selectedSubstats.includes(build.substats_5) ? 'highlighted' : ''}>{parseText(build.substats_5)}</li>}
 
-      </div>}{/* End Build content wrapper */}
+				          {/* Flat substats: Visible only when filtered for */}
+				          {build.flatstats_1 && selectedSubstats.includes(build.flatstats_1) && <li className={selectedSubstats.includes(build.flatstats_1) ? 'highlighted flatstat' : ''}>{build.flatstats_1}</li>}
+				          {build.flatstats_2 && selectedSubstats.includes(build.flatstats_2) && <li className={selectedSubstats.includes(build.flatstats_2) ? 'highlighted flatstat' : ''}>{build.flatstats_2}</li>}
+				        </ol>
+				      </div>
+			      </div>
+			    </div>
+		      </>
+			   	}
+			  {/* 5. ER Recommendation */} 
+	      	{(showERRecommendation || expanded) && 
+	      	<>
+		      <div className="er-recommendation">
+		      	<div className="build-section">
+			      	<img className="artifact-icon-simple" src={"./images/icons/Icon Energy Recharge.webp"}/>
+			      	<div className="build-section-text">
+					      <h4>{isMobile ? 'Recommended ER' : 'ER Recommendation'}</h4>
+					        <ul>
+					        	{/* No data - Remove later? */}
+					        	{
+					        		build.er_min === '' && 
+					        		build.er_max === '' &&
+					        	<li>No data</li>}
+
+					        	{/* Not applicable - Remove later */}
+					          {
+					          	build.er_min === 'n/a' && 
+					          	build.er_max === 'n/a' &&
+					          <li>100%</li>}
+
+					        	{/* No range */}
+					          {
+					          	build.er_min !== 'n/a' && build.er_min !== '' &&
+					          	build.er_max !== 'n/a' && build.er_max !== '' &&
+					          	build.er_min === build.er_max &&
+					          <li>{build.er_min}%</li>}
+
+					          {/* Has range */}
+					          {
+					          	build.er_min !== 'n/a' && build.er_min !== '' && 
+					          	build.er_max !== 'n/a' && build.er_max !== '' &&
+					          	build.er_min !== build.er_max &&
+					          <li>{build.er_min}&ndash;{build.er_max}%</li>}
+					        </ul>
+		     		 	</div>
+	      		</div>
+	      	</div>
+		      </>
+			   	}
+      </div>}{/* End build content wrapper */}
 
     </div>
 	);

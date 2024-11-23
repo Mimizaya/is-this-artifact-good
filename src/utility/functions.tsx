@@ -57,7 +57,7 @@ export const updateFiltersSingleSelect = (
     setState(['HP%', 'HP% (C1)'])
   }
   else if (value === 'Elemental Mastery') {
-    setState(['Elemental Mastery', 'EM (Vaporize)', 'EM (Quicken)'])
+    setState(['Elemental Mastery', 'EM (Vape/Melt)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Aggravate)'])
   }
   else if (value === 'CRIT Rate') {
     setState(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])
@@ -121,9 +121,11 @@ export const updateFiltersSubstats = (
 
       // Check if the stat is already selected
       const isSelected = prev.includes(value);
+      const isVapeMeltIncluded = prev.includes('EM (Vape/Melt)');
       const isVapeIncluded = prev.includes('EM (Vaporize)');
       const isQuickenIncluded = prev.includes('EM (Quicken)');
       const isMeltIncluded = prev.includes('EM (Melt)');
+      const isAggravateIncluded = prev.includes('EM (Aggravate)');
 
       // Create a new selection based on the current state
       let newSelection = isSelected
@@ -131,17 +133,21 @@ export const updateFiltersSubstats = (
         : numberOfSubstats < 4 ? [...prev, value] : [...prev] // Add the stat if it's not already selected
 
       // Add to selection
-      if (!isSelected && !isVapeIncluded && !isQuickenIncluded && !isMeltIncluded) {
+      if (!isSelected && !isVapeMeltIncluded && !isVapeIncluded && !isQuickenIncluded && !isMeltIncluded && !isAggravateIncluded) {
+        newSelection.push('EM (Vape/Melt)');
         newSelection.push('EM (Vaporize)');
         newSelection.push('EM (Quicken)');
         newSelection.push('EM (Melt)');
+        newSelection.push('EM (Aggravate)');
       }
 
       // Remove from selection
       if (!newSelection.includes('Elemental Mastery')) {
+        newSelection = newSelection.filter((n) => n !== 'EM (Vape/Melt)');
         newSelection = newSelection.filter((n) => n !== 'EM (Vaporize)');
         newSelection = newSelection.filter((n) => n !== 'EM (Quicken)');
         newSelection = newSelection.filter((n) => n !== 'EM (Melt)');
+        newSelection = newSelection.filter((n) => n !== 'EM (Aggravate)');
       }
 
       return newSelection;

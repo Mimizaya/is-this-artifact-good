@@ -167,8 +167,8 @@ div.character-card.small {
 
       div.tooltip-part {
         img {
-          height: $artifact-icon-size /1.2;
-          width: $artifact-icon-size /1.2;
+          height: $artifact-icon-size / 1.2;
+          width: $artifact-icon-size / 1.2;
         }
         div.tooltip-text {
           font-size: 0.90em;
@@ -231,7 +231,6 @@ div.character-card.small {
           h2 {
             font-size: 1.2em;
           }
-
         // Build name
           h3 {
             font-size: 0.9em;
@@ -256,8 +255,6 @@ div.character-card.small {
           padding-bottom: 4px;
         }
       }
-
-
 
       // Icon sizes
         div.build-section {
@@ -356,10 +353,15 @@ div.character-card.small {
         }
     }
 
-  // Build content general
-    div.build-section {
-      height: 100%; // Ensure equal height of side by side artifact boxes
+    div.build-content {
+      margin-top: 3px;
+
+    // Build content general
+      div.build-section {
+        height: 100%; // Ensure equal height of side by side artifact boxes
+      }
     }
+
 
   // Specific sections
     // Artifact types - Sands, Goblet, Circlet 
@@ -763,7 +765,6 @@ div.character-card.small {
   // Content wrapper 
     div.build-content {
       margin-left: 0;
-      margin-top: 3px;
       padding: $character-card-gap;
       position: relative;
 
@@ -791,11 +792,11 @@ div.character-card.small {
           user-select: none;
           flex-shrink: 0;
         }
-      // Multi set artifact icons (show both)
+      // Multi set artifact icons (show both) 
         div.artifact-icons-double {
           height: $artifact-icon-size;
           width: $artifact-icon-size;
-          align-self: center; 
+          //align-self: center; 
           pointer-events: none;
           user-select: none;
           flex-shrink: 0;
@@ -807,11 +808,11 @@ div.character-card.small {
           }
           img.artifact-icon-top {
             position: relative;
-            z-index: 5;
+            z-index: 4;
           }
           img.artifact-icon-bottom {
             position: relative;
-            z-index: 4;
+            z-index: 5;
             top: -$artifact-icon-size / 2;
             left: 12px;
           }
@@ -828,7 +829,7 @@ div.character-card.small {
         div.build-section-text {
           padding-left: 5px;
           padding-right: 5px;
-          align-self: center;
+          //align-self: center;
 
           h4 {
             font-size: 0.9em;
@@ -880,7 +881,7 @@ div.character-card.small {
           }
 
           img.artifact-icon {
-            align-self: center;
+            //align-self: center;
           }
         }
       // Artifact types - Sands, Goblet, Circlet 
@@ -894,6 +895,16 @@ div.character-card.small {
       // ER Recommendation 
         div.er-recommendation {
           float: left;
+
+          li {
+            //font-size: 0.9em;
+          }
+
+          li.er-note {
+            //font-size: 0.9em;
+            font-weight: 400;
+            //color: #BBB;
+          }
         }
       // About 
         div.about {
@@ -944,6 +955,5 @@ div.character-card.small {
             padding-bottom: 30px;
           }
         }
-    
     }
   }

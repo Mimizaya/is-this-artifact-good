@@ -1,6 +1,6 @@
 {
-  "name": "gi-builds-filter",
-  "homepage": "https://mimizaya.github.io/gi-builds-filter/",
+  "name": "Is This Artifact Good?",
+  "homepage": "https://mimizaya.github.io/is-this-artifact-good/",
   "private": false,
   "version": "0.9.0",
   "type": "module",

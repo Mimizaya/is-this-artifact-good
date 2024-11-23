@@ -78,4 +78,24 @@ button.reset-filters:hover, button.clear-input:hover {
   background-color: #3f2d37;
 }
 
+div#mobile-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #1f1f1f;
+  height: 40px;
+  width: 100%;
+}
+div#mobile-header button.close-menu {
+  margin-left: 3px;
+  height: 100%;
+  width: 40px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #CCC;
+}
+
 /*# sourceMappingURL=App.css.map */

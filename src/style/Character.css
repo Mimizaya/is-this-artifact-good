@@ -260,7 +260,10 @@ div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.to
     color: #ccac00;
     cursor: pointer;
   }
-  div.character-card.full div.build-section {
+  div.character-card.full div.build-content {
+    margin-top: 3px;
+  }
+  div.character-card.full div.build-content div.build-section {
     height: 100%;
   }
   div.character-card.full div.artifact-types {
@@ -609,7 +612,6 @@ div.character-card div.build-header div.pin-build button.pin-build-button.active
 }
 div.character-card div.build-content {
   margin-left: 0;
-  margin-top: 3px;
   padding: 7px;
   position: relative;
 }
@@ -638,7 +640,6 @@ div.character-card div.build-content div.build-section img.artifact-icon {
 div.character-card div.build-content div.build-section div.artifact-icons-double {
   height: 50px;
   width: 50px;
-  align-self: center;
   pointer-events: none;
   user-select: none;
   flex-shrink: 0;
@@ -650,11 +651,11 @@ div.character-card div.build-content div.build-section div.artifact-icons-double
 }
 div.character-card div.build-content div.build-section div.artifact-icons-double img.artifact-icon-top {
   position: relative;
-  z-index: 5;
+  z-index: 4;
 }
 div.character-card div.build-content div.build-section div.artifact-icons-double img.artifact-icon-bottom {
   position: relative;
-  z-index: 4;
+  z-index: 5;
   top: -25px;
   left: 12px;
 }
@@ -668,7 +669,6 @@ div.character-card div.build-content div.build-section img.artifact-icon-simple 
 div.character-card div.build-content div.build-section div.build-section-text {
   padding-left: 5px;
   padding-right: 5px;
-  align-self: center;
 }
 div.character-card div.build-content div.build-section div.build-section-text h4 {
   font-size: 0.9em;
@@ -710,9 +710,6 @@ div.character-card div.build-content div.artifact-set li {
   line-height: 1.1;
   padding-bottom: 3px;
 }
-div.character-card div.build-content div.artifact-set img.artifact-icon {
-  align-self: center;
-}
 div.character-card div.build-content div.artifact-types {
   float: left;
 }
@@ -721,6 +718,9 @@ div.character-card div.build-content div.substats {
 }
 div.character-card div.build-content div.er-recommendation {
   float: left;
+}
+div.character-card div.build-content div.er-recommendation li.er-note {
+  font-weight: 400;
 }
 div.character-card div.build-content div.about {
   font-weight: 400;
