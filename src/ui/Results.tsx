@@ -883,7 +883,7 @@ export default function Results({
               </button>
               <button className="order" onClick={() => handleToggleSortingOrder()}>
                 <img 
-                  className={sortDescending ? 'descending-image' : 'ascending-image'}
+                  className="sort-order-image"
                   src="./images/icons/Icon Sort Direction.webp"
                 />
               </button>

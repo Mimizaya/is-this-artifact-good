@@ -49,7 +49,7 @@ $header-height: 145px;
 
     header#results-header {
       left: $filter-width-total;
-      height: $header-height;
+      min-height: $header-height;
       padding-left: 20px;
 
       h2 {
@@ -207,6 +207,7 @@ section#results {
       z-index: 100;
       background-color: darken(#242424, 2%);
       min-width: calc(100vw - $filter-width-total - 8px); // 8 scrollbar
+      display: flex;
 
       h2 {
         color: #CCC;
@@ -232,6 +233,7 @@ section#results {
         div.filter-build-options {
           height: 100%;
           display: flex;
+          flex-wrap: wrap;
 
           button.highlighted {
             background-color: lighten(#242424, 7%);
@@ -265,11 +267,12 @@ section#results {
       }
     // Select sorting option
       div#select-sorting-option {
-        position: absolute;
+        position: relative;
         top: $header-height - 75px;
         height: 40px;
         width: 240px;
-        left: 850px;
+        margin-left: 40px;
+        margin-right: 10px;
 
       // Header (Sort results by)
         h4 {
@@ -279,19 +282,21 @@ section#results {
           margin-bottom: 3px;
           margin-left: 4px;
         }
-
       // Wrapper for both buttons, selected and inverse order
         div.sorting-buttons {
           display: flex;
+          height: 40px;
 
         // Select option button
           button.option {
             width: 200px;
+            height: 100%;
             margin-right: 5px;
           }
         // Toggle order button
           button.order {
             width: 40px;
+            padding: 10px;
           }
         // General for both buttons
           button {
@@ -303,20 +308,17 @@ section#results {
             padding: 10px 13px 8px 8px;
             transition: all 0.3s ease-out;
             border-radius: 5px;
-            margin-bottom: 1px;
             display: flex;
             cursor: pointer;
+            flex-shrink: 0;
 
           // Images
             img.sort-image,
-            img.ascending-image,, 
-            img.descending-image, {
+            img.sort-order-image {
               height: 20px;
               margin-right: 2px;
             }
-            img.ascending-image, {
-              transform: rotate(180deg);
-            }
+
           // Text
             p {
               overflow: hidden;
@@ -324,14 +326,12 @@ section#results {
               text-overflow: ellipsis;
             }
           }
-
         // General for both buttons:hover
           button:hover {
             background-color: lighten(#242424, 7%);
             color: #FFF;
           }
         }
-
       // The dropdown list
         ul {
           //position: absolute;

@@ -154,6 +154,32 @@ export const updateFiltersSubstats = (
     });
   }
 
+  else if (value === 'Energy Recharge') {
+    setState((prev) => {
+
+      // Check if the stat is already selected
+      const isSelected = prev.includes(value);
+      const isERC2Included = prev.includes('Energy Recharge (C2)');
+
+      // Create a new selection based on the current state
+      let newSelection = isSelected
+        ? prev.filter((n) => n !== value) // Remove the stat if it's already selected
+        : numberOfSubstats < 4 ? [...prev, value] : [...prev] // Add the stat if it's not already selected
+
+      // Add to selection
+      if (!isERC2Included) {
+        newSelection.push('Energy Recharge (C2)');
+      }
+
+      // Remove from selection
+      if (!newSelection.includes('Energy Recharge')) {
+        newSelection = newSelection.filter((n) => n !== 'Energy Recharge (C2)');
+      }
+
+      return newSelection;
+    });
+  }
+
   // All other stats
   else {
     setState((prev) =>

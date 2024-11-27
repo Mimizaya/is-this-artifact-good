@@ -4,38 +4,42 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Anemo',
+		banner_offset: 60,
 	},
 	{
 		name: 'Ororon',
 		rarity: 4,
 		alias: null,
 		element: 'Electro',
+		banner_offset: 67,
 	},
 	{
 		name: 'Xilonen',
 		rarity: 5,
 		alias: null,
 		element: 'Geo',
+		banner_offset: 54,
 	},
 	{
 		name: 'Kinich',
 		rarity: 5,
 		alias: null,
 		element: 'Dendro',
+		banner_offset: 65,
 	},
 	{
 		name: 'Mualani',
 		rarity: 5,
 		alias: null,
 		element: 'Hydro',
-		banner_offset: 63,
+		banner_offset: 69,
 	},
 	{
 		name: 'Kachina',
 		rarity: 4,
 		alias: null,
 		element: 'Geo',
-		banner_offset: 10,
+		banner_offset: 8,
 	},
 	{
 		name: 'Emilie',
@@ -60,13 +64,14 @@ export const characterData = [
 		rarity: 4,
 		alias: null,
 		element: 'Electro',
+		banner_offset: 52,
 	},
 	{
 		name: 'Arlecchino',
 		rarity: 5,
 		alias: 'Father',
 		element: 'Pyro',
-		banner_offset: 52,
+		banner_offset: 50,
 	},
 	{
 		name: 'Chiori',
@@ -86,6 +91,7 @@ export const characterData = [
 		rarity: 4,
 		alias: null,
 		element: 'Pyro',
+		banner_offset: 69,
 	},
 	{
 		name: 'Chevreuse',
@@ -248,6 +254,7 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Dendro',
+		banner_offset: 105,
 	},
 	{
 		name: 'Collei',
@@ -352,6 +359,7 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Pyro',
+		banner_offset: 15,
 	},
 	{
 		name: 'Sayu',
@@ -383,6 +391,7 @@ export const characterData = [
 		rarity: 4,
 		alias: null,
 		element: 'Pyro',
+		banner_offset: 106,
 	},
 	{
 		name: 'Rosaria',
@@ -394,8 +403,9 @@ export const characterData = [
 	{
 		name: 'Hu Tao',
 		rarity: 5,
-		alias: null,
+		alias: 'Hutao',
 		element: 'Pyro',
+		banner_offset: 63,
 	},
 	{
 		name: 'Xiao',
@@ -408,6 +418,7 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Cryo',
+		banner_offset: 101,
 	},
 	{
 		name: 'Albedo',
@@ -446,6 +457,7 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Pyro',
+		banner_offset: 76,
 	},
 	{
 		name: 'Venti',
@@ -459,6 +471,7 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Electro',
+		banner_offset: 62,
 	},
 	{
 		name: 'Mona',
@@ -479,13 +492,14 @@ export const characterData = [
 		rarity: 5,
 		alias: null,
 		element: 'Pyro',
+		banner_offset: 60,
 	},
 	{
 		name: 'Jean',
 		rarity: 5,
 		alias: null,
 		element: 'Anemo',
-		banner_offset: 83,
+		banner_offset: 93,
 	},
 	{
 		name: 'Sucrose',

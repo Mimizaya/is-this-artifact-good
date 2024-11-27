@@ -174,7 +174,7 @@ export default function CharacterCard({
 								!filterApplied && !isMobile ? (build.banner_offset ? build.banner_offset : '60px') : 
 								!filterApplied && isMobile ? (build.banner_offset ? build.banner_offset / 1.5 +2 : '60px') :
 
-								filterApplied && !isMobile && !expanded ? (build.banner_offset ? build.banner_offset / 2.1 : '35px') :
+								filterApplied && !isMobile && !expanded ? (build.banner_offset ? build.banner_offset / 2.1 : '28px') :
 								filterApplied && !isMobile && expanded ? (build.banner_offset ? build.banner_offset : '60px') :
 								'60px'
 							}}
@@ -460,7 +460,7 @@ export default function CharacterCard({
 					          {
 					          	build.er_min === 'n/a' && 
 					          	build.er_max === 'n/a' &&
-					          <li>100%</li>}
+					          <li>N/A</li>}
 
 					        	{/* No range */}
 					          {

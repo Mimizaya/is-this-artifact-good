@@ -26,7 +26,7 @@ export default function App() {
 
   // IMPORT DATA: Handle CSV data
     // 1. Data version 
-      const VERSION = '0.9.0';
+      const VERSION = '0.9.52';
     // 2. State to store data 
       const [rawData, setRawData] = useState<RawBuild[]>([]);
     // 3. Parse and set data to state and localstorage 

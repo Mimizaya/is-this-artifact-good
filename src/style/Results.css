@@ -35,7 +35,7 @@
   }
   section#results header#results-header {
     left: 300px;
-    height: 145px;
+    min-height: 145px;
     padding-left: 20px;
   }
   section#results header#results-header h2 {
@@ -178,6 +178,7 @@ section#results header#results-header {
   z-index: 100;
   background-color: #1f1f1f;
   min-width: calc(100vw - 300px - 8px);
+  display: flex;
 }
 section#results header#results-header h2 {
   color: #CCC;
@@ -199,6 +200,7 @@ section#results header#results-header div#filter-build h4 {
 section#results header#results-header div#filter-build div.filter-build-options {
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 section#results header#results-header div#filter-build div.filter-build-options button.highlighted {
   background-color: #363636;
@@ -228,11 +230,12 @@ section#results header#results-header div#filter-build div.filter-build-options 
   height: 20px;
 }
 section#results header#results-header div#select-sorting-option {
-  position: absolute;
+  position: relative;
   top: 70px;
   height: 40px;
   width: 240px;
-  left: 850px;
+  margin-left: 40px;
+  margin-right: 10px;
 }
 section#results header#results-header div#select-sorting-option h4 {
   color: #CCC;
@@ -243,13 +246,16 @@ section#results header#results-header div#select-sorting-option h4 {
 }
 section#results header#results-header div#select-sorting-option div.sorting-buttons {
   display: flex;
+  height: 40px;
 }
 section#results header#results-header div#select-sorting-option div.sorting-buttons button.option {
   width: 200px;
+  height: 100%;
   margin-right: 5px;
 }
 section#results header#results-header div#select-sorting-option div.sorting-buttons button.order {
   width: 40px;
+  padding: 10px;
 }
 section#results header#results-header div#select-sorting-option div.sorting-buttons button {
   height: 100%;
@@ -260,18 +266,14 @@ section#results header#results-header div#select-sorting-option div.sorting-butt
   padding: 10px 13px 8px 8px;
   transition: all 0.3s ease-out;
   border-radius: 5px;
-  margin-bottom: 1px;
   display: flex;
   cursor: pointer;
+  flex-shrink: 0;
 }
 section#results header#results-header div#select-sorting-option div.sorting-buttons button img.sort-image,
-section#results header#results-header div#select-sorting-option div.sorting-buttons button img.ascending-image,
-section#results header#results-header div#select-sorting-option div.sorting-buttons button img.descending-image {
+section#results header#results-header div#select-sorting-option div.sorting-buttons button img.sort-order-image {
   height: 20px;
   margin-right: 2px;
-}
-section#results header#results-header div#select-sorting-option div.sorting-buttons button img.ascending-image {
-  transform: rotate(180deg);
 }
 section#results header#results-header div#select-sorting-option div.sorting-buttons button p {
   overflow: hidden;
