@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/is-this-artifact-good/sw.js', { scope: '/is-this-artifact-good/' })})}
