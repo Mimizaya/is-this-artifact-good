@@ -32,7 +32,8 @@ export default function CharacterCard({
 }) {
 
   // SELECTED FILTERS
-  	// 1. Destructure the selected filters object 
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Destructure the selected filters object 
 	    const { 
 	    	selectedCharacter, 
 	    	selectedArtifactSet, 
@@ -43,122 +44,150 @@ export default function CharacterCard({
 	    	//selectedElements, // Part of the object, but not used.
 	    } = selectedFilters;
 	
-	// BUILD CONTENT: Which sections are shown? (set from Results.tsx)
-	  // 1. Establish variables for conditional showing of sections (PC) 
-			const filterApplied = buildSectionsVisible.length !== buildSectionsOptions.length;
-			const showArtifactSets = buildSectionsVisible.includes('Artifact Sets') || buildSectionsVisible.includes('All');
-			const showAbout = buildSectionsVisible.includes('About') || buildSectionsVisible.includes('All');
-			const showSands = buildSectionsVisible.includes('Sands') || buildSectionsVisible.includes('All');
-			const showGoblet = buildSectionsVisible.includes('Goblet') || buildSectionsVisible.includes('All');
-			const showCirclet = buildSectionsVisible.includes('Circlet') || buildSectionsVisible.includes('All');
-			const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
-			const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
-		// 2. Handle click on banner (visibility / expanded view toggle) 
-		  const [isBuildVisible, setIsBuildVisible] = useState<boolean>(false);
-			const [expanded, setExpanded] = useState<boolean>(false);
-		  const handleBannerClick = () => {
 
-		  		// Banner click on mobile
-				  if (isMobile) {
-				  	if (!isMenuOpen) {
-				    	setIsBuildVisible(prev => !prev);
-				    }
-				  }
+	// BUILD CONTENT: Which sections are shown? (set from Results)
+	// ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Establish variables for conditional showing of sections (PC) 
+		const filterApplied = buildSectionsVisible.length !== buildSectionsOptions.length;
+		const showArtifactSets = buildSectionsVisible.includes('Artifact Sets') || buildSectionsVisible.includes('All');
+		const showAbout = buildSectionsVisible.includes('About') || buildSectionsVisible.includes('All');
+		const showSands = buildSectionsVisible.includes('Sands') || buildSectionsVisible.includes('All');
+		const showGoblet = buildSectionsVisible.includes('Goblet') || buildSectionsVisible.includes('All');
+		const showCirclet = buildSectionsVisible.includes('Circlet') || buildSectionsVisible.includes('All');
+		const showSubstats = buildSectionsVisible.includes('Substats') || buildSectionsVisible.includes('All');
+		const showERRecommendation = buildSectionsVisible.includes('ER Recommendation') || buildSectionsVisible.includes('All');
+	// #2 Handle click on banner (visibility / expanded view toggle) 
+	  const [isBuildVisible, setIsBuildVisible] = useState<boolean>(false);
+		const [expanded, setExpanded] = useState<boolean>(false);
+	  const handleBannerClick = () => {
 
-				  // Banner click on PC
-					else if (filterApplied) {
-				    setExpanded(prev => !prev)
-				  }
-				}
-		// 3. Set default state based on mobile or not 
-		  useLayoutEffect(() => {
-		  	if(isMobile) {
-		  		setIsBuildVisible(false)
-		  	}
-		  	else {
-		  		setIsBuildVisible(true)
-		  	}
-		  }, [isMobile]);
-
-	// ABOUT: Handle minimize/maximize
-		// 1. States & Refs 
-			const [aboutIsExpandable, setAboutIsExpandable] = useState<boolean>();
-			const [aboutIsExpanded, setAboutIsExpanded] = useState<boolean>();
-			const aboutSectionRef = useRef<HTMLInputElement>(null);
-		// 2. Set state based on content height. Expandable or not? 
-			useLayoutEffect(() => {
-			  const aboutSection = aboutSectionRef.current;
-
-			  if (aboutSection) {
-			    const aboutSectionHeight = aboutSection.scrollHeight;
-
-
-			    if (aboutSectionHeight >= 85) {
-			      setAboutIsExpandable(true);
-			      setAboutIsExpanded(false);
-			    } 
-			    else {
-			      setAboutIsExpandable(false);
+	  		// Banner click on mobile
+			  if (isMobile) {
+			  	if (!isMenuOpen) {
+			    	setIsBuildVisible(prev => !prev);
 			    }
 			  }
-			}, [filterApplied, isBuildVisible, buildSectionsVisible, expanded]);
-		// 3. Handle maximizing of about section on click 
-			const handleAboutIsExpanded = (e: any) => {
-				e.preventDefault();
-				e.stopPropagation();
-				setAboutIsExpanded(!aboutIsExpanded);
-			}
-	
-	// IMAGES
-		// BANNER
-			// 1. Placeholder 
-		  	const bannerPlaceholderImage = './images/characters/banners/Placeholder Banner.webp';
-		  // 2. Image source 
-		  	const bannerImageUrl = `./images/characters/banners/${build.character_name} Banner.webp`;
-		  // 3. State to store the final image URL 
-		  	const [bannerImgSrc, setBannerImgSrc] = useState(bannerImageUrl);
-		  // 4. Handle the error if image fails to load 
-			  const handleBannerError = () => {
-			    setBannerImgSrc(bannerPlaceholderImage);  // Set the image to placeholder if original image fails
-			  };
-		
-		// PORTRAIT
-			// 1. Placeholder 
-		  	const portraitPlaceholderImage = './images/characters/portraits/Placeholder.webp';
-		  // 2. Image source 
-		  	const portraitImageUrl = `./images/characters/portraits/${build.character_name}.webp`;
-		  // 3. State to store the final image URL 
-		  	const [portraitImgSrc, setPortraitImgSrc] = useState(portraitImageUrl);
-		  // 4. Handle the error if image fails to load 
-			  const handlePortraitError = () => {
-			    setPortraitImgSrc(portraitPlaceholderImage);  // Set the image to placeholder if original image fails
-			  };
 
-		// ARTIFACT: Find number of different options 
-			const getMaxArtifactSetNumber = (build: FullBuild) => {
-				if(build.artifact_set_9) {
-					return 5;
-				}
-				else if(build.artifact_set_7) {
-					return 4;
-				}
-				else if(build.artifact_set_5) {
-					return 3;
-				}
-				else if(build.artifact_set_3) {
-					return 2;
-				}
-				else if(build.artifact_set_1) {
-					return 1;
-				}
-				return 0;
-			};
-			const numberOfArtifactOptions = getMaxArtifactSetNumber(build)
+			  // Banner click on PC
+				else if (filterApplied) {
+			    setExpanded(prev => !prev)
+			  }
+			}
+	// #3 Set default state based on mobile or not 
+	  useLayoutEffect(() => {
+	  	if(isMobile) {
+	  		setIsBuildVisible(false)
+	  	}
+	  	else {
+	  		setIsBuildVisible(true)
+	  	}
+	  }, [isMobile]);
+
+
+	// ABOUT SECTION: Handle minimize/maximize
+	// ——————————————————————————————————————————————————————————————————————————————————————————	  
+	// #1 States & Refs 
+		const [aboutIsExpandable, setAboutIsExpandable] = useState<boolean>();
+		const [aboutIsExpanded, setAboutIsExpanded] = useState<boolean>();
+		const aboutSectionRef = useRef<HTMLInputElement>(null);
+	// #2 Set state based on content height: Expandable or not? 
+		useLayoutEffect(() => {
+		  const aboutSection = aboutSectionRef.current;
+
+		  if (aboutSection) {
+		    const aboutSectionHeight = aboutSection.scrollHeight;
+
+
+		    if (aboutSectionHeight >= 85) {
+		      setAboutIsExpandable(true);
+		      setAboutIsExpanded(false);
+		    } 
+		    else {
+		      setAboutIsExpandable(false);
+		    }
+		  }
+		}, [filterApplied, isBuildVisible, buildSectionsVisible, expanded]);
+	// #3 Handle maximizing of about section on click 
+		const handleAboutIsExpanded = (e: any) => {
+			e.preventDefault();
+			e.stopPropagation();
+			setAboutIsExpanded(!aboutIsExpanded);
+		}
+
+
+	// IMAGES
+	// ——————————————————————————————————————————————————————————————————————————————————————————		
+	// Banner
+	// #1 Placeholder 
+  	const bannerPlaceholderImage = './images/characters/banners/Placeholder Banner.webp';
+  // #2 Image source 
+  	const bannerImageUrl = `./images/characters/banners/${build.character_name} Banner.webp`;
+  // #3 State to store the final image URL 
+  	const [bannerImgSrc, setBannerImgSrc] = useState(bannerImageUrl);
+  // #4 Handle the error if image fails to load 
+	  const handleBannerError = () => {
+	    setBannerImgSrc(bannerPlaceholderImage);  // Set the image to placeholder if original image fails
+	  };
+
+	// Portrait  
+	// #1 Placeholder 
+  	const portraitPlaceholderImage = './images/characters/portraits/Placeholder.webp';
+  // #2 Image source 
+  	const portraitImageUrl = `./images/characters/portraits/${build.character_name}.webp`;
+  // #3 State to store the final image URL 
+  	const [portraitImgSrc, setPortraitImgSrc] = useState(portraitImageUrl);
+  // #4 Handle the error if image fails to load 
+	  const handlePortraitError = () => {
+	    setPortraitImgSrc(portraitPlaceholderImage);  // Set the image to placeholder if original image fails
+	  };
+
+
+	// ARTIFACT: Find number of different options 
+	// ——————————————————————————————————————————————————————————————————————————————————————————
+	// #1 Function: Get number based on artifact set numbers 
+		const getMaxArtifactSetNumber = (build: FullBuild) => {
+			if(build.artifact_set_9) {
+				return 5;
+			}
+			else if(build.artifact_set_7) {
+				return 4;
+			}
+			else if(build.artifact_set_5) {
+				return 3;
+			}
+			else if(build.artifact_set_3) {
+				return 2;
+			}
+			else if(build.artifact_set_1) {
+				return 1;
+			}
+			return 0;
+		};
+	// #2 Call function, assign number to variable 
+		const numberOfArtifactOptions = getMaxArtifactSetNumber(build)
+
+
+	// ARTIFACT TOOLTIP: Handle opening of tooltip
+	// ——————————————————————————————————————————————————————————————————————————————————————————
+	// #1 State: Tooltip open/closed 
+		const [tooltipOpen, setTooltipOpen] = useState(false);
+	// #2 Function: Toggle tooltipOpen state 
+		const toggleTooltipOpen = () => {
+			setTooltipOpen(!tooltipOpen)
+		}
+
+
+
+	// DISABLE THE ABOUT SECTION FOR NOW
+	// Will be re-enabled later when the content is ready.
+ 	const disableAboutTemporarily = true;
+
 
 	return (
 		<div className={`character-card ${filterApplied ? (expanded ? 'full expanded' : 'small') : 'full'}`}>
 
-		{/* Build header wrapper */}
+		{/* BUILD HEADER */}
+		{/* —————————————————————————————————————————————————————————————————————————————————————————— */}
       <div className={`build-header rarity-${build.rarity}`} onClick={() => handleBannerClick()}>
       	{/* 1. Element symbol */} 
 					<img className="character-element" src={"./images/elements/" + build.element + ".webp"} alt={build.element}/>
@@ -217,7 +246,8 @@ export default function CharacterCard({
 	        </div> 
     	</div>{/* End build header wrapper */}
       
-    {/* Build content wrapper */}
+    {/* BUILD CONTENT */}
+	  {/* —————————————————————————————————————————————————————————————————————————————————————————— */}
 	    {isBuildVisible &&
       <div className="build-content">
 	      {/* 1. Artifact Sets */} 
@@ -239,6 +269,9 @@ export default function CharacterCard({
 			      	build={build}
 			      	selectedArtifactSet={selectedArtifactSet}
 						  matchingSets={matchingSets}
+						  isMobile={isMobile}
+						  tooltipOpen={tooltipOpen}
+						  toggleTooltipOpen={toggleTooltipOpen}
 			      />
 		      {/* Artifact Option 2: Sets 3 & 4 */}
 					  {build.artifact_set_3 && (!filterApplied || expanded) &&
@@ -249,6 +282,9 @@ export default function CharacterCard({
 			      	build={build}
 			      	selectedArtifactSet={selectedArtifactSet}
 						  matchingSets={matchingSets}
+						  isMobile={isMobile}
+						  tooltipOpen={tooltipOpen}
+						  toggleTooltipOpen={toggleTooltipOpen}
 			      />}
 					{/* Artifact Option 3: Sets 5 & 6 */}
 						{build.artifact_set_5 && (!filterApplied || expanded) &&
@@ -259,6 +295,9 @@ export default function CharacterCard({
 			      	build={build}
 			      	selectedArtifactSet={selectedArtifactSet}
 						  matchingSets={matchingSets}
+						  isMobile={isMobile}
+						  tooltipOpen={tooltipOpen}
+						  toggleTooltipOpen={toggleTooltipOpen}
 			      />}
 					{/* Artifact Option 4: Sets 7 & 8 */}
 						{build.artifact_set_7 && (!filterApplied || expanded) &&
@@ -269,6 +308,9 @@ export default function CharacterCard({
 			      	build={build}
 			      	selectedArtifactSet={selectedArtifactSet}
 						  matchingSets={matchingSets}
+						  isMobile={isMobile}
+						  tooltipOpen={tooltipOpen}
+						  toggleTooltipOpen={toggleTooltipOpen}
 			      />}
 					{/* Artifact Option 5: Sets 9 & 10 */}
 						{build.artifact_set_9 && (!filterApplied || expanded) &&
@@ -279,6 +321,9 @@ export default function CharacterCard({
 			      	build={build}
 			      	selectedArtifactSet={selectedArtifactSet}
 						  matchingSets={matchingSets}
+						  isMobile={isMobile}
+						  tooltipOpen={tooltipOpen}
+						  toggleTooltipOpen={toggleTooltipOpen}
 			      />}
 
 					{/* Alternative Artifact Options Wrapper: Minimal view (Images only) */}
@@ -293,6 +338,9 @@ export default function CharacterCard({
 						      	build={build}
 						      	selectedArtifactSet={selectedArtifactSet}
 						      	matchingSets={matchingSets}
+						  			isMobile={isMobile}
+									  tooltipOpen={tooltipOpen}
+									  toggleTooltipOpen={toggleTooltipOpen}
 						      />}
 							{/* Artifact Alternative Option 2 - Minimal */}
 					    	{build.artifact_set_5 &&
@@ -303,6 +351,9 @@ export default function CharacterCard({
 						      	build={build}
 						      	selectedArtifactSet={selectedArtifactSet}
 						      	matchingSets={matchingSets}
+						  			isMobile={isMobile}
+									  tooltipOpen={tooltipOpen}
+									  toggleTooltipOpen={toggleTooltipOpen}
 						      />}
 							{/* Artifact Alternative Option 3 - Minimal */}
 					    	{build.artifact_set_7 &&
@@ -313,6 +364,9 @@ export default function CharacterCard({
 						      	build={build}
 						      	selectedArtifactSet={selectedArtifactSet}
 						      	matchingSets={matchingSets}
+						  			isMobile={isMobile}
+									  tooltipOpen={tooltipOpen}
+									  toggleTooltipOpen={toggleTooltipOpen}
 						      />}
 							{/* Artifact Alternative Option 4 - Minimal */}
 					    	{build.artifact_set_9 &&
@@ -323,11 +377,17 @@ export default function CharacterCard({
 						      	build={build}
 						      	selectedArtifactSet={selectedArtifactSet}
 						      	matchingSets={matchingSets}
+						  			isMobile={isMobile}
+									  tooltipOpen={tooltipOpen}
+									  toggleTooltipOpen={toggleTooltipOpen}
 						      />}
 				    </div>}{/* End Alternative Artifact Option Wrapper - Minimal view */}
 			    </div>
 				  </>}
 		    {/* 2. About */} 
+
+				  {!disableAboutTemporarily &&
+				  <>
 	      	{(showAbout || expanded) && 
 	      	<>
 					<div className="about">
@@ -364,6 +424,8 @@ export default function CharacterCard({
 				  	</div>
 		      </div>
 			    </>}
+			    </>}
+
 			  {/* 3. Artifact Types */} 
 		      <div className="artifact-types">
 			      {/* Sands */}

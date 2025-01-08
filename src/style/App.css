@@ -4,13 +4,14 @@
 @import './Footer.css';
 * {
   box-sizing: border-box;
+  scrollbar-width: thin;
 }
 
 #root, body {
   margin: 0 auto;
   padding: 0;
   text-align: left;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
@@ -76,6 +77,30 @@ button.reset-filters, button.clear-input {
 
 button.reset-filters:hover, button.clear-input:hover {
   background-color: #3f2d37;
+}
+
+section#legal {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+section#legal div#legal-content {
+  background-color: #1f1f1f;
+  height: 100%;
+  padding: 10px 20px;
+  width: 50%;
+  margin-left: 25%;
+}
+section#legal div#legal-content button {
+  float: right;
+  margin-top: 10px;
+}
+section#legal div#legal-content h2 {
+  font-size: 2em;
 }
 
 div#mobile-header {

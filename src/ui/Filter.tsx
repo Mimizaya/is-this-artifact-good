@@ -50,244 +50,256 @@ export default function Filter({
 }) {
 
   // SELECTED FILTERS
-    // 1. Destructure the selected filters object
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Destructure the selected filters object 
       const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
 
-  // MENU: Handle dropdown menus
-    // 1. States & Refs 
-      const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
-      const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState<boolean>(false);
-      const [sandsDropDownOpen, setSandsDropDownOpen] = useState<boolean>(false);
-      const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
-      const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false); 
 
-      const characterDropDownRef = useRef<HTMLInputElement>(null);
-      const artifactDropDownRef = useRef<HTMLInputElement>(null);
-      const sandsDropDownRef = useRef<HTMLInputElement>(null);
-      const gobletDropDownRef = useRef<HTMLInputElement>(null);
-      const circletDropDownRef = useRef<HTMLInputElement>(null);
-    // 2. Handle opening of menu on click 
-      const handleDropDown = (menu: string) => {
-        if(menu === 'character') {
-          setCharacterDropDownOpen(true);
-          const targetElement = document.getElementById(`${menu}-section`);
-          
-          if (targetElement) {
-            requestAnimationFrame(() => {
-              // Scroll the container to the target element
-              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-          }
-        }
-        if(menu === 'Artifact') {
-          setArtifactSetDropDownOpen(true);
-        }
-        if(menu === 'Sands') {
-          setSandsDropDownOpen(true);
-        }
-        if(menu === 'Goblet') {
-          setGobletDropDownOpen(true);
-        }
-        if(menu === 'Circlet') {
-          setCircletDropDownOpen(true);
+  // MENU: Handle dropdown menus
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 States & Refs 
+    const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
+    const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState<boolean>(false);
+    const [sandsDropDownOpen, setSandsDropDownOpen] = useState<boolean>(false);
+    const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
+    const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false); 
+
+    const characterDropDownRef = useRef<HTMLInputElement>(null);
+    const artifactDropDownRef = useRef<HTMLInputElement>(null);
+    const sandsDropDownRef = useRef<HTMLInputElement>(null);
+    const gobletDropDownRef = useRef<HTMLInputElement>(null);
+    const circletDropDownRef = useRef<HTMLInputElement>(null);
+  // #2 Handle opening of menu on click 
+    const handleDropDown = (menu: string) => {
+      if(menu === 'character') {
+        setCharacterDropDownOpen(true);
+        const targetElement = document.getElementById(`${menu}-section`);
+        
+        if (targetElement) {
+          requestAnimationFrame(() => {
+            // Scroll the container to the target element
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
         }
       }
-    // 3. Listen for clicks on/outside of menu 
-      useEffect(() => {
-        // Add the event listener when the dropdown is open
-        if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
-          document.addEventListener('mousedown', handleClickOutside);
-          document.addEventListener('keydown', handleClickOutside);
-        }
-        // Cleanup the event listener on component unmount or when dropdown closes
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
-          document.addEventListener('keydown', handleClickOutside);
-        };
-      }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
-    // 4. Handle clicks outside menu 
-      const handleClickOutside = (event: any) => {
-        // Check if the click was outside the dropdown and button
-        if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target) || event.key === 'Enter') {
-          setCharacterDropDownOpen(false);
-          setCharacterQuery('');
-        }
-        if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target) || event.key === 'Enter') {
-          setArtifactSetDropDownOpen(false);
-          setArtifactQuery('');
-        }
-        if (sandsDropDownRef.current && !sandsDropDownRef.current.contains(event.target)) {
-          setSandsDropDownOpen(false);
-        }
-        if (gobletDropDownRef.current && !gobletDropDownRef.current.contains(event.target)) {
-          setGobletDropDownOpen(false);
-        }
-        if (circletDropDownRef.current && !circletDropDownRef.current.contains(event.target)) {
-          setCircletDropDownOpen(false);
-        }
+      if(menu === 'Artifact') {
+        setArtifactSetDropDownOpen(true);
+      }
+      if(menu === 'Sands') {
+        setSandsDropDownOpen(true);
+      }
+      if(menu === 'Goblet') {
+        setGobletDropDownOpen(true);
+      }
+      if(menu === 'Circlet') {
+        setCircletDropDownOpen(true);
+      }
+    }
+  // #3 Listen for clicks on/outside of menu 
+    useEffect(() => {
+      // Add the event listener when the dropdown is open
+      if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleClickOutside);
+      }
+      // Cleanup the event listener on component unmount or when dropdown closes
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleClickOutside);
       };
+    }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
+  // #4 Handle clicks outside menu 
+    const handleClickOutside = (event: any) => {
+      // Check if the click was outside the dropdown and button
+      if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target) || event.key === 'Enter') {
+        setCharacterDropDownOpen(false);
+        setCharacterQuery('');
+      }
+      if (artifactDropDownRef.current && !artifactDropDownRef.current.contains(event.target) || event.key === 'Enter') {
+        setArtifactSetDropDownOpen(false);
+        setArtifactQuery('');
+      }
+      if (sandsDropDownRef.current && !sandsDropDownRef.current.contains(event.target)) {
+        setSandsDropDownOpen(false);
+      }
+      if (gobletDropDownRef.current && !gobletDropDownRef.current.contains(event.target)) {
+        setGobletDropDownOpen(false);
+      }
+      if (circletDropDownRef.current && !circletDropDownRef.current.contains(event.target)) {
+        setCircletDropDownOpen(false);
+      }
+    };
+
 
   // SEARCH: Character 
-    // 1. State to hold query 
-      const [characterQuery, setCharacterQuery] = useState<string>('');
-    // 2. Update query on input 
-      const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCharacterQuery(e.target.value)
-      }
-    // 3. Filter and sort the list based on query 
-      const filteredCharacterData = characterData
-      .filter((character: Character) =>
-        character.name.toLowerCase().includes(characterQuery.toLowerCase()) ||
-        character.alias?.toLowerCase().includes(characterQuery.toLowerCase())
-      )
-      .sort((a, b) => {
-        const queryLower = characterQuery.toLowerCase();
-        const indexA = a.name.toLowerCase().indexOf(queryLower);
-        const indexB = b.name.toLowerCase().indexOf(queryLower);
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 State to hold query 
+    const [characterQuery, setCharacterQuery] = useState<string>('');
+  // #2 Update query on input 
+    const handleCharacterQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCharacterQuery(e.target.value)
+    }
+  // #3 Filter and sort the list based on query 
+    const filteredCharacterData = characterData
+    .filter((character: Character) =>
+      character.name.toLowerCase().includes(characterQuery.toLowerCase()) ||
+      character.alias?.toLowerCase().includes(characterQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      const queryLower = characterQuery.toLowerCase();
+      const indexA = a.name.toLowerCase().indexOf(queryLower);
+      const indexB = b.name.toLowerCase().indexOf(queryLower);
 
-        // If indexA or indexB is -1 (meaning no match), push those characters to the end
-        if (indexA === -1 && indexB === -1) return 0; // No change if neither match
-        if (indexA === -1) return 1; // Put 'a' after 'b'
-        if (indexB === -1) return -1; // Put 'b' after 'a'
+      // If indexA or indexB is -1 (meaning no match), push those characters to the end
+      if (indexA === -1 && indexB === -1) return 0; // No change if neither match
+      if (indexA === -1) return 1; // Put 'a' after 'b'
+      if (indexB === -1) return -1; // Put 'b' after 'a'
 
-        // Sort by the position of the first match
-        return indexA - indexB;
-      });
-    // 4. Automatically set/unset filter based on result
-      useEffect(() => {
-        if (filteredCharacterData.length === 1) {
-          const newCharacter = filteredCharacterData[0].name;
-          handleCharacterChange(newCharacter);
-        } 
-        else if (filteredCharacterData.length > 1) {
-          if (characterQuery.length > 0) { // Prevent resetting when selecting by clicking, which sets the query to empty string.
-            resetFilters('character');
-          }
+      // Sort by the position of the first match
+      return indexA - indexB;
+    });
+  // #4 Automatically set/unset filter based on result 
+    useEffect(() => {
+      if (filteredCharacterData.length === 1) {
+        const newCharacter = filteredCharacterData[0].name;
+        handleCharacterChange(newCharacter);
+      } 
+      else if (filteredCharacterData.length > 1) {
+        if (characterQuery.length > 0) { // Prevent resetting when selecting by clicking, which sets the query to empty string.
+          resetFilters('character');
         }
-      }, [characterQuery]);
+      }
+    }, [characterQuery]);
+
 
   // SEARCH: Artifact set 
-    // 1. State to hold query 
-      const [artifactQuery, setArtifactQuery] = useState<string>('');
-    // 2. Update query on input 
-      const handleArtifactQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setArtifactQuery(e.target.value)
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 State to hold query 
+    const [artifactQuery, setArtifactQuery] = useState<string>('');
+  // #2 Update query on input 
+    const handleArtifactQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setArtifactQuery(e.target.value)
+    }
+  // #3 Filter and sort the list based on query 
+    const filteredArtifacts = artifactSets.filter((set: ArtifactSet) =>
+      set.name.toLowerCase().includes(artifactQuery.toLowerCase()) ||
+      set.alias?.toLowerCase().includes(artifactQuery.toLowerCase())
+    )      
+    .sort((a, b) => {
+      const queryLower = artifactQuery.toLowerCase();
+      const indexA = a.name.toLowerCase().indexOf(queryLower);
+      const indexB = b.name.toLowerCase().indexOf(queryLower);
+
+      // If indexA or indexB is -1 (meaning no match), push those characters to the end
+      if (indexA === -1 && indexB === -1) return 0; // No change if neither match
+      if (indexA === -1) return 1; // Put 'a' after 'b'
+      if (indexB === -1) return -1; // Put 'b' after 'a'
+
+      // Sort by the position of the first match
+      return indexA - indexB;
+    });
+  // #4 Automatically set/unset filter based on result 
+    useEffect(() => {
+      if (filteredArtifacts.length === 1) {
+        const newArtifact = filteredArtifacts[0].name;
+        handleArtifactSetChange(newArtifact);
       }
-    // 3. Filter and sort the list based on query 
-      const filteredArtifacts = artifactSets.filter((set: ArtifactSet) =>
-        set.name.toLowerCase().includes(artifactQuery.toLowerCase())
-      )      
-      .sort((a, b) => {
-        const queryLower = artifactQuery.toLowerCase();
-        const indexA = a.name.toLowerCase().indexOf(queryLower);
-        const indexB = b.name.toLowerCase().indexOf(queryLower);
-
-        // If indexA or indexB is -1 (meaning no match), push those characters to the end
-        if (indexA === -1 && indexB === -1) return 0; // No change if neither match
-        if (indexA === -1) return 1; // Put 'a' after 'b'
-        if (indexB === -1) return -1; // Put 'b' after 'a'
-
-        // Sort by the position of the first match
-        return indexA - indexB;
-      });
-    // 4. Automatically set/unset filter based on result 
-      useEffect(() => {
-        if (filteredArtifacts.length === 1) {
-          const newArtifact = filteredArtifacts[0].name;
-          handleArtifactSetChange(newArtifact);
+      else if (filteredArtifacts.length > 1) {
+        if(artifactQuery.length > 0 ) { // Prevent resetting when selecting by clicking, which sets the query to empty string.
+          resetFilters('artifact');
         }
-        else if (filteredArtifacts.length > 1) {
-          if(artifactQuery.length > 0 ) { // Prevent resetting when selecting by clicking, which sets the query to empty string.
-            resetFilters('artifact');
-          }
-        }
-      }, [artifactQuery]);
+      }
+    }, [artifactQuery]);
+
 
   // SCROLL: Save scroll distance and return if applicable
-    // 1. Use a ref to persist the scroll position without causing re-renders 
-      const currentScrollRef = useRef<number>(0);
-    // 2. Effect to store scroll position when dropdown is opened 
-      useEffect(() => {
-        if (characterDropDownOpen || artifactSetDropDownOpen) {
-          // Save the scroll position of the results section when the dropdown opens
-          const resultsSection = document.getElementById('results');
-          if (resultsSection) {
-            currentScrollRef.current = resultsSection.scrollTop;
-          }
-        }
-      }, [characterDropDownOpen, artifactSetDropDownOpen]);
-    // 3. Effect to detect changes and scroll when content is rendered 
-      useEffect(() => {
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Use a ref to persist the scroll position without causing re-renders 
+    const currentScrollRef = useRef<number>(0);
+  // #2 Effect to store scroll position when dropdown is opened 
+    useEffect(() => {
+      if (characterDropDownOpen || artifactSetDropDownOpen) {
+        // Save the scroll position of the results section when the dropdown opens
         const resultsSection = document.getElementById('results');
-        if (characterDropDownOpen) {
-          if (resultsSection) {
-            // Initialize a MutationObserver to detect changes in the #results content
-            const observer = new MutationObserver(() => {
-              // Once content is updated, scroll to the right position
-              if (filteredCharacterData.length > 1) {
-                resultsSection.scrollTo({
-                  top: currentScrollRef.current,
-                  behavior: 'auto',
-                });
-              } else if (filteredCharacterData.length === 1) {
-                resultsSection.scrollTo({
-                  top: 0,
-                  behavior: 'auto',
-                });
-              }
-              // Disconnect observer once the scroll has happened
-              observer.disconnect();
-            });
-
-            // Start observing the results section for changes
-            observer.observe(resultsSection, {
-              childList: true, // Observe child elements being added or removed
-              subtree: true, // Observe all descendants
-            });
-          }
+        if (resultsSection) {
+          currentScrollRef.current = resultsSection.scrollTop;
         }
-        else if (artifactSetDropDownOpen) {
-          if (resultsSection) {
-            // Initialize a MutationObserver to detect changes in the #results content
-            const observer = new MutationObserver(() => {
-              // Once content is updated, scroll to the right position
-              if (filteredArtifacts.length > 1) {
-                resultsSection.scrollTo({
-                  top: currentScrollRef.current,
-                  behavior: 'auto',
-                });
-              } else if (filteredArtifacts.length === 1) {
-                resultsSection.scrollTo({
-                  top: 0,
-                  behavior: 'auto',
-                });
-              }
-              // Disconnect observer once the scroll has happened
-              observer.disconnect();
-            });
+      }
+    }, [characterDropDownOpen, artifactSetDropDownOpen]);
+  // #3 Effect to detect changes and scroll when content is rendered 
+    useEffect(() => {
+      const resultsSection = document.getElementById('results');
+      if (characterDropDownOpen) {
+        if (resultsSection) {
+          // Initialize a MutationObserver to detect changes in the #results content
+          const observer = new MutationObserver(() => {
+            // Once content is updated, scroll to the right position
+            if (filteredCharacterData.length > 1) {
+              resultsSection.scrollTo({
+                top: currentScrollRef.current,
+                behavior: 'auto',
+              });
+            } else if (filteredCharacterData.length === 1) {
+              resultsSection.scrollTo({
+                top: 0,
+                behavior: 'auto',
+              });
+            }
+            // Disconnect observer once the scroll has happened
+            observer.disconnect();
+          });
 
-            // Start observing the results section for changes
-            observer.observe(resultsSection, {
-              childList: true, // Observe child elements being added or removed
-              subtree: true, // Observe all descendants
-            });
-          }
+          // Start observing the results section for changes
+          observer.observe(resultsSection, {
+            childList: true, // Observe child elements being added or removed
+            subtree: true, // Observe all descendants
+          });
         }
-      }, [characterDropDownOpen, artifactSetDropDownOpen, filteredCharacterData, filteredArtifacts]);
+      }
+      else if (artifactSetDropDownOpen) {
+        if (resultsSection) {
+          // Initialize a MutationObserver to detect changes in the #results content
+          const observer = new MutationObserver(() => {
+            // Once content is updated, scroll to the right position
+            if (filteredArtifacts.length > 1) {
+              resultsSection.scrollTo({
+                top: currentScrollRef.current,
+                behavior: 'auto',
+              });
+            } else if (filteredArtifacts.length === 1) {
+              resultsSection.scrollTo({
+                top: 0,
+                behavior: 'auto',
+              });
+            }
+            // Disconnect observer once the scroll has happened
+            observer.disconnect();
+          });
+
+          // Start observing the results section for changes
+          observer.observe(resultsSection, {
+            childList: true, // Observe child elements being added or removed
+            subtree: true, // Observe all descendants
+          });
+        }
+      }
+    }, [characterDropDownOpen, artifactSetDropDownOpen, filteredCharacterData, filteredArtifacts]);
+
 
   // SEARCH: Focus input when menu open
-    // 1. Refs 
-      const characterRef = useRef<HTMLInputElement>(null);
-      const artifactRef = useRef<HTMLInputElement>(null);
-    // 2. Set focus based on ref 
-      useEffect(() => {
-        if (characterDropDownOpen && characterRef.current) {
-          characterRef.current.focus();
-        }
-        if (artifactSetDropDownOpen && artifactRef.current) {
-          artifactRef.current.focus();
-        }
-      }, [characterDropDownOpen, artifactSetDropDownOpen]);
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Refs 
+    const characterRef = useRef<HTMLInputElement>(null);
+    const artifactRef = useRef<HTMLInputElement>(null);
+  // #2 Set focus based on ref 
+    useEffect(() => {
+      if (characterDropDownOpen && characterRef.current) {
+        characterRef.current.focus();
+      }
+      if (artifactSetDropDownOpen && artifactRef.current) {
+        artifactRef.current.focus();
+      }
+    }, [characterDropDownOpen, artifactSetDropDownOpen]);
 
 
 
@@ -374,7 +386,6 @@ export default function Filter({
               )
             }
           </div>
-        
         {/* 2. Mainstats */}
         <div className="filter-artifact-mainstats">
           <h3>Select mainstats</h3>
@@ -655,7 +666,7 @@ export default function Filter({
                     className="filter-icon side" 
                     src={
                       selectedCharacter.some(character => character.includes('Traveler')) && selectedCharacter.length > 0 ?
-                      `./images/characters/portraits/Aether.webp` : 
+                      `./images/characters/portraits/Traveler.webp` : 
                       !selectedCharacter.some(character => character.includes('Traveler')) && selectedCharacter.length > 0 ? 
                       `./images/characters/portraits/${selectedCharacter}.webp` : 
                       selectedCharacter.length === 0 ? `./images/icons/Icon Character.webp` : ''

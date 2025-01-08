@@ -90,6 +90,7 @@ export interface FullBuild extends RawBuild {
 
 export interface ArtifactSet {
 	name: string;
+	alias: string | null;
 	two_piece: string;
 	four_piece: string;
 	domain: string | null;

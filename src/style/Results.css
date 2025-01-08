@@ -12,7 +12,7 @@
     flex-wrap: wrap;
     align-content: start;
     align-items: start;
-    min-height: calc(100% - 170px);
+    min-height: calc(100vh - 270px);
   }
   section#results div#main-content div.additional-results-text {
     margin: 0 10px;
@@ -152,7 +152,7 @@
     flex-wrap: wrap;
     align-content: start;
     align-items: start;
-    min-height: calc(100% - 315px);
+    min-height: calc(100vh - 315px);
   }
   section#results div#main-content div.additional-results-text h3, section#results div#main-content div.additional-results-text p {
     padding: 0px 10px;
@@ -166,18 +166,16 @@
   }
 }
 section#results {
-  position: fixed;
-  top: 0;
-  overflow-y: scroll;
+  position: absolute;
+  overflow-x: hidden;
   scrollbar-width: thin;
-  height: 100%;
 }
 section#results header#results-header {
   position: fixed;
   top: 0;
   z-index: 100;
   background-color: #1f1f1f;
-  min-width: calc(100vw - 300px - 8px);
+  min-width: calc(100vw - 300px);
   display: flex;
 }
 section#results header#results-header h2 {

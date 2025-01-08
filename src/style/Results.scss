@@ -21,7 +21,7 @@ $header-height: 145px;
       flex-wrap: wrap;
       align-content: start;
       align-items: start;
-      min-height: calc(100% - 170px); // 100 pixel footer + 50 margin bottom +20 top margin
+      min-height: calc(100vh - 270px); // 100 pixel footer + 50 margin bottom +20 top margin
 
       div.additional-results-text {
         margin: 0 10px;
@@ -174,7 +174,7 @@ $header-height: 145px;
       flex-wrap: wrap;
       align-content: start; // each item aligns at the start, no vertical distribution
       align-items: start; // each item retains its own height
-      min-height: calc(100% - 315px); // 100 pixel footer + 50 margin bottom, 145+20 margin header
+      min-height: calc(100vh - 315px); // 100 pixel footer + 50 margin bottom, 145+20 margin header
 
       div.additional-results-text {
         h3, p {
@@ -194,11 +194,11 @@ $header-height: 145px;
 
 // Applicable to all screen sizes
 section#results {
-  position: fixed;
-  top: 0;
-  overflow-y: scroll;
+  position: absolute;
+  //top: 0;
+  overflow-x: hidden;
   scrollbar-width: thin;
-  height: 100%;
+  //height: 100%;
 
   // Results header 
     header#results-header {
@@ -206,7 +206,7 @@ section#results {
       top: 0;
       z-index: 100;
       background-color: darken(#242424, 2%);
-      min-width: calc(100vw - $filter-width-total - 8px); // 8 scrollbar
+      min-width: calc(100vw - $filter-width-total); // 12 scrollbar
       display: flex;
 
       h2 {

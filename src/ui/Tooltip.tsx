@@ -1,3 +1,4 @@
+
 // Functions
 import { parseText } from '../utility/functions';
 
@@ -5,6 +6,7 @@ import { parseText } from '../utility/functions';
 import { ArtifactSet } from '../types/types';
 
 export default function Tooltip({
+	active,
 	toolTipAlignment,
 	artifactSet_1, 
 	artifactSet_1_two_piece,
@@ -12,6 +14,7 @@ export default function Tooltip({
 	artifactSet_2,
 	artifactSet_2_two_piece,
 } : {
+	active: boolean;
 	toolTipAlignment: string;
 	artifactSet_1: ArtifactSet["name"];
 	artifactSet_1_two_piece: ArtifactSet["two_piece"];
@@ -23,6 +26,8 @@ export default function Tooltip({
 	return (
 		<>
 	    {/* Single set */}
+		 	{active &&
+		 	<>
 	    {!artifactSet_2 &&
 		 	<div className={`artifact-info tooltip-${toolTipAlignment}`}>
 		 		<div className="tooltip-part">
@@ -38,6 +43,7 @@ export default function Tooltip({
 			 		</div>
 			 	</div>
 			</div>}
+
 
 	    {/* Split set */}
 	    {artifactSet_2 &&
@@ -64,6 +70,8 @@ export default function Tooltip({
 			 		</div>
 			 	</div>
 			</div>}
+			
+			</>}
 		</>
 	)
 }

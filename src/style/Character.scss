@@ -159,6 +159,7 @@ div.character-card.small {
     }
   }
 }
+
 @media screen and (max-width: 600px) { 
   div.character-card.full {
     div.artifact-info.tooltip-left,
@@ -330,12 +331,11 @@ div.character-card.small {
     div.build-header {
       width: $card-width-full +10px;
       position: relative;
-      height: $banner-size;
+      height: $banner-size + 5px;
       left: -5px;
 
       // Character Portrait 
         img.character-portrait {
-          bottom: 5px;
           height: $banner-size + 5;
         }
       // Secondary Character Portrait (Traveler) 
@@ -687,6 +687,7 @@ div.character-card.small {
       }
       img.character-portrait-two {
         position: absolute;
+        border-radius: 20px;
         right: 20px;
         bottom: -5px;
         pointer-events: none;
@@ -698,7 +699,7 @@ div.character-card.small {
         width: $element-icon-size;
         position: absolute;
         z-index: 2;
-        top: -15px;
+        top: -10px;
         left: -20px;
         pointer-events: none;
         user-select: none;
@@ -729,7 +730,7 @@ div.character-card.small {
       div.character-title {
         position: absolute;
         left: $banner-size + 25px;
-        top: 15px;
+        top: 20px;
         text-shadow: 1px 1px 5px black;
 
         h2.character-name {

@@ -9,12 +9,13 @@ $filter-width: 250px;
 // General Reset Rules and Global Rules 
   * {
     box-sizing: border-box;
+    scrollbar-width: thin;
   }
   #root, body {
     margin: 0 auto;
     padding: 0;
     text-align: left;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   p, h1, h2, h3, h4, h5, h6 {
     margin: 0;
@@ -79,7 +80,32 @@ $filter-width: 250px;
   }
 
 
+section#legal {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
 
+  div#legal-content {
+    background-color: #1f1f1f;
+    height: 100%;
+    padding: 10px 20px;
+    width: 50%;
+    margin-left: 25%;
+
+    button {
+      float: right;
+      margin-top: 10px;
+    }
+
+    h2 {
+      font-size: 2em;
+    }
+  }
+}
 
 div#mobile-header {
   position: fixed;

@@ -11,6 +11,7 @@ export const parseText = (text: string) => {
   // Loop through all matches in the text
   while ((match = regex.exec(text)) !== null) {
     const regularText = match[1]; // Normal text (not in tags or parentheses)
+
     const italicOpenTag = match[2]; // Opening <i> tag
     const italicText = match[3]; // Content inside <i> tags
     const italicCloseTag = match[4]; // Closing </i> tag
@@ -58,6 +59,9 @@ export const updateFiltersSingleSelect = (
   }
   else if (value === 'Elemental Mastery') {
     setState(['Elemental Mastery', 'EM (Vape/Melt)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Aggravate)'])
+  }
+  else if (value === 'Energy Recharge') {
+    setState(['Energy Recharge', 'Energy Recharge (C2)'])
   }
   else if (value === 'CRIT Rate') {
     setState(['CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)'])

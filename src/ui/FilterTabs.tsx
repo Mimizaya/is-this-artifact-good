@@ -21,131 +21,133 @@ export default function FilterTabs({
 }) {
 
   // SELECTED FILTERS
-    // 1. Destructure the selected filters object 
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Destructure the selected filters object 
       const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
   
   // TABS
-    // 1. Initial Tabs 
-      const initialFilterTabs: FilterTab[] = [
-        {
-          id: 1,
-          default_name: 'All builds',
-          name: null,
-        },
-      ];
-      const [filterTabs, setFilterTabs] = useState(initialFilterTabs);
-    // 2. Handle Add Tab 
-      // Reference for tracking the next available ID
-      const nextId = useRef(2); // Start from 2 since we already have Tab 1 as initial
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 Initial Tabs 
+    const initialFilterTabs: FilterTab[] = [
+      {
+        id: 1,
+        default_name: 'All builds',
+        name: null,
+      },
+    ];
+    const [filterTabs, setFilterTabs] = useState(initialFilterTabs);
+  // #2 Handle Add Tab 
+    // Reference for tracking the next available ID
+    const nextId = useRef(2); // Start from 2 since we already have Tab 1 as initial
 
-      const handleAddTab = (filter: string | null, value: string | null) => {
-        const newId = nextId.current; // Get the next available ID
-        nextId.current += 1; // Increment the ID for the next tab
-        const currentTabIndex = filterTabs.findIndex(tab => tab.id === currentFilterTab);
+    const handleAddTab = (filter: string | null, value: string | null) => {
+      const newId = nextId.current; // Get the next available ID
+      nextId.current += 1; // Increment the ID for the next tab
+      const currentTabIndex = filterTabs.findIndex(tab => tab.id === currentFilterTab);
 
-          setFilterTabs((prev) => {
-            // Split the array into two parts: before the index and after the index
-            const before = prev.slice(0, currentTabIndex+1); // Tabs before and including the current index
-            const after = prev.slice(currentTabIndex+1); // Tabs after the specified index
+        setFilterTabs((prev) => {
+          // Split the array into two parts: before the index and after the index
+          const before = prev.slice(0, currentTabIndex+1); // Tabs before and including the current index
+          const after = prev.slice(currentTabIndex+1); // Tabs after the specified index
 
-            if(filter) {
-              return [
-                ...before,
-                { id: newId, default_name: 'All builds', name: null },
-                ...after,
-              ];
+          if(filter) {
+            return [
+              ...before,
+              { id: newId, default_name: 'All builds', name: null },
+              ...after,
+            ];
+          }
+          else {
+            return [
+              ...prev,
+              {
+                id: newId,
+                default_name: 'All builds',
+                name: null,
+              }
+            ];
+          }
+          // Return a new array with the new tab inserted at the specified index
+
+        });
+
+
+
+      handleTabChange(newId, filter, value);
+    };
+  // #3 Handle Close Tab 
+    const handleTabClose = (id: number) => {
+      setFilterTabs((prev) => {
+        const newTabs = prev.filter((tab) => tab.id !== id);
+        return newTabs;
+      });
+      // If the closed tab was the current tab, find the previous tab
+      if (id === currentFilterTab) {
+        // Get the index of the tab to be removed in the updated filterTabs
+        const currentIndex = filterTabs.findIndex((tab) => tab.id === id);
+
+        // Get the tab before and after the current tab
+        const prevTab = filterTabs[currentIndex - 1];
+        const nextTab = filterTabs[currentIndex + 1];
+
+        // If current index is not 0, go to previous
+        if(currentIndex !== 0) {
+          handleTabChange(prevTab.id, null, null);
+        }
+        // Else if 0, go to next
+        else {
+          handleTabChange(nextTab.id, null, null);
+        }
+
+      }
+    };
+  // #4 Automatic re-naming of Tabs 
+    useEffect(() => {
+      setFilterTabs((prev) =>
+        prev.map((tab: FilterTab) => {
+          if (tab.id === currentFilterTab) {
+            if(selectedCharacter.length > 0) {
+              return { ...tab, name: [selectedCharacter[0]] }; 
+            }
+            else if(selectedArtifactSet.length > 0) {
+              return { ...tab, name: selectedArtifactSet }; 
+            }
+            else if(selectedElements.length > 0) {
+              return { ...tab, name: [selectedElements.join(', ')] }; 
+            }
+            else if(selectedSands.length > 0) {
+              return { ...tab, name: ['Sands: ' + selectedSands[0]] }; 
+            }
+            else if(selectedGoblet.length > 0) {
+              return { ...tab, name: ['Goblet: ' + selectedGoblet[0]] }; 
+            }
+            else if(selectedCirclet.length > 0) {
+              return { ...tab, name: ['Circlet: ' + selectedCirclet[0]] }; 
+            }
+            else if(selectedSubstats.length > 0) {
+              return { ...tab, name: ['Substats: ' + selectedSubstats[0]] };
             }
             else {
-              return [
-                ...prev,
-                {
-                  id: newId,
-                  default_name: 'All builds',
-                  name: null,
-                }
-              ];
+              return { ...tab, name: null };
             }
-            // Return a new array with the new tab inserted at the specified index
-
-          });
-
-
-
-        handleTabChange(newId, filter, value);
-      };
-    // 3. Handle Close Tab 
-      const handleTabClose = (id: number) => {
-        setFilterTabs((prev) => {
-          const newTabs = prev.filter((tab) => tab.id !== id);
-          return newTabs;
-        });
-        // If the closed tab was the current tab, find the previous tab
-        if (id === currentFilterTab) {
-          // Get the index of the tab to be removed in the updated filterTabs
-          const currentIndex = filterTabs.findIndex((tab) => tab.id === id);
-
-          // Get the tab before and after the current tab
-          const prevTab = filterTabs[currentIndex - 1];
-          const nextTab = filterTabs[currentIndex + 1];
-
-          // If current index is not 0, go to previous
-          if(currentIndex !== 0) {
-            handleTabChange(prevTab.id, null, null);
           }
-          // Else if 0, go to next
-          else {
-            handleTabChange(nextTab.id, null, null);
-          }
+          return tab;
+        })
+      );
+    }, [selectedFilters, currentFilterTab]);
+  // #5 Suggest other artifact from same domain 
+    const artifactDomain = artifactSets.find((set: ArtifactSet) => set.name === selectedArtifactSet?.toString())
+    const partnerArtifact = artifactDomain?.domain
+      ? artifactSets
+        .filter((set: ArtifactSet) => set.domain === artifactDomain?.domain)
+        .filter((set) => set.name !== artifactDomain?.name)
+        .map((set) => set.name)
+        .toString() // Convert the array to a string
+      : ''; // Return an empty string if domain is null or undefined
 
-        }
-      };
-    // 4. Automatic re-naming of Tabs 
-      useEffect(() => {
-        setFilterTabs((prev) =>
-          prev.map((tab: FilterTab) => {
-            if (tab.id === currentFilterTab) {
-              if(selectedCharacter.length > 0) {
-                return { ...tab, name: [selectedCharacter[0]] }; 
-              }
-              else if(selectedArtifactSet.length > 0) {
-                return { ...tab, name: selectedArtifactSet }; 
-              }
-              else if(selectedElements.length > 0) {
-                return { ...tab, name: [selectedElements.join(', ')] }; 
-              }
-              else if(selectedSands.length > 0) {
-                return { ...tab, name: ['Sands: ' + selectedSands[0]] }; 
-              }
-              else if(selectedGoblet.length > 0) {
-                return { ...tab, name: ['Goblet: ' + selectedGoblet[0]] }; 
-              }
-              else if(selectedCirclet.length > 0) {
-                return { ...tab, name: ['Circlet: ' + selectedCirclet[0]] }; 
-              }
-              else if(selectedSubstats.length > 0) {
-                return { ...tab, name: ['Substats: ' + selectedSubstats[0]] };
-              }
-              else {
-                return { ...tab, name: null };
-              }
-            }
-            return tab;
-          })
-        );
-      }, [selectedFilters, currentFilterTab]);
-    // 5. Suggest other artifact from same domain 
-      const artifactDomain = artifactSets.find((set: ArtifactSet) => set.name === selectedArtifactSet?.toString())
-      const partnerArtifact = artifactDomain?.domain
-        ? artifactSets
-          .filter((set: ArtifactSet) => set.domain === artifactDomain?.domain)
-          .filter((set) => set.name !== artifactDomain?.name)
-          .map((set) => set.name)
-          .toString() // Convert the array to a string
-        : ''; // Return an empty string if domain is null or undefined
-
-      const tabIsAlreadyOpen = filterTabs?.map((tab: FilterTab) => {
-        return tab?.name?.toString() === partnerArtifact;
-      });
+    const tabIsAlreadyOpen = filterTabs?.map((tab: FilterTab) => {
+      return tab?.name?.toString() === partnerArtifact;
+    });
 
 
   return (
@@ -155,8 +157,7 @@ export default function FilterTabs({
         onClick={() => {
           handleTabChange(0, null, null);
         }}
-      >
-        &#9733; {/* Star Icon */}
+      >&#9733; {/* Star Icon */}
       </button>
 
       {filterTabs.map((tab: FilterTab) => (
@@ -169,7 +170,7 @@ export default function FilterTabs({
             {savedFilters[tab.id] &&
             <img 
               src={
-                // Character 
+                // Character
                 savedFilters[tab.id].selectedCharacter.length > 0 ? 
                 './images/characters/portraits/' + savedFilters[tab.id].selectedCharacter[0] + '.webp' :
 
@@ -199,7 +200,8 @@ export default function FilterTabs({
 
                 isMobile ? 
                 './images/icons/Icon Tab.webp' :
-                ''
+
+                undefined
               }
             />}
             

@@ -28,4 +28,3 @@ assets
 *.sublime-project
 *.sublime-workspace
 *.ps1
-src/data/builds-data.csv

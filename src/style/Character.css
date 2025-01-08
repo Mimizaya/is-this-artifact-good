@@ -243,11 +243,10 @@ div.character-card.small div.artifact-info.tooltip-right div.tooltip-part div.to
   div.character-card.full div.build-header {
     width: 485px;
     position: relative;
-    height: 100px;
+    height: 105px;
     left: -5px;
   }
   div.character-card.full div.build-header img.character-portrait {
-    bottom: 5px;
     height: 105px;
   }
   div.character-card.full div.build-header img.character-portrait-two {
@@ -544,6 +543,7 @@ div.character-card div.build-header img.character-portrait, div.character-card d
 }
 div.character-card div.build-header img.character-portrait-two {
   position: absolute;
+  border-radius: 20px;
   right: 20px;
   bottom: -5px;
   pointer-events: none;
@@ -554,7 +554,7 @@ div.character-card div.build-header img.character-element {
   width: 50px;
   position: absolute;
   z-index: 2;
-  top: -15px;
+  top: -10px;
   left: -20px;
   pointer-events: none;
   user-select: none;
@@ -582,7 +582,7 @@ div.character-card div.build-header div.character-banner-wrapper img.character-b
 div.character-card div.build-header div.character-title {
   position: absolute;
   left: 125px;
-  top: 15px;
+  top: 20px;
   text-shadow: 1px 1px 5px black;
 }
 div.character-card div.build-header div.character-title h2.character-name {
