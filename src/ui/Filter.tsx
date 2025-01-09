@@ -16,6 +16,7 @@ import { Character, ArtifactSet, SelectedFilters, SavedFilters } from '../types/
 
 // UI
 import FilterTabs from './FilterTabs.tsx';
+import Logo from './Logo.tsx';
 
 export default function Filter({
   isMobile,
@@ -23,6 +24,7 @@ export default function Filter({
   selectedFilters,
   savedFilters,
   isMenuOpen,
+  toggleMenu,
   handleTabChange,
   currentFilterTab,
   handleCharacterChange,
@@ -32,12 +34,14 @@ export default function Filter({
   handleCircletChange,
   handleSubstatsChange,
   handleElementsChange,
+  resultsNumber,
 } : {
   isMobile: boolean;
   resetFilters: (filter: string | null) => void;
   selectedFilters: SelectedFilters;
   savedFilters: SavedFilters;
   isMenuOpen: boolean;
+  toggleMenu: any;
   handleTabChange: (tabId: number, filter: string | null, value: string | null) => void;
   currentFilterTab: number;
   handleCharacterChange: (name: string) => void;
@@ -47,6 +51,7 @@ export default function Filter({
   handleCircletChange: (stat: string) => void;
   handleSubstatsChange: (stat: string) => void;
   handleElementsChange: (element: string) => void;
+  resultsNumber: number;
 }) {
 
   // SELECTED FILTERS
@@ -58,17 +63,20 @@ export default function Filter({
   // MENU: Handle dropdown menus
   // ——————————————————————————————————————————————————————————————————————————————————————————
   // #1 States & Refs 
+    const [searchDropDownOpen, setSearchDropDownOpen] = useState<boolean>(false);
     const [characterDropDownOpen, setCharacterDropDownOpen] = useState<boolean>(false);
     const [artifactSetDropDownOpen, setArtifactSetDropDownOpen] = useState<boolean>(false);
     const [sandsDropDownOpen, setSandsDropDownOpen] = useState<boolean>(false);
     const [gobletDropDownOpen, setGobletDropDownOpen] = useState<boolean>(false);
     const [circletDropDownOpen, setCircletDropDownOpen] = useState<boolean>(false); 
 
+    const searchDropDownRef = useRef<HTMLInputElement>(null);
     const characterDropDownRef = useRef<HTMLInputElement>(null);
     const artifactDropDownRef = useRef<HTMLInputElement>(null);
     const sandsDropDownRef = useRef<HTMLInputElement>(null);
     const gobletDropDownRef = useRef<HTMLInputElement>(null);
     const circletDropDownRef = useRef<HTMLInputElement>(null);
+
   // #2 Handle opening of menu on click 
     const handleDropDown = (menu: string) => {
       if(menu === 'character') {
@@ -81,6 +89,9 @@ export default function Filter({
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
           });
         }
+      }
+      if(menu === 'Search') {
+        setSearchDropDownOpen(true);
       }
       if(menu === 'Artifact') {
         setArtifactSetDropDownOpen(true);
@@ -98,7 +109,7 @@ export default function Filter({
   // #3 Listen for clicks on/outside of menu 
     useEffect(() => {
       // Add the event listener when the dropdown is open
-      if (characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
+      if (searchDropDownOpen || characterDropDownOpen || artifactSetDropDownOpen || sandsDropDownOpen || gobletDropDownOpen || circletDropDownOpen) {
         document.addEventListener('mousedown', handleClickOutside);
         document.addEventListener('keydown', handleClickOutside);
       }
@@ -107,10 +118,14 @@ export default function Filter({
         document.removeEventListener('mousedown', handleClickOutside);
         document.addEventListener('keydown', handleClickOutside);
       };
-    }, [characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
+    }, [searchDropDownOpen, characterDropDownOpen, artifactSetDropDownOpen, sandsDropDownOpen, gobletDropDownOpen, circletDropDownOpen]);
   // #4 Handle clicks outside menu 
     const handleClickOutside = (event: any) => {
       // Check if the click was outside the dropdown and button
+      if (searchDropDownRef.current && !searchDropDownRef.current.contains(event.target) || event.key === 'Enter') {
+        setSearchDropDownOpen(false);
+        setSearchQuery('');
+      }
       if (characterDropDownRef.current && !characterDropDownRef.current.contains(event.target) || event.key === 'Enter') {
         setCharacterDropDownOpen(false);
         setCharacterQuery('');
@@ -129,6 +144,47 @@ export default function Filter({
         setCircletDropDownOpen(false);
       }
     };
+
+  // SEARCH: All types
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // #1 State to hold query 
+    const [searchQuery, setSearchQuery] = useState<string>('');
+  // #2 Update query on input 
+    const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value)
+    }
+  // #3 Filter and sort the list based on query 
+
+    // Modify datasets to include a type property
+    const characterDataType = characterData.map((character) => ({
+      ...character,
+      type: 'Character'
+    }));
+    const artifactSetsType = artifactSets.map((artifact) => ({
+      ...artifact,
+      type: 'Artifact'
+    }));
+
+    // Filter and sort data based on search
+    const filteredSearchData = [...characterDataType, ...artifactSetsType]
+    .filter((search: Character | ArtifactSet) =>
+      search.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      search.alias?.toLowerCase().includes(searchQuery.toLowerCase())
+      // other properties that should be matched?
+    )
+    .sort((a, b) => {
+      const queryLower = searchQuery.toLowerCase();
+      const indexA = a.name.toLowerCase().indexOf(queryLower);
+      const indexB = b.name.toLowerCase().indexOf(queryLower);
+
+      // If indexA or indexB is -1 (meaning no match), push those results to the end
+      if (indexA === -1 && indexB === -1) return 0; // No change if neither match
+      if (indexA === -1) return 1; // Put 'a' after 'b'
+      if (indexB === -1) return -1; // Put 'b' after 'a'
+
+      // Sort by the position of the first match
+      return indexA - indexB;
+    });
 
 
   // SEARCH: Character 
@@ -170,6 +226,29 @@ export default function Filter({
         }
       }
     }, [characterQuery]);
+
+    // SEARCH CHARACTER ADDITION: Toggle visible characters by their element
+    // ————————————————————————————————————————————————————————————————————————————————————————
+    // #1 State to hold the selected element 
+      const [characterElementSelection, setCharacterElementSelection] = useState<string>('');
+    // #2 Function to change the selected element 
+      const handleCharacterElementSelection = (element: string) => {
+        if(element === characterElementSelection) {
+          setCharacterElementSelection('');
+        }
+        else {
+          setCharacterElementSelection(element);
+        }
+      }
+    // #3 Filter the data to only include characters of the selected element 
+      const filteredCharacterDataByElement = filteredCharacterData.filter((character: Character) => {
+        if (characterElementSelection) {
+          return character.element === characterElementSelection;
+        }
+        else {
+          return character;
+        }
+      })
 
 
   // SEARCH: Artifact set 
@@ -289,17 +368,21 @@ export default function Filter({
   // SEARCH: Focus input when menu open
   // ——————————————————————————————————————————————————————————————————————————————————————————
   // #1 Refs 
+    const searchRef = useRef<HTMLInputElement>(null);
     const characterRef = useRef<HTMLInputElement>(null);
     const artifactRef = useRef<HTMLInputElement>(null);
   // #2 Set focus based on ref 
     useEffect(() => {
+      if (searchDropDownOpen && searchRef.current) {
+        searchRef.current.focus();
+      }
       if (characterDropDownOpen && characterRef.current) {
         characterRef.current.focus();
       }
       if (artifactSetDropDownOpen && artifactRef.current) {
         artifactRef.current.focus();
       }
-    }, [characterDropDownOpen, artifactSetDropDownOpen]);
+    }, [searchDropDownOpen, characterDropDownOpen, artifactSetDropDownOpen]);
 
 
 
@@ -316,6 +399,76 @@ export default function Filter({
           savedFilters={savedFilters}
           isMenuOpen={isMenuOpen}
         />}
+
+      <div id="filter-header" className={isMenuOpen ? 'open' : 'closed'}>
+        <Logo />
+        {/* Search all */}
+        <div className="filter-option" ref={searchDropDownRef}>
+
+            {/* Dropdown Toggle */}
+            {!searchDropDownOpen ? (
+            <>
+            <div className="dropdown-wrapper">
+              <div 
+                onClick={() => handleDropDown('Search')} 
+                className='dropdown'
+              >
+                <img
+                  className="filter-icon"  
+                  src="./images/icons/Icon Survey.webp"
+                  alt="search"
+                />
+                <p>
+                  Search...
+                </p>
+              </div>
+
+            </div>
+            </>
+            ) : (
+              <>
+              <div className="search-bar">
+                <input
+                  className="search-input"
+                  ref={searchRef}
+                  value={searchQuery}
+                  onChange={handleSearchQuery}
+                  placeholder="Type to search"
+                />
+              </div>
+              {searchQuery.length > 2 &&
+              <>
+              <ul className="dropdown-menu">
+                {filteredSearchData.map((result: any) => (
+                  <li key={result.name} onClick={() => {
+                    if(result.type === 'Character') {
+                      handleCharacterChange(result.name)
+                    }
+                    if(result.type === 'Artifact') {
+                      handleArtifactSetChange(result.name)
+                    }
+                    setSearchDropDownOpen(!setSearchDropDownOpen)
+                    setSearchQuery('')
+                  }}>
+                    <img
+                      className="artifact"
+                      src={
+                        result.type === 'Character' ? `./images/characters/portraits/${result.name}.webp` : 
+                        result.type === 'Artifact' ? `./images/artifacts/flowers/${result.name} Flower.webp` :
+                        '' }
+                      alt={selectedArtifactSet[0]}
+                    />
+                    <p>{result.name}</p>
+                  </li>
+                ))}
+              </ul>
+              </>
+              }
+              </>
+            )
+          }
+        </div>
+      </div>
 
       {/* Artifact Filters */}
       <div id="filter-artifact">
@@ -693,6 +846,19 @@ export default function Filter({
               </>
             ) : (
               <>
+              {/* Dropdown Open */}
+              {/* Toggle Element of Displayed Characters */}
+              <div className="element-toggle">
+                {elements.map((element: string) => (
+                  <button 
+                    onClick={() => handleCharacterElementSelection(element)}
+                    className={characterElementSelection === element ? 'selected' : 'unselected'}
+                  >
+                    <img src={`./images/elements/${element}.webp`} />
+                  </button>
+                ))}
+              </div>
+
               {/* Search Bar */}
               <div className="search-bar">
                 <input
@@ -707,7 +873,7 @@ export default function Filter({
               {/* List of characters, filtered by Search Bar */}
 
               <ul className="dropdown-menu">
-                {filteredCharacterData.map((character: Character) => {
+                {filteredCharacterDataByElement.map((character: Character) => {
                   if(
                     character.name === 'Cryo Traveler' ||
                     character.name === 'Pyro Traveler' ||
@@ -768,6 +934,8 @@ export default function Filter({
 
       <div className={isMenuOpen ? 'toggle-filters open' : 'toggle-filters closed'}>
         <button className="reset-filters" onClick={() => resetFilters(null)}>Clear all filters</button>
+        {isMobile && 
+        <button className="apply-filters" onClick={() => toggleMenu(false)}>View {resultsNumber === 1 ? resultsNumber + ' result' : resultsNumber + ' results'}</button>}
       </div>
     </section>
   );

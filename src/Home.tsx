@@ -304,74 +304,85 @@ export default function Home() {
 
 
 
-const BASE58_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
+  // URL: Handle updates to URL based on filters, or set filters based on URL
+  // ——————————————————————————————————————————————————————————————————————————————————————————
+  // Define BASE58 Alphanumericals
+    const BASE58_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
+  // Declare BASE58_MAP with the correct type
+    const BASE58_MAP: { [key: string]: bigint } = {};  // Use `bigint` (lowercase)
+  // Initialize BASE58_MAP with `bigint` values (using BigInt literals)
+    for (let i = 0; i < BASE58_ALPHABET.length; i++) {
+        BASE58_MAP[BASE58_ALPHABET[i]] = BigInt(i);  // Store as `bigint` using BigInt constructor
+    }
+  // Function to convert an integer to Base58
+    function intToBase58(num: string | number): string {
+      let bigNum = BigInt(num); // Convert num to `bigint` using BigInt constructor if necessary
 
-// Declare BASE58_MAP with the correct type
-const BASE58_MAP: { [key: string]: bigint } = {};  // Use `bigint` (lowercase)
-
-// Initialize BASE58_MAP with `bigint` values (using BigInt literals)
-for (let i = 0; i < BASE58_ALPHABET.length; i++) {
-    BASE58_MAP[BASE58_ALPHABET[i]] = BigInt(i);  // Store as `bigint` using BigInt constructor
-}
-
-// Function to convert an integer to Base58
-function intToBase58(num: string | number): string {
-    let bigNum = BigInt(num); // Convert num to `bigint` using BigInt constructor if necessary
-
-    let base58 = '';
-    while (bigNum > 0n) {  // Use `n` suffix for `bigint` comparison
+      let base58 = '';
+      while (bigNum > 0n) {  // Use `n` suffix for `bigint` comparison
         const remainder = bigNum % 58n;  // Ensure you're using `bigint` literals
         base58 = BASE58_ALPHABET[Number(remainder)] + base58; // Convert to number for indexing
         bigNum = bigNum / 58n;  // Division with `bigint` literals
+      }
+
+      return base58;
     }
+  // Function to convert Base58 back to an integer (using `bigint`)
+    function base58ToInt(base58: string): bigint {
+      let num = 0n;  // Start with `bigint` zero (`0n`)
 
-    return base58;
-}
-
-// Function to convert Base58 back to an integer (using `bigint`)
-function base58ToInt(base58: string): bigint {
-    let num = 0n;  // Start with `bigint` zero (`0n`)
-
-    for (let i = 0; i < base58.length; i++) {
+      for (let i = 0; i < base58.length; i++) {
         const digitValue = BASE58_MAP[base58[i]];  // Get `bigint` from map
         num = num * 58n + digitValue;  // Ensure both operands are `bigint`
-    }
+      }
 
-    return num;
-}
+      return num;
+    }
 
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const urlPrefix = 'view=';
 
   // 1. Update State based on URL
   useEffect(() => {
     if (id) {
 
-      // Check for match with character name or alias
-      const character = characterData.find(character => 
-        character.name.replace(' ', '_').toLowerCase() === id.toLowerCase() || 
-        character.alias?.toLowerCase() === id.toLowerCase() 
-      );
-
-      // If match, set character
-      if(character) {
-        handleCharacterChange(character.name);
-      }
+      // Check for match with character name or alias 
+        const character = characterData.find(character => 
+          character.name.replace(/ /g, '_').toLowerCase() === id.toLowerCase() || 
+          character.alias?.toLowerCase() === id.toLowerCase() 
+        );
+        // If match, set character
+        if(character) {
+          handleCharacterChange(character.name);
+        }
+      // Check for match with artifact name or alias 
+        const artifact = artifactSets.find(artifact => 
+          artifact.name.replace(/ /g, '_').toLowerCase() === id.toLowerCase() || 
+          artifact.alias?.toLowerCase() === id.toLowerCase() 
+        );
+        // If match, set character
+        if(artifact) {
+          handleArtifactSetChange(artifact.name);
+        }
 
       // If no match, perform normal operations
       else {
 
+        // Remove prefix from URL
+        const getURL = id.replace(urlPrefix, '');
+
         // In case of manually inputting id that is not the right length, return early
-        if(id.length !== 11) {
+        if(getURL.length !== 11) {
           return;
         }
 
       // Convert URL
       // ——————————————————————————————————————————————————————————————————————————————————————————
-        const idToInt = base58ToInt(id);
+        const idToInt = base58ToInt(getURL);
         const urlToString = idToInt.toString();
-        console.log(id.length)
+        //console.log(getURL.length)
 
 
       // Slice URL into seperate numbers per filter
@@ -380,16 +391,15 @@ function base58ToInt(base58: string): bigint {
         const gobletFromUrl = urlToString.slice(1,3); // two digits: 2-3
         const circletFromUrl = urlToString.slice(3,4); // one digit: 4
 
-        const substatsAndElementsFromUrl = urlToString.slice(4,10); // six digits: 5-8
-          const substatsAndElementsToBinary = parseInt(substatsAndElementsFromUrl, 10).toString(2);
-          const substatsAndElementsPadded = substatsAndElementsToBinary.padStart(17, '0');
-          const substatsFromUrl = substatsAndElementsPadded.slice(0,10);
-          const elementsFromUrl = substatsAndElementsPadded.slice(10,17);
+        const substatsAndElementsFromUrl = urlToString.slice(4,10); // six digits: 5-10
+          const substatsAndElementsToBinary = parseInt(substatsAndElementsFromUrl, 10).toString(2); // Convert to binary
+          const substatsAndElementsPadded = substatsAndElementsToBinary.padStart(17, '0'); // Pad to full length
+          const substatsFromUrl = substatsAndElementsPadded.slice(0,10); // Split first part to substats
+          const elementsFromUrl = substatsAndElementsPadded.slice(10,17); // Split second part to elements
 
-        const characterIdFromUrl = urlToString.slice(10,13); // three digits: 12-14
-        const artifactSetFromUrl = urlToString.slice(13,16); // three digits: 15-17
-        //const weaponFromUrl = urlToString.slice(16,19); // three digits: 17-20
-
+        const characterFromUrl = urlToString.slice(10,13); // three digits: 11-13
+        const artifactSetFromUrl = urlToString.slice(13,16); // three digits: 14-16
+        //const weaponFromUrl = urlToString.slice(16,19); // three digits: 17-19
 
 
       // Define what the filters should be set to from URL info
@@ -430,7 +440,7 @@ function base58ToInt(base58: string): bigint {
           }
         }
       // #2 Character 
-        const character = characterData.find(character => character.id === parseInt(characterIdFromUrl));
+        const character = characterData.find(character => character.id === parseInt(characterFromUrl));
       // #3 Artifact Set 
         const artifactSet = artifactSets.find(artifact => artifact.id === parseInt(artifactSetFromUrl));
       // #4 Artifact Main Stats 
@@ -574,6 +584,8 @@ function base58ToInt(base58: string): bigint {
 
   // 2. Update URL based on State
   useEffect(() => {
+
+    // Define the base URL
     let sandsNumber = '1';
     let substatsNumber = '0000000000';
     let elementNumber = '0000000';
@@ -583,6 +595,7 @@ function base58ToInt(base58: string): bigint {
     let circletNumber = '0';
     let weaponNumber = '000';
 
+    // Change the numbers that make up the URL based on filters set
     if (selectedSubstats.length > 0) {
       let atk = '0';
       let def = '0';
@@ -747,23 +760,29 @@ function base58ToInt(base58: string): bigint {
     }
 
     // Convert substats and elements from binary presentation to a single base10 integer
-    const substatsAndElementsString = substatsNumber+elementNumber;
-    const substatsAndElementsToBase10 = parseInt(substatsAndElementsString, 2);
-    const substatsAndElementsNumber = substatsAndElementsToBase10.toString().padStart(6, '0');
+    const substatsAndElementsString = substatsNumber + elementNumber; // Add strings together
+    const substatsAndElementsToBase10 = parseInt(substatsAndElementsString, 2); // Convert to base 10
+    const substatsAndElementsNumber = substatsAndElementsToBase10.toString().padStart(6, '0'); // Pad number to its maximum character length for consistency when calculating back
 
+    // Base10 URL
+    // Consists of all numbers in seqeuence 
+    // (substats and elements are already put together and converted to base10)
     const url = 
-      sandsNumber?.toString() +
-      gobletNumber?.toString() +
-      circletNumber?.toString() +
+      sandsNumber +
+      gobletNumber +
+      circletNumber +
       substatsAndElementsNumber +
-      characterNumber?.toString() + 
-      artifactSetNumber?.toString() +
-      weaponNumber?.toString();
+      characterNumber + 
+      artifactSetNumber +
+      weaponNumber;
 
+    // Convert the Base10 url to Base58
     const urlBase58 = intToBase58(url);
-    console.log(url.length)
+    //console.log(url.length)
 
-    const isOnlyCharacterIsSelected = () => {
+    // Check if ONLY character is selected
+    // If true, their name is used as the URL
+    const isOnlyCharacterSelected = () => {
       if(
         selectedCharacter.length > 0 &&
         selectedSubstats.length === 0 &&
@@ -779,15 +798,38 @@ function base58ToInt(base58: string): bigint {
         return false;
       }
     }
-    const onlyCharacterIsSelected = isOnlyCharacterIsSelected();
-    const selectedCharacterNoSpace = selectedCharacter[0]?.toString().replaceAll(' ','_')
-    console.log(selectedCharacterNoSpace)
+    const onlyCharacterIsSelected = isOnlyCharacterSelected();
+    const selectedCharacterNoSpace = selectedCharacter[0]?.toString().replace(/ /g, '_')
 
-    if (url !== '1000000000000000000' && !onlyCharacterIsSelected) {
-      navigate(`/is-this-artifact-good/${urlBase58}`, { replace: true });
+    // Check if ONLY artifact set is selected
+    // If true, its name is used as the URL
+    const isOnlyArtifactSetSelected = () => {
+      if(
+        selectedArtifactSet.length > 0 &&
+        selectedSubstats.length === 0 &&
+        selectedCharacter.length === 0 &&
+        selectedSands.length === 0 &&
+        selectedGoblet.length === 0 &&
+        selectedCirclet.length === 0 &&
+        selectedElements.length === 0
+        ) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    const onlyArtifactSetIsSelected = isOnlyArtifactSetSelected();
+    const selectedArtifactSetNoSpace = selectedArtifactSet[0]?.toString().replace(/ /g, '_')
+
+    if (url !== '1000000000000000000' && !onlyCharacterIsSelected && !onlyArtifactSetIsSelected) {
+      navigate(`/is-this-artifact-good/${urlPrefix}${urlBase58}`, { replace: true });
     }
     else if (onlyCharacterIsSelected) {
       navigate(`/is-this-artifact-good/${selectedCharacterNoSpace}`, { replace: true });
+    }
+    else if (onlyArtifactSetIsSelected) {
+      navigate(`/is-this-artifact-good/${selectedArtifactSetNoSpace}`, { replace: true });
     }
     else {
       navigate(`/is-this-artifact-good/`, { replace: true });
@@ -796,6 +838,10 @@ function base58ToInt(base58: string): bigint {
 
 
 
+  const [resultsNumber, setResultsNumber] = useState<number>(0);
+  const updateResults = (numberOfResults: number) => {
+    setResultsNumber(numberOfResults);
+  }
 
   return (
     <>       
@@ -815,9 +861,11 @@ function base58ToInt(base58: string): bigint {
           resetFilters={resetFilters}
           selectedFilters={selectedFilters}
           isMenuOpen={isMenuOpen}
+          toggleMenu={toggleMenu}
           handleTabChange={handleTabChange}
           currentFilterTab={currentFilterTab}
           savedFilters={savedFilters}
+          resultsNumber={resultsNumber}
 
           // Change filter values
           handleCharacterChange={handleCharacterChange}
@@ -830,6 +878,7 @@ function base58ToInt(base58: string): bigint {
         />
 
         <Results 
+          updateResults={updateResults}
           viewPinned={viewPinned}
           isMenuOpen={isMenuOpen}
           isMobile={isMobile}

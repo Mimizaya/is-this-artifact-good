@@ -6,25 +6,61 @@
     left: 0;
   }
   section#filter {
-    width: 85%;
+    width: 100%;
     transition: all 0.3s ease-out;
     padding: 10px;
-    padding-top: 40px;
+    top: 175px;
+  }
+  section#filter div#filter-header.closed {
+    left: -100%;
+  }
+  section#filter div#filter-header {
+    background-color: #1f1f1f;
+    position: fixed;
+    z-index: 100;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: 95px;
+    transition: all 0.3s ease-out;
+  }
+  section#filter div#filter-header div#logo {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+  }
+  section#filter div#filter-header div#logo img {
+    height: 40px;
+    width: 40px;
+    margin-right: 5px;
+  }
+  section#filter div#filter-header div#logo h1 {
+    line-height: 1;
+    font-size: 1.8em;
+  }
+  section#filter div#filter-header div.filter-option {
+    margin-top: 2px;
+    padding: 0 10px;
+  }
+  section#filter div#filter-header div.filter-option div.dropdown p {
+    padding: 10px 2px;
   }
   section#filter div#filter-tabs {
     position: fixed;
     display: block;
-    width: 15%;
-    left: 85%;
-    top: 40px;
+    width: 100%;
+    left: 0;
+    top: 135px;
     transition: all 0.3s ease-out;
+    display: flex;
+    z-index: 10;
+    background-color: #202020;
   }
   section#filter div#filter-tabs div.filter-tab {
-    background-color: #191919;
-    box-shadow: 1px 3px 5px #202020;
+    background-color: #1c1c1c;
     border: none;
-    width: 100%;
-    height: 50px;
+    width: 70px;
+    height: 40px;
   }
   section#filter div#filter-tabs div.filter-tab button.filter-select {
     color: #FFF;
@@ -51,14 +87,15 @@
   }
   section#filter div#filter-tabs button.filter-new, section#filter div#filter-tabs button.filter-pinned, section#filter div#filter-tabs button.filter-suggestion {
     color: #FFF;
-    width: 100%;
-    height: 50px;
+    width: 70px;
+    height: 40px;
     border: none;
-    background-color: #191919;
+    background-color: #1c1c1c;
     font-size: 1.1em;
+    overflow: hidden;
   }
   section#filter div#filter-tabs button.filter-pinned.highlighted {
-    background-color: #363636;
+    background-color: #222222;
     color: gold;
   }
   section#filter div#filter-tabs button.filter-suggestion img {
@@ -70,10 +107,17 @@
     display: none;
   }
   section#filter div#filter-tabs.closed {
-    left: -15%;
+    left: -100%;
   }
-  section#filter div.dropdown-wrapper, section#filter ul.dropdown-menu, section#filter div.search-bar, section#filter label {
+  section#filter div.dropdown-wrapper div.dropdown p {
+    width: calc(100% - 44px - 44px) !important;
+  }
+  section#filter div.dropdown-wrapper, section#filter div.search-bar, section#filter label {
     width: 100%;
+  }
+  section#filter ul.dropdown-menu {
+    width: calc(100% - 20px);
+    margin-right: 10px !important;
   }
   section#filter div#filter-other {
     margin-bottom: 70px;
@@ -89,7 +133,11 @@
   }
   section#filter div.toggle-filters button.reset-filters {
     margin: 0;
-    width: 85%;
+    width: 100%;
+  }
+  section#filter div.toggle-filters button.apply-filters {
+    margin: 0;
+    width: 100%;
   }
   section#filter div.toggle-filters.closed {
     left: -100%;
@@ -99,6 +147,73 @@
   section#filter {
     padding: 10px 20px 20px 20px;
     width: 300px;
+    top: 145px;
+  }
+  section#filter div#filter-header {
+    background-color: #1f1f1f;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 302px;
+    height: 145px;
+  }
+  section#filter div#filter-header div#logo {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 15px;
+  }
+  section#filter div#filter-header div#logo img {
+    position: relative;
+    top: 1px;
+    height: 65px;
+    width: 65px;
+    margin-right: 2px;
+  }
+  section#filter div#filter-header div#logo h1 {
+    font-size: 1em;
+    line-height: 0.9;
+    display: flex;
+    flex-direction: column;
+  }
+  section#filter div#filter-header div#logo h1 span.crimson {
+    font-size: 1.7em;
+  }
+  section#filter div#filter-header div#logo h1 span.witch {
+    font-size: 1.7em;
+    margin-left: 1px;
+  }
+  section#filter div#filter-header div.filter-option {
+    position: absolute;
+    top: 97px;
+    padding: 0 20px;
+    height: 40px;
+  }
+  section#filter div#filter-header div.filter-option div.dropdown:hover {
+    background-color: #313131;
+  }
+  section#filter div#filter-header div.filter-option div.dropdown {
+    height: 40px;
+    border-radius: 5px;
+    border-bottom: none;
+  }
+  section#filter div#filter-header div.filter-option div.dropdown p {
+    padding: 6px 4px;
+  }
+  section#filter div#filter-header div.filter-option ul.dropdown-menu {
+    padding: 0;
+    overflow: hidden;
+  }
+  section#filter div#filter-header div.filter-option div.search-bar {
+    height: 40px;
+    border-radius: 5px;
+    background-color: #363636;
+    border-bottom: none;
+  }
+  section#filter div#filter-header div.filter-option div.search-bar input.search-input {
+    height: 38px;
+    padding: 0px 10px;
   }
   section#filter div.dropdown-wrapper, section#filter ul.dropdown-menu, section#filter div.search-bar, section#filter label {
     width: 250px;
@@ -121,21 +236,27 @@
 }
 section#filter {
   position: fixed;
-  height: 100%;
+  height: calc(100% - 145px);
   z-index: 99;
   background-color: #222222;
   box-sizing: border-box;
-  top: 0;
   left: 0;
   overflow-y: scroll;
   scrollbar-width: thin;
   font-size: 1em;
 }
+section#filter div#filter-artifact {
+  margin-top: 0;
+}
 section#filter div#filter-other {
   margin-top: 30px;
 }
 section#filter div#filter-artifact h2, section#filter div#filter-other h2 {
-  font-size: 2em;
+  font-size: 1.7em;
+}
+section#filter div#filter-artifact h3, section#filter div#filter-other h3 {
+  font-size: 1.1em;
+  margin-bottom: 3px;
 }
 section#filter div.filter-artifact-mainstats div.filter-option {
   margin: 0;
@@ -183,6 +304,26 @@ section#filter div.filter-option label input {
 section#filter div.filter-option label:hover {
   background-color: #313131;
   cursor: pointer;
+}
+section#filter div.element-toggle {
+  display: flex;
+  width: 250px;
+}
+section#filter div.element-toggle button.selected {
+  filter: grayscale(0);
+}
+section#filter div.element-toggle button.unselected {
+  filter: grayscale(100%);
+}
+section#filter div.element-toggle button {
+  cursor: pointer;
+  height: 35px;
+  border: none;
+  transition: all 0.3s ease-out;
+}
+section#filter div.element-toggle button img {
+  padding-top: 2px;
+  width: 100%;
 }
 section#filter div.dropdown-wrapper {
   position: relative;

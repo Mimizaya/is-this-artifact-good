@@ -42,9 +42,8 @@ $filter-width: 250px;
     font-weight: 700;
   }
 
-// Reset/Clear buttons 
+// Apply/Reset/Clear buttons 
   button.reset-filters {
-    border: none;
     padding: 10px;
     width: $filter-width;
     border-bottom: 1px solid #192019;
@@ -64,9 +63,9 @@ $filter-width: 250px;
     border: 1px solid #192019;
     border-top: none;
   }
-  button.reset-filters, button.clear-input {
+  button.apply-filters, button.reset-filters, button.clear-input {
+    border: none;
     transition: all 0.3s ease-out;
-    background-color: #36272f;
     box-shadow: 1px 3px 5px #202020;
     cursor: pointer;
     text-align: center;
@@ -74,6 +73,12 @@ $filter-width: 250px;
     font-weight: 700;
     font-size: 0.9em;
     font-family: inherit;
+  }
+  button.reset-filters, button.clear-input {
+    background-color: #36272f;
+  }
+  button.apply-filters {
+    background-color: #293622;
   }
   button.reset-filters:hover, button.clear-input:hover {
     background-color: lighten(#36272f, 3%);

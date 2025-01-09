@@ -28,6 +28,7 @@ export default function Results({
   savedFilters,
   isMenuOpen,
   viewPinned,
+  updateResults,
 }: {
   isMobile: boolean;
   buildsDataRaw: RawBuild[];
@@ -38,13 +39,14 @@ export default function Results({
   savedFilters: SavedFilters;
   isMenuOpen: boolean;
   viewPinned: boolean;
+  updateResults: any;
 }) {
 
   // SELECTED FILTERS
   // ——————————————————————————————————————————————————————————————————————————————————————————
   // #1 Destructure the selected filters object 
       const { selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedSubstats, selectedElements } = selectedFilters;
-  
+
 
   // BUILD CONTENT: Decide what sections are displayed
   // ——————————————————————————————————————————————————————————————————————————————————————————
@@ -861,7 +863,9 @@ export default function Results({
   // #2 Combine pinned builds back with main data 
     const sortedMainResults = pinnedBuilds.length > 0 ? pinnedBuilds.concat(otherBuilds) : otherBuilds;
 
-
+  // Run function to set amount of results
+  // Used in mobile filter options
+  updateResults(sortedMainResults.length + sortedAdditionalResults.length);
 
   return (
     <section id="results">
