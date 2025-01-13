@@ -16,7 +16,7 @@ import { Character, ArtifactSet, SelectedFilters, SavedFilters } from '../types/
 
 // UI
 import FilterTabs from './FilterTabs.tsx';
-//import Logo from './Logo.tsx';
+import Logo from './Logo.tsx';
 
 export default function Filter({
   isMobile,
@@ -401,7 +401,7 @@ export default function Filter({
         />}
 
       <div id="filter-header" className={isMenuOpen ? 'open' : 'closed'}>
-        {/*<Logo />*/}
+        <Logo />
         {/* Search all */}
         <div className="filter-option" ref={searchDropDownRef}>
 
