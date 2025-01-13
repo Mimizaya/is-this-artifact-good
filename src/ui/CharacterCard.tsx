@@ -118,27 +118,39 @@ export default function CharacterCard({
 	// IMAGES
 	// ——————————————————————————————————————————————————————————————————————————————————————————		
 	// Banner
-	// #1 Placeholder 
+	// #1 Placeholder / Temp
   	const bannerPlaceholderImage = './images/characters/banners/Placeholder Banner.webp';
+  	const bannerTempImage = `./temp/${build.character_name} Banner.webp`;
   // #2 Image source 
   	const bannerImageUrl = `./images/characters/banners/${build.character_name} Banner.webp`;
   // #3 State to store the final image URL 
   	const [bannerImgSrc, setBannerImgSrc] = useState(bannerImageUrl);
   // #4 Handle the error if image fails to load 
 	  const handleBannerError = () => {
-	    setBannerImgSrc(bannerPlaceholderImage);  // Set the image to placeholder if original image fails
+	  	if(bannerTempImage) {
+	  		setBannerImgSrc(bannerTempImage);
+	  	} else {
+				setBannerImgSrc(bannerPlaceholderImage);  // Set the image to placeholder if original image fails
+	  	}
+	    
 	  };
 
 	// Portrait  
-	// #1 Placeholder 
+	// #1 Placeholder / Temp
   	const portraitPlaceholderImage = './images/characters/portraits/Placeholder.webp';
+  	const portraitTempImage = `./temp/${build.character_name}.webp`;
   // #2 Image source 
   	const portraitImageUrl = `./images/characters/portraits/${build.character_name}.webp`;
   // #3 State to store the final image URL 
   	const [portraitImgSrc, setPortraitImgSrc] = useState(portraitImageUrl);
   // #4 Handle the error if image fails to load 
 	  const handlePortraitError = () => {
-	    setPortraitImgSrc(portraitPlaceholderImage);  // Set the image to placeholder if original image fails
+	  	if(portraitTempImage) {
+				setPortraitImgSrc(portraitTempImage);
+	  	} else {
+	  		setPortraitImgSrc(portraitPlaceholderImage);
+	  	}
+	    
 	  };
 
 

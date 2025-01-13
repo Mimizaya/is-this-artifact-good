@@ -16,7 +16,7 @@ import { Character, ArtifactSet, SelectedFilters, SavedFilters } from '../types/
 
 // UI
 import FilterTabs from './FilterTabs.tsx';
-import Logo from './Logo.tsx';
+//import Logo from './Logo.tsx';
 
 export default function Filter({
   isMobile,
@@ -41,7 +41,7 @@ export default function Filter({
   selectedFilters: SelectedFilters;
   savedFilters: SavedFilters;
   isMenuOpen: boolean;
-  toggleMenu: any;
+  toggleMenu: (toggle: boolean) => void;
   handleTabChange: (tabId: number, filter: string | null, value: string | null) => void;
   currentFilterTab: number;
   handleCharacterChange: (name: string) => void;
@@ -76,7 +76,6 @@ export default function Filter({
     const sandsDropDownRef = useRef<HTMLInputElement>(null);
     const gobletDropDownRef = useRef<HTMLInputElement>(null);
     const circletDropDownRef = useRef<HTMLInputElement>(null);
-
   // #2 Handle opening of menu on click 
     const handleDropDown = (menu: string) => {
       if(menu === 'character') {
@@ -144,6 +143,7 @@ export default function Filter({
         setCircletDropDownOpen(false);
       }
     };
+
 
   // SEARCH: All types
   // ——————————————————————————————————————————————————————————————————————————————————————————
@@ -401,7 +401,7 @@ export default function Filter({
         />}
 
       <div id="filter-header" className={isMenuOpen ? 'open' : 'closed'}>
-        <Logo />
+        {/*<Logo />*/}
         {/* Search all */}
         <div className="filter-option" ref={searchDropDownRef}>
 
@@ -851,6 +851,7 @@ export default function Filter({
               <div className="element-toggle">
                 {elements.map((element: string) => (
                   <button 
+                    key={element}
                     onClick={() => handleCharacterElementSelection(element)}
                     className={characterElementSelection === element ? 'selected' : 'unselected'}
                   >
@@ -875,13 +876,13 @@ export default function Filter({
               <ul className="dropdown-menu">
                 {filteredCharacterDataByElement.map((character: Character) => {
                   if(
-                    character.name === 'Cryo Traveler' ||
-                    character.name === 'Pyro Traveler' ||
-                    character.name === 'Dendro Traveler' ||
-                    character.name === 'Hydro Traveler' ||
-                    character.name === 'Electro Traveler' ||
-                    character.name === 'Geo Traveler' ||
-                    character.name === 'Anemo Traveler'
+                    characterElementSelection !== 'Cryo' && character.name === 'Cryo Traveler' ||
+                    characterElementSelection !== 'Pyro' && character.name === 'Pyro Traveler' ||
+                    characterElementSelection !== 'Dendro' && character.name === 'Dendro Traveler' ||
+                    characterElementSelection !== 'Hydro' && character.name === 'Hydro Traveler' ||
+                    characterElementSelection !== 'Electro' && character.name === 'Electro Traveler' ||
+                    characterElementSelection !== 'Geo' && character.name === 'Geo Traveler' ||
+                    characterElementSelection !== 'Anemo' && character.name === 'Anemo Traveler'
                     ) { return null;
                   }
                   return (

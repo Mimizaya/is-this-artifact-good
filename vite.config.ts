@@ -24,7 +24,7 @@ export default defineConfig({
           {
             urlPattern: (event: any) => {
               const { url } = event; // event is a FetchEvent, which has a 'url' property
-              return url.pathname.startsWith('/'); // Cache assets from public folder
+              return url.pathname.startsWith('/images/'); // Cache assets from public folder
             },
             handler: 'CacheFirst', // Use Cache-First strategy (prefer cache)
             options: {
@@ -39,7 +39,7 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/is-this-artifact-good/', // GitHub repo name
+  base: '/', // GitHub repo name
   server: {
     host: true, // or use '0.0.0.0'
     port: 5173, // or your preferred port

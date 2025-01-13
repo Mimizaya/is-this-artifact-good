@@ -39,7 +39,7 @@ export default function Results({
   savedFilters: SavedFilters;
   isMenuOpen: boolean;
   viewPinned: boolean;
-  updateResults: any;
+  updateResults: (value: number) => void;
 }) {
 
   // SELECTED FILTERS
@@ -865,7 +865,13 @@ export default function Results({
 
   // Run function to set amount of results
   // Used in mobile filter options
-  updateResults(sortedMainResults.length + sortedAdditionalResults.length);
+  useEffect(() => {
+    if(sortedMainResults && sortedAdditionalResults) {
+      updateResults(sortedMainResults.length + sortedAdditionalResults.length);
+    }
+  }, [sortedMainResults, sortedAdditionalResults])
+
+  
 
   return (
     <section id="results">

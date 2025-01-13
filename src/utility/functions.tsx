@@ -70,7 +70,7 @@ export const updateFiltersSingleSelect = (
     setState(['CRIT DMG', 'CRIT Rate/DMG'])
   }
   else if (value === 'Traveler') {
-    setState(['Traveler','Hydro Traveler', 'Dendro Traveler', 'Electro Traveler', 'Geo Traveler', 'Anemo Traveler'])
+    setState(['Traveler', 'Pyro Traveler', 'Hydro Traveler', 'Dendro Traveler', 'Electro Traveler', 'Geo Traveler', 'Anemo Traveler'])
   }
   else {
     setState([value]);
@@ -192,6 +192,7 @@ export const updateFiltersSubstats = (
     );
   }
 };
+
 export const updateFiltersElements = (
   value: string,
   setState: React.Dispatch<React.SetStateAction<string[]>>,
@@ -201,3 +202,90 @@ export const updateFiltersElements = (
       : [...prev, value]
     );
 };
+
+
+// FUNCTIONS FOR URL CREATION/DECODING
+// —————————————————————————————————————————————————————————————————————————————————————————— 
+const artifactSetRange = 1000;
+const sandsRange = 6;
+const gobletRange = 13;
+const circletRange = 8;
+const characterRange = 1000;
+const weaponTypeRange = 6;
+const substatsRange = 1024; // 2^10
+const elementsRange = 128; // 2^7
+// const weaponRange = 1000; // Not in use for now, keep in case order or decryption changes
+
+export function createUrlNumber(
+  weaponNumber: number, 
+  sandsNumber: number, 
+  gobletNumber: number, 
+  circletNumber: number, 
+  characterNumber: number,
+  artifactSetNumber: number,
+  weaponTypeNumber: number,
+  substats: number,
+  elements: number,
+  ) {
+
+  let result = 0;
+  result += Number(weaponNumber);
+
+  result *= Number(sandsRange);
+  result += Number(sandsNumber);
+
+  result *= Number(gobletRange);
+  result += Number(gobletNumber);
+
+  result *= Number(circletRange);
+  result += Number(circletNumber);
+
+  result *= Number(characterRange);
+  result += Number(characterNumber);
+
+  result *= Number(artifactSetRange);
+  result += Number(artifactSetNumber);
+
+  result *= Number(weaponTypeRange);
+  result += Number(weaponTypeNumber);
+
+  result *= Number(substatsRange);
+  result += Number(substats);
+
+  result *= Number(elementsRange);
+  result += Number(elements);
+
+  return result;
+}
+
+export function decodeUrlNumber(num: number) {
+  let result = num;
+
+  const elements = result % elementsRange;
+  result = Math.floor(result / elementsRange);
+
+  const substats = result % substatsRange;
+  result = Math.floor(result / substatsRange);
+
+  const weaponType = result % weaponTypeRange;
+  result = Math.floor(result / weaponTypeRange);
+
+  const artifact = result % artifactSetRange;
+  result = Math.floor(result / artifactSetRange);
+
+  const character = result % characterRange;
+  result = Math.floor(result / characterRange);
+
+  const circlet = result % circletRange;
+  result = Math.floor(result / circletRange);
+
+  const goblet = result % gobletRange;
+  result = Math.floor(result / gobletRange);
+
+  const sands = result % sandsRange;
+  result = Math.floor(result / sandsRange);
+
+  const weapon = result;
+
+  return { artifact, sands, goblet, circlet, character, weapon, weaponType, substats, elements };
+}

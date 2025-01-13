@@ -180,36 +180,41 @@ $filter-padding: 20px;
       width: $filter-width +52;
       height: 145px;
 
+      // Logo wrapper
       div#logo {
         display: flex;
         align-items: center;
         margin-top: 15px;
         margin-left: 15px;
 
-        img {
-          position: relative;
-          top: 1px;
-          height: 65px;
-          width: 65px;
-          margin-right: 2px;
-        }
-        h1 {
-          font-size: 1em;
-          line-height: 0.9;
-          display: flex;
-          flex-direction: column;
+        // Image Symbol 
+          img {
+            position: relative;
+            top: 2px;
+            height: 70px;
+            width: 70px;
+            margin-right: 2px;
+          }
+        // Text 
+          h1 {
+            font-size: 1em;
+            line-height: 1;
+            display: flex;
+            flex-direction: column;
 
-          span.crimson {
-            font-size: 1.7em;
+            // Crimson 
+              span.crimson {
+                font-size: 1.8em;
+              }
+            // Witch 
+              span.witch {
+                font-size: 1.8em;
+                margin-left: 1px;
+              }
           }
-          span.witch {
-            font-size: 1.7em;
-            margin-left: 1px;
-          }
-        }
       }
 
-      // General search option
+      // Main search option
       div.filter-option {
         position: absolute;
         top: 97px;
@@ -437,7 +442,7 @@ section#filter {
       border-bottom: 1px solid #192019;
       margin-bottom: 20px;
       padding-bottom: 5px;
-      max-height: calc(100vh - 180px);
+      max-height: calc(100vh - 327px);
       overflow-y: scroll;
       scrollbar-width: thin;
 

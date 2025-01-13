@@ -13,6 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 // Datasets
 import { characterData } from './data/character-data.ts';
 import { artifactSets } from './data/artifact-data.ts';
+import { elements } from './data/elements.ts';
 
 // UI components
 import Filter from './ui/Filter.tsx';
@@ -24,6 +25,8 @@ import {
   updateFiltersSingleSelect,
   updateFiltersSubstats,
   updateFiltersElements,
+  createUrlNumber,
+  decodeUrlNumber,
 } from './utility/functions';
 
 // Type definitions
@@ -183,7 +186,7 @@ export default function Home() {
     }
   // #6 Handle open menu (Mobile) 
     // State to store open/closed
-    const [isMenuOpen, setIsMenuOpen] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Toggle menu on button click
     const toggleMenu = () => {
@@ -342,11 +345,14 @@ export default function Home() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const urlPrefix = 'view=';
+  const urlPrefix = '';
+  
 
   // 1. Update State based on URL
   useEffect(() => {
     if (id) {
+
+      console.log(id)
 
       // Check for match with character name or alias 
         const character = characterData.find(character => 
@@ -356,6 +362,7 @@ export default function Home() {
         // If match, set character
         if(character) {
           handleCharacterChange(character.name);
+          return;
         }
       // Check for match with artifact name or alias 
         const artifact = artifactSets.find(artifact => 
@@ -365,49 +372,35 @@ export default function Home() {
         // If match, set character
         if(artifact) {
           handleArtifactSetChange(artifact.name);
+          return;
         }
-
-      // If no match, perform normal operations
-      else {
-
-        // Remove prefix from URL
-        const getURL = id.replace(urlPrefix, '');
-
-        // In case of manually inputting id that is not the right length, return early
-        if(getURL.length !== 11) {
+      // Check for match with element 
+        const element = elements.find(element => 
+          element === id
+        );
+        // If match, set element
+        if(element) {
+          setSelectedElements([element]);
           return;
         }
 
+      // No specific matches? Move to decrypt
+      else {
+
       // Convert URL
       // ——————————————————————————————————————————————————————————————————————————————————————————
+        const getURL = id.replace(urlPrefix, '');
         const idToInt = base58ToInt(getURL);
-        const urlToString = idToInt.toString();
-        //console.log(getURL.length)
-
-
-      // Slice URL into seperate numbers per filter
-      // ——————————————————————————————————————————————————————————————————————————————————————————
-        const sandsFromUrl = urlToString.slice(0,1); // one digit: 1
-        const gobletFromUrl = urlToString.slice(1,3); // two digits: 2-3
-        const circletFromUrl = urlToString.slice(3,4); // one digit: 4
-
-        const substatsAndElementsFromUrl = urlToString.slice(4,10); // six digits: 5-10
-          const substatsAndElementsToBinary = parseInt(substatsAndElementsFromUrl, 10).toString(2); // Convert to binary
-          const substatsAndElementsPadded = substatsAndElementsToBinary.padStart(17, '0'); // Pad to full length
-          const substatsFromUrl = substatsAndElementsPadded.slice(0,10); // Split first part to substats
-          const elementsFromUrl = substatsAndElementsPadded.slice(10,17); // Split second part to elements
-
-        const characterFromUrl = urlToString.slice(10,13); // three digits: 11-13
-        const artifactSetFromUrl = urlToString.slice(13,16); // three digits: 14-16
-        //const weaponFromUrl = urlToString.slice(16,19); // three digits: 17-19
-
+        const urlToString = idToInt.toString(); // remove bigint
+        const filtersFromURL = decodeUrlNumber(Number(urlToString));
 
       // Define what the filters should be set to from URL info
       // —————————————————————————————————————————————————————————————————————————————————————————— 
       // #1 Substats 
+        const substatsToBinary = filtersFromURL?.substats?.toString(2);
+        const substatsPadded = substatsToBinary?.padStart(10, '0')
         const substats = [];
-        const substatsPadded = substatsFromUrl.padStart(10, '0');
-        if(substatsFromUrl) {
+        if(filtersFromURL?.substats) {
           if(substatsPadded.slice(0,1) === '1') {
             substats.push('ATK%');
           }
@@ -440,97 +433,90 @@ export default function Home() {
           }
         }
       // #2 Character 
-        const character = characterData.find(character => character.id === parseInt(characterFromUrl));
+        const character = characterData.find(character => Number(character.id) === Number(filtersFromURL.character - 1));
       // #3 Artifact Set 
-        const artifactSet = artifactSets.find(artifact => artifact.id === parseInt(artifactSetFromUrl));
+        const artifactSet = artifactSets.find(artifact => Number(artifact.id) === Number(filtersFromURL.artifact));
       // #4 Artifact Main Stats 
         const sands = [];
-        if(sandsFromUrl) {
-          if(sandsFromUrl === '2') {
+          if(filtersFromURL.sands === 1) {
             sands.push('ATK%');
           }
-          if(sandsFromUrl === '3') {
+          if(filtersFromURL.sands === 2) {
             sands.push('DEF%');
           }
-          if(sandsFromUrl === '4') {
+          if(filtersFromURL.sands === 3) {
             sands.push('HP%', 'HP% (C1)');
           }
-          if(sandsFromUrl === '5') {
+          if(filtersFromURL.sands === 4) {
             sands.push('Elemental Mastery', 'EM (Vape/Melt)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Aggravate)');
           }
-          if(sandsFromUrl === '6') {
+          if(filtersFromURL.sands === 5) {
             sands.push('Energy Recharge', 'Energy Recharge (C2)');
           }
-        }
-
         const goblet = [];
-        if(gobletFromUrl) {
-          if(gobletFromUrl === '01') {
+          if(filtersFromURL.goblet === 1) {
             goblet.push('ATK%');
           }
-          if(gobletFromUrl === '02') {
+          if(filtersFromURL.goblet === 2) {
             goblet.push('DEF%');
           }
-          if(gobletFromUrl === '03') {
+          if(filtersFromURL.goblet === 3) {
             goblet.push('HP%', 'HP% (C1)');
           }
-          if(gobletFromUrl === '04') {
+          if(filtersFromURL.goblet === 4) {
             goblet.push('Elemental Mastery', 'EM (Vape/Melt)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Aggravate)');
           }
-          if(gobletFromUrl === '05') {
+          if(filtersFromURL.goblet === 5) {
             goblet.push('Physical DMG Bonus');
           }
-          if(gobletFromUrl === '06') {
+          if(filtersFromURL.goblet === 6) {
             goblet.push('Hydro DMG Bonus');
           }
-          if(gobletFromUrl === '07') {
+          if(filtersFromURL.goblet === 7) {
             goblet.push('Pyro DMG Bonus');
           }
-          if(gobletFromUrl === '08') {
+          if(filtersFromURL.goblet === 8) {
             goblet.push('Cryo DMG Bonus');
           }
-          if(gobletFromUrl === '09') {
+          if(filtersFromURL.goblet === 9) {
             goblet.push('Dendro DMG Bonus');
           }
-          if(gobletFromUrl === '10') {
+          if(filtersFromURL.goblet === 10) {
             goblet.push('Electro DMG Bonus');
           }
-          if(gobletFromUrl === '11') {
+          if(filtersFromURL.goblet === 11) {
             goblet.push('Anemo DMG Bonus');
           }
-          if(gobletFromUrl === '12') {
+          if(filtersFromURL.goblet === 12) {
             goblet.push('Geo DMG Bonus');
           }
-        }
-
         const circlet = [];
-        if(circletFromUrl) {
-          if(circletFromUrl === '1') {
+          if(filtersFromURL.circlet === 1) {
             circlet.push('ATK%');
           }
-          if(circletFromUrl === '2') {
+          if(filtersFromURL.circlet === 2) {
             circlet.push('DEF%');
           }
-          if(circletFromUrl === '3') {
+          if(filtersFromURL.circlet === 3) {
             circlet.push('HP%', 'HP% (C1)');
           }
-          if(circletFromUrl === '4') {
+          if(filtersFromURL.circlet === 4) {
             circlet.push('CRIT Rate', 'CRIT Rate/DMG', 'CRIT Rate (Favonius)');
           }
-          if(circletFromUrl === '5') {
+          if(filtersFromURL.circlet === 5) {
             circlet.push('CRIT DMG', 'CRIT Rate/DMG');
           }
-          if(circletFromUrl === '6') {
+          if(filtersFromURL.circlet === 6) {
             circlet.push('Elemental Mastery', 'EM (Vape/Melt)', 'EM (Vaporize)', 'EM (Quicken)', 'EM (Aggravate)');
           }
-          if(circletFromUrl === '7') {
+          if(filtersFromURL.circlet === 7) {
             circlet.push('Healing Bonus');
           }
-        }
       // #5 Elements 
         const elements = [];
-        const elementsPadded = elementsFromUrl.padStart(7, '0');
-        if(elementsFromUrl) {
+        const elementsToBinary = filtersFromURL?.elements?.toString(2);
+        const elementsPadded = elementsToBinary?.padStart(7, '0')
+        if(filtersFromURL?.elements) {
           if(elementsPadded.slice(0,1) === '1') {
             elements.push('Pyro');
           }
@@ -582,18 +568,21 @@ export default function Home() {
     }
   }, []);
 
+
+
   // 2. Update URL based on State
   useEffect(() => {
 
-    // Define the base URL
-    let sandsNumber = '1';
+    // Define the default values
+    let artifactSetNumber = 0;
+    let sandsNumber = 0;
+    let gobletNumber = 0;
+    let circletNumber = 0;
+    let characterNumber = 1; // Default value of 1 to pad end number
+    let weaponNumber = 0;
+    let weaponTypeNumber = 0;
     let substatsNumber = '0000000000';
-    let elementNumber = '0000000';
-    let characterNumber = '000';
-    let artifactSetNumber = '000';
-    let gobletNumber = '00';
-    let circletNumber = '0';
-    let weaponNumber = '000';
+    let elementsNumber = '0000000';
 
     // Change the numbers that make up the URL based on filters set
     if (selectedSubstats.length > 0) {
@@ -642,88 +631,91 @@ export default function Home() {
     }
     if (selectedCharacter.length > 0) {
       const character = characterData.find(character => character.name === selectedCharacter[0]);
-      characterNumber = String(character?.id).padStart(3, '0');
+      if(character) {
+        console.log(character)
+        characterNumber = Number(character.id + 1);  
+      }
     }
     if (selectedArtifactSet.length > 0) {
       const artifact = artifactSets.find(artifact => artifact.name === selectedArtifactSet[0]);
-      artifactSetNumber = String(artifact?.id).padStart(3, '0');
+      artifactSetNumber = Number(artifact?.id);
     }
     if (selectedSands.length > 0) {
       if(selectedSands.includes('ATK%')) {
-        sandsNumber = '2';
+        sandsNumber = 1;
       }
       if(selectedSands.includes('DEF%')) {
-        sandsNumber = '3';
+        sandsNumber = 2;
       }
       if(selectedSands.includes('HP%')) {
-        sandsNumber = '4';
+        sandsNumber = 3;
       }
       if(selectedSands.includes('Elemental Mastery')) {
-        sandsNumber = '5';
+        sandsNumber = 4;
       }
       if(selectedSands.includes('Energy Recharge')) {
-        sandsNumber = '6';
+        sandsNumber = 5;
       }
     }
     if (selectedGoblet.length > 0) {
       if(selectedGoblet.includes('ATK%')) {
-        gobletNumber = '01';
+        gobletNumber = 1;
       }
       if(selectedGoblet.includes('DEF%')) {
-        gobletNumber = '02';
+        gobletNumber = 2;
       }
       if(selectedGoblet.includes('HP%')) {
-        gobletNumber = '03';
+        gobletNumber = 3;
       }
       if(selectedGoblet.includes('Elemental Mastery')) {
-        gobletNumber = '04';
+        gobletNumber = 4;
       }
       if(selectedGoblet.includes('Physical DMG Bonus')) {
-        gobletNumber = '05';
+        gobletNumber = 5;
       }
       if(selectedGoblet.includes('Hydro DMG Bonus')) {
-        gobletNumber = '06';
+        gobletNumber = 6;
       }
       if(selectedGoblet.includes('Pyro DMG Bonus')) {
-        gobletNumber = '07';
+        gobletNumber = 7;
       }
       if(selectedGoblet.includes('Cryo DMG Bonus')) {
-        gobletNumber = '08';
+        gobletNumber = 8;
       }
       if(selectedGoblet.includes('Dendro DMG Bonus')) {
-        gobletNumber = '09';
+        gobletNumber = 9;
       }
       if(selectedGoblet.includes('Electro DMG Bonus')) {
-        gobletNumber = '10';
+        gobletNumber = 10;
       }
       if(selectedGoblet.includes('Anemo DMG Bonus')) {
-        gobletNumber = '11';
+        gobletNumber = 11;
       }
       if(selectedGoblet.includes('Geo DMG Bonus')) {
-        gobletNumber = '12';
+        gobletNumber = 12;
       }
     }
     if (selectedCirclet.length > 0) {
       if(selectedCirclet.includes('ATK%')) {
-        circletNumber = '1';
+        circletNumber = 1;
       }
       if(selectedCirclet.includes('DEF%')) {
-        circletNumber = '2';
+        circletNumber = 2;
       }
       if(selectedCirclet.includes('HP%')) {
-        circletNumber = '3';
+        circletNumber = 3;
       }
       if(selectedCirclet.includes('CRIT Rate')) {
-        circletNumber = '4';
+        circletNumber = 4;
       }
       if(selectedCirclet.includes('CRIT DMG')) {
-        circletNumber = '5';
+        circletNumber = 5;
       }
       if(selectedCirclet.includes('Elemental Mastery')) {
-        circletNumber = '6';
+        circletNumber = 6;
       }
       if(selectedCirclet.includes('Healing Bonus')) {
-        circletNumber = '7';
+        circletNumber = 7;
       }
     }
     if (selectedElements.length > 0) {
@@ -756,32 +748,32 @@ export default function Home() {
       if(selectedElements.includes('Geo')) {
         geo = '1';
       }
-      elementNumber = pyro+hydro+anemo+electro+dendro+cryo+geo;
+      elementsNumber = pyro+hydro+anemo+electro+dendro+cryo+geo;
     }
+    // ADD WEAPON
+    // ADD WEAPON TYPE
 
-    // Convert substats and elements from binary presentation to a single base10 integer
-    const substatsAndElementsString = substatsNumber + elementNumber; // Add strings together
-    const substatsAndElementsToBase10 = parseInt(substatsAndElementsString, 2); // Convert to base 10
-    const substatsAndElementsNumber = substatsAndElementsToBase10.toString().padStart(6, '0'); // Pad number to its maximum character length for consistency when calculating back
 
-    // Base10 URL
-    // Consists of all numbers in seqeuence 
-    // (substats and elements are already put together and converted to base10)
-    const url = 
-      sandsNumber +
-      gobletNumber +
-      circletNumber +
-      substatsAndElementsNumber +
-      characterNumber + 
-      artifactSetNumber +
-      weaponNumber;
+    // Convert substats and elements groups to binary after changing defaults
+    const substats = parseInt(substatsNumber,2);
+    const elements = parseInt(elementsNumber,2);
 
-    // Convert the Base10 url to Base58
-    const urlBase58 = intToBase58(url);
-    //console.log(url.length)
+    // Create the URL
+    const urlBase10 = createUrlNumber(    
+      weaponNumber, 
+      sandsNumber, 
+      gobletNumber, 
+      circletNumber, 
+      characterNumber,
+      artifactSetNumber,
+      weaponTypeNumber,
+      substats,
+      elements
+    );
+    const urlBase58 = intToBase58(urlBase10);
 
-    // Check if ONLY character is selected
-    // If true, their name is used as the URL
+    // Check if named URLs should be used. 
+    // Only character, Artifact set or element
     const isOnlyCharacterSelected = () => {
       if(
         selectedCharacter.length > 0 &&
@@ -798,11 +790,6 @@ export default function Home() {
         return false;
       }
     }
-    const onlyCharacterIsSelected = isOnlyCharacterSelected();
-    const selectedCharacterNoSpace = selectedCharacter[0]?.toString().replace(/ /g, '_')
-
-    // Check if ONLY artifact set is selected
-    // If true, its name is used as the URL
     const isOnlyArtifactSetSelected = () => {
       if(
         selectedArtifactSet.length > 0 &&
@@ -819,20 +806,43 @@ export default function Home() {
         return false;
       }
     }
-    const onlyArtifactSetIsSelected = isOnlyArtifactSetSelected();
-    const selectedArtifactSetNoSpace = selectedArtifactSet[0]?.toString().replace(/ /g, '_')
+    const isOnlyElementSelected = () => {
+      if(
+        selectedElements.length === 1 &&
+        selectedSubstats.length === 0 &&
+        selectedCharacter.length === 0 &&
+        selectedSands.length === 0 &&
+        selectedGoblet.length === 0 &&
+        selectedCirclet.length === 0 &&
+        selectedArtifactSet.length === 0
+        ) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
 
-    if (url !== '1000000000000000000' && !onlyCharacterIsSelected && !onlyArtifactSetIsSelected) {
-      navigate(`/is-this-artifact-good/${urlPrefix}${urlBase58}`, { replace: true });
+
+    // Check for specific single selections first
+    if (isOnlyCharacterSelected()) {
+      navigate(`/${selectedCharacter[0].replace(/ /g, '_')}`, { replace: true });
     }
-    else if (onlyCharacterIsSelected) {
-      navigate(`/is-this-artifact-good/${selectedCharacterNoSpace}`, { replace: true });
+    else if (isOnlyArtifactSetSelected()) {
+      navigate(`/${selectedArtifactSet[0].replace(/ /g, '_')}`, { replace: true });
     }
-    else if (onlyArtifactSetIsSelected) {
-      navigate(`/is-this-artifact-good/${selectedArtifactSetNoSpace}`, { replace: true });
+    else if (isOnlyElementSelected()) {
+      navigate(`/${selectedElements[0]}`, { replace: true });
     }
+
+    // Any selection that is not one of the above
+    else if (urlBase58 !== 'BMepza') {
+      navigate(`/${urlPrefix}${urlBase58}`, { replace: true });
+    }
+
+    // If no selection
     else {
-      navigate(`/is-this-artifact-good/`, { replace: true });
+      navigate(`/`, { replace: true });
     }
   }, [selectedSubstats, selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedElements]);
 
