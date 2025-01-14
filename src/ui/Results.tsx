@@ -293,9 +293,9 @@ export default function Results({
       // Default sorting. 
       else {
         // Sort by artifact order
-        if (indexAArtifact !== indexBArtifact) {
-          return indexAArtifact - indexBArtifact;
-        }
+        //if (indexAArtifact !== indexBArtifact) {
+        //  return indexAArtifact - indexBArtifact;
+        //}
         // Sort by character chronology
         if (indexACharacter !== indexBCharacter) {
           return indexACharacter - indexBCharacter;

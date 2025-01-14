@@ -630,7 +630,6 @@ export default function Home() {
     if (selectedCharacter.length > 0) {
       const character = characterData.find(character => character.name === selectedCharacter[0]);
       if(character) {
-        console.log(character)
         characterNumber = Number(character.id + 1);  
       }
     }

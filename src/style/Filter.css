@@ -145,7 +145,7 @@
 }
 @media screen and (min-width: 601px) {
   section#filter {
-    padding: 10px 20px 20px 20px;
+    padding: 10px 20px 60px 20px;
     width: 300px;
     top: 145px;
   }
@@ -218,9 +218,6 @@
   section#filter div.dropdown-wrapper, section#filter ul.dropdown-menu, section#filter div.search-bar, section#filter label {
     width: 250px;
   }
-  section#filter div#filter-other {
-    margin-bottom: 50px;
-  }
   section#filter div.toggle-filters {
     position: fixed;
     bottom: 0px;
@@ -245,16 +242,10 @@ section#filter {
   scrollbar-width: thin;
   font-size: 1em;
 }
-section#filter div#filter-artifact {
-  margin-top: 0;
+section#filter div#logo {
+  cursor: pointer;
 }
-section#filter div#filter-other {
-  margin-top: 30px;
-}
-section#filter div#filter-artifact h2, section#filter div#filter-other h2 {
-  font-size: 1.7em;
-}
-section#filter div#filter-artifact h3, section#filter div#filter-other h3 {
+section#filter h3 {
   font-size: 1.1em;
   margin-bottom: 3px;
 }
