@@ -4,7 +4,7 @@ export default function Logo({
 	resetFilters: (filter: string | null) => void;
 }) {
 	return (
-		<div id="logo" onClick={() => resetFilters()}>
+		<div id="logo" onClick={() => resetFilters(null)}>
 			<img src='./images/artifacts/flowers/Crimson Witch of Flames Flower.webp'/>
 			<h1>
 				<span className="crimson">Crimson</span>
