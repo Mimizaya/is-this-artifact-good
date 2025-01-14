@@ -1,0 +1,43 @@
+{
+  "hash": "f712707a",
+  "configHash": "bf4ad036",
+  "lockfileHash": "e3b0c442",
+  "browserHash": "3e50925b",
+  "optimized": {
+    "papaparse": {
+      "src": "../../node_modules/.pnpm/papaparse@5.4.1/node_modules/papaparse/papaparse.min.js",
+      "file": "papaparse.js",
+      "fileHash": "bd17e70e",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/.pnpm/react@19.0.0/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "f1531e3f",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/.pnpm/react-dom@19.0.0_react@19.0.0/node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "02c40d48",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/.pnpm/react-router-dom@7.1.1_react-dom@19.0.0_react@19.0.0__react@19.0.0/node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "40789799",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-CFVMIPSK": {
+      "file": "chunk-CFVMIPSK.js"
+    },
+    "chunk-4SPHGGED": {
+      "file": "chunk-4SPHGGED.js"
+    },
+    "chunk-EQCVQC35": {
+      "file": "chunk-EQCVQC35.js"
+    }
+  }
+}

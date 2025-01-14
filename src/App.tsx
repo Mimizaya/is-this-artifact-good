@@ -1,16 +1,14 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// Return to BrowserRouter at later time. 
-// HashBrowser currently in use because of github-pages hosting limitations
-
-import Home from './Home.tsx';
-
+import './App.css';
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:id" element={<Home />} />
-      </Routes>
-    </Router>
+    <div>
+      <img src="./icon.webp" />
+      <div id="text">
+        <h1>We have moved.
+        <br/>
+        <a href="https://www.crimsonwitch.com"><span className="link-sub">https://www.</span>crimsonwitch.com</a>
+        </h1>
+      </div>
+    </div>
   );
 };
