@@ -1,0 +1,960 @@
+
+// VARIABLES
+// ------------------------------------------
+// Sizes
+$banner-size: 100px;
+$element-icon-size: 50px;
+$artifact-icon-simple-size: 45px;
+$artifact-icon-size: 50px;
+$card-width-full: 475px;
+$card-width-small: 275px;
+$character-card-gap: 7px;
+
+// Colors
+$primary-color: #242424;
+
+
+
+
+// MISC
+// ------------------------------------------
+// Character rarity colors
+.rarity-4 {
+  border-bottom: 5px solid purple;
+}
+.rarity-5 {
+  border-bottom: 5px solid orange;
+}
+
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+// TOOLTIP
+// ------------------------------------------
+
+// Tooltip display logic 
+
+// General rules 
+div.character-card.full {
+  div.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
+  div.tooltip-on-hover:hover + div.artifact-info.tooltip-right {
+    display: block;
+  }
+  div.artifact-info.tooltip-left {
+    left: 0;
+  }
+  div.artifact-info.tooltip-right {
+    right: 0;
+  }
+  div.artifact-info.tooltip-left, div.artifact-info.tooltip-right {
+    display: none;
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+    width: $card-width-full - ($character-card-gap * 2);
+    border-bottom: 1px solid #202020;
+    font-size: 0.95em;
+    box-shadow: 5px 5px 10px #222222;
+    background-color: lighten(#222222, 3%);
+    color: rgba(255, 255, 255, 0.87);
+    border-radius: 5px;
+    pointer-events: none;
+    padding: 2px;
+    animation-name: fade-in;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+
+    div.tooltip-part {
+      display: flex;
+
+      img {
+        margin-top: 8px;
+        margin-left: 4px;
+        height: $artifact-icon-size;
+        width: $artifact-icon-size;
+      }
+      div.tooltip-text {
+        margin-top: 10px;
+        padding-left: 5px;
+        padding-right: 30px;
+
+        h4 {
+          font-size: 1em;
+          font-weight: 600;
+        }
+        p {
+          color: #DDD;
+          font-size: 0.9em;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}
+div.character-card.small {
+  div.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
+  div.tooltip-on-hover:hover + div.artifact-info.tooltip-right,
+  img.tooltip-on-hover:hover + div.artifact-info.tooltip-left,
+  img.tooltip-on-hover:hover + div.artifact-info.tooltip-right {
+    display: block;
+  }
+  div.artifact-info.tooltip-left,
+  div.artifact-info.tooltip-right {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    width: $card-width-small;
+    border-bottom: 1px solid #202020;
+    font-size: 1em;
+    box-shadow: 5px 5px 10px #222222;
+    background-color: lighten(#202020, 3%);
+    color: rgba(255, 255, 255, 0.87);
+    border-radius: 5px;
+    pointer-events: none;
+    padding: 4px;
+    animation-name: fade-in;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+
+    div.tooltip-part {
+      display: block;
+      position: relative;
+
+      img {
+        position: absolute;
+        top: -7px;
+        right: 0;
+        height: $artifact-icon-size;
+      }
+      div.tooltip-text {
+        margin-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        h3 {
+          font-size: 1em;
+          margin-bottom: 5px;
+          padding-right: $artifact-icon-size;
+        }
+        h4 {
+          font-size: 0.8em;
+          font-weight: 700;
+        }
+        p {
+          color: #DDD;
+          font-size: 0.8em;
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) { 
+  div.character-card.full {
+    div.artifact-info.tooltip-left,
+    div.artifact-info.tooltip-right {
+      width: 100%;
+
+      div.tooltip-part {
+        img {
+          height: $artifact-icon-size / 1.2;
+          width: $artifact-icon-size / 1.2;
+        }
+        div.tooltip-text {
+          font-size: 0.90em;
+
+          h3 {
+            // No specific mobile rules
+          }
+          h4 {
+            // No specific mobile rules
+          }
+          p {
+            // No specific mobile rules
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// SMALL SCREEN SIZES
+// --------------------------------------------------------------
+@media screen and (max-width: 600px) {
+  div.character-card.full {
+    width: 100%;
+    margin-bottom: 20px;
+
+    // Header
+    div.build-header {
+      width: 100%;
+      position: relative;
+      height: $banner-size / 1.5;
+
+      // Element
+        img.character-element {
+          height: 30px;
+          width: 30px;
+          left: 5px;
+          top: 14px;
+        }
+      // Banner
+        div.character-banner-wrapper {
+          height: $banner-size / 1.5;
+        }
+      // Portrait
+        img.character-portrait {
+          height: $banner-size / 1.5 + 5px;
+          margin-left: 35px;
+          bottom: 5px;
+        }
+        img.character-portrait-two {
+          display: none;
+        }
+      // Titles
+        div.character-title {
+          top: 6px;
+          left: 115px;
+
+        // Character name
+          h2 {
+            font-size: 1.2em;
+          }
+        // Build name
+          h3 {
+            font-size: 0.9em;
+          } 
+      }
+    }
+
+  // Build Content
+    div.build-content {
+      animation-name: fade-in;
+      animation-duration: 0.3s;
+      animation-iteration-count: 1;
+
+      div.build-section {
+        margin-bottom: 5px;
+
+        p, li {
+          font-size: 1em;
+        }
+        li {
+          line-height: 1.1;
+          padding-bottom: 4px;
+        }
+      }
+
+      // Icon sizes
+        div.build-section {
+          img.artifact-icon {
+            height: $artifact-icon-size / 1.2;
+            width: $artifact-icon-size / 1.2;
+          }
+          img.artifact-icon-simple {
+            height: $artifact-icon-simple-size / 1.2;
+            width: $artifact-icon-simple-size / 1.2;
+          }
+          div.artifact-icons-double {
+            height: $artifact-icon-size / 1.2;
+            width: $artifact-icon-size / 1.2;
+
+            img.artifact-icon-top {
+              height: $artifact-icon-size / 1.5;
+              width: $artifact-icon-size / 1.5;
+              top: -5px;
+              left: 0px;
+            }
+            img.artifact-icon-bottom {
+              height: $artifact-icon-size / 1.5;
+              width: $artifact-icon-size / 1.5;
+              top: -25px;
+              left: 7px;
+            }
+          }
+
+          div.build-section-text {
+            font-size: 0.85em;
+          }
+        }
+    }
+
+  // Artifact types - Sands, Goblet, Circlet 
+    div.artifact-types {
+      width: calc(50% - 5px);
+      margin-right: 5px;
+      float: left;
+    }
+  // Substats, ER Recommendation
+    div.substats, div.er-recommendation {
+      width: calc(50%);
+      float: left;
+    }
+  // About
+    div.about {
+      button {
+        width: 100%;
+      }
+    }
+
+  }
+}
+
+// LARGE SCREEN SIZES
+// --------------------------------------------------------------
+@media screen and (min-width: 601px) {
+// Character Card - Full Expanded
+// ------------------------------------------
+  div.character-card.full.expanded {
+  }
+ 
+// Character Card - Full card
+// ------------------------------------------
+  div.character-card.full {
+    width: $card-width-full;
+    margin: 18px 24px;
+    //transition: width 0.3s ease-out;
+
+  // Header wrapper 
+    div.build-header {
+      width: $card-width-full +10px;
+      position: relative;
+      height: $banner-size + 5px;
+      left: -5px;
+
+      // Character Portrait 
+        img.character-portrait {
+          height: $banner-size + 5;
+        }
+      // Secondary Character Portrait (Traveler) 
+        img.character-portrait-two {
+          height: $banner-size + 5;
+        }
+      // Pin Build 
+        div.pin-build {
+          top: -5px;
+
+          button.pin-build-button:hover {
+            color: darken(gold, 10%);
+            cursor: pointer;
+          }
+        }
+    }
+
+    div.build-content {
+      margin-top: 3px;
+
+    // Build content general
+      div.build-section {
+        height: 100%; // Ensure equal height of side by side artifact boxes
+      }
+    }
+
+
+  // Specific sections
+    // Artifact types - Sands, Goblet, Circlet 
+      div.artifact-types {
+        margin-right: $character-card-gap;
+        width: ($card-width-full / 2) - $character-card-gap - ($character-card-gap / 2);
+      }
+    // Artifacts
+      // If 1 option
+      div.artifact-options-1 {
+        div.artifact-set.option-1 {
+          width: 100%;
+        }
+      }
+      // If more than 1 option
+      div.artifact-options-2,
+      div.artifact-options-3,
+      div.artifact-options-4,
+      div.artifact-options-5 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $character-card-gap;
+        margin-bottom: $character-card-gap;
+
+        // Remove extra margin from grid items
+        div.build-section {
+          margin-bottom: 0;
+        }
+      }
+      div.artifact-options-3, div.artifact-options-5 {
+        div.artifact-set.option-1 {
+          grid-column: span 2;
+        }
+      }
+    // Substats 
+      div.substats {
+        width: ($card-width-full / 2) - $character-card-gap - ($character-card-gap / 2);
+      }
+    // ER Recommendation 
+      div.er-recommendation {
+        width: ($card-width-full / 2) - $character-card-gap - ($character-card-gap / 2);
+      }
+    // About
+      div.about {
+        div.build-section-text {
+          max-width: $card-width-full - $artifact-icon-size - ($character-card-gap*2) - 10;
+        }
+        button {
+          width: $card-width-full - ($character-card-gap / 2);
+        }
+      }
+  }
+
+// Character Card - Small card
+// ------------------------------------------
+  div.character-card.small {
+    width: $card-width-small;
+    margin: 18px;
+
+    // Header
+      div.build-header {
+        width: $card-width-small;
+        height: $banner-size / 1.5;
+        position: relative;
+        left: 0;
+
+      // Banner 
+        div.character-banner-wrapper {
+          height: $banner-size / 1.5;
+          opacity: 0.5;
+          bottom: 0px;
+
+          img.character-banner {
+            bottom: 20px;
+          }
+        }
+      // Element
+        img.character-element {
+          height: $element-icon-size / 1.5;
+          width: $element-icon-size / 1.5;
+          position: absolute;
+          z-index: 2;
+          top: -12px;
+          left: -15px;
+        }
+      // Portrait
+        img.character-portrait {
+          margin-left: 3px;
+          bottom: 5px;
+          height: $banner-size / 1.5 + 5px;
+        }
+      // Titles
+        div.character-title {
+          position: absolute;
+          left: $banner-size / 1.5 + 10px;
+          top: 6px;
+          text-shadow: 1px 1px 5px black;
+
+        // Character name
+          h2.character-name {
+            width: $card-width-small - $banner-size / 1.5 - 30;
+            font-size: 1.2em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: 600;
+          }
+
+        // Build name
+          h3.build-name {
+            width: $card-width-small - $banner-size / 1.5 - 12;
+            font-size: 0.9em;
+            position: relative;
+            top: -5px;
+            margin: 0;
+            font-weight: 600;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+      // Pin Build 
+        div.pin-build {
+          position: absolute;
+          top: -5px;
+          font-size: 0.8em;
+
+          button.pin-build-button:hover {
+            color: darken(gold, 10%);
+            cursor: pointer;
+          }
+        }
+    }
+
+    // General content
+      div.build-content {
+        padding: 0;
+
+        div.build-section {
+          height: 100%;
+          margin: 0;
+
+          div.build-section-text {
+
+            h4 {
+              font-size: 0.9em;
+            }
+            p,li {
+              color: #FFF;
+              font-size: 1em;
+            }
+            p.highlighted,li.highlighted {
+              color: lightgreen;
+            }
+          }
+        }
+
+    // Specific sections
+      // Artifacts
+        // Main Artifact 
+          div.artifact-options-1,
+          div.artifact-options-2, 
+          div.artifact-options-3,
+          div.artifact-options-4,
+          div.artifact-options-5 {
+            display: flex;
+            
+            div.artifact-set {
+              position: relative;
+              flex-grow: 1;
+              //max-height: 80px;
+            }
+          }
+        // Artifact options: Background and image 
+          div.artifact-option-1,
+          div.artifact-option-2,
+          div.artifact-option-3,
+          div.artifact-option-4,
+          div.artifact-option-5 {
+            background-color: lighten(#222222, 1%);
+            border-bottom: 1px solid #192019;
+            border-left: 1px solid #192019;
+            box-shadow: 1px 3px 5px #202020;
+            border-radius: 5px;
+
+            img.artifact-alternative-icon {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+            }
+            div.artifact-alternative-split {
+              width: 100%;
+              height: 100%;
+              position: relative;
+
+              div.clipping-mask-top,
+              div.clipping-mask-bottom {
+                position: absolute;
+                z-index: 4;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+              }
+              div.clipping-mask-top {
+                top: -1px;
+                left: -1px;
+                clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+              }
+              div.clipping-mask-bottom {
+                top: 1px;
+                left: 1px;
+                clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
+              }
+            }
+          }
+        // 2 Total Artifact options 
+          div.artifact-options-2 {
+            div.artifact-set-alternatives {
+              display: grid;
+              grid-template-columns: 40px;
+              grid-template-rows: 1fr 1fr;
+
+              div.artifact-option-2 {
+                grid-column: span 1;
+                grid-row: span 2;
+              }
+            }
+          }
+        // 3 Total Artifact options 
+          div.artifact-options-3 {
+            div.artifact-set-alternatives {
+              display: grid;
+              grid-template-columns: 40px;
+              grid-template-rows: 1fr 1fr;
+
+              div.artifact-option-2 {
+                max-height: 44px;
+                grid-column: span 1;
+                grid-row: span 1;
+              }
+              div.artifact-option-3 {
+                max-height: 44px;
+                grid-column: span 1;
+                grid-row: span 1;
+              }
+            }
+          }
+        // 4 Total Artifact options 
+          div.artifact-options-4 {
+            div.artifact-set-alternatives {
+              display: grid;
+              grid-template-columns: 40px 40px;
+              grid-template-rows: 1fr 40px;
+
+              div.artifact-option-2 {
+                grid-column: span 1;
+                grid-row: span 1;
+              }
+              div.artifact-option-3 {
+                grid-column: span 1;
+                grid-row: span 1;
+              }
+              div.artifact-option-4 {
+                grid-column: span 2;
+                grid-row: span 1;
+              }
+            }
+
+          }
+        // 5 Total Artifact options 
+          div.artifact-options-5 {
+            div.artifact-set-alternatives {
+              display: grid;
+              grid-template-columns: 40px 40px;
+              grid-template-rows: 40px 40px;
+            }
+            div.artifact-option-2, 
+            div.artifact-option-3,
+            div.artifact-option-4,
+            div.artifact-option-5, {
+              grid-column: span 1;
+              grid-row: span 1;
+            }
+          }
+
+      // About
+        div.about {
+          button {
+            width: 100%;
+          }
+        }
+      // All sections cover full width
+        div.artifact-types, div.about, div.substats, div.er-recommendation {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+// ALL SCREEN SIZES
+// --------------------------------------------------------------
+// Character Card - General 
+  div.character-card {
+    position: relative;
+    background-color: #222222;
+    box-shadow: 1px 3px 5px #1c1c1c;
+    border-radius: 5px;
+
+  // Header wrapper 
+    div.build-header {
+      border-radius: 5px;
+      background-color: darken(#222222, 1%);
+
+    // Portraits 
+      img.character-portrait, img.character-portrait-two {
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 0;
+        margin-left: 15px;
+        pointer-events: none;
+        user-select: none;
+      }
+      img.character-portrait-two {
+        position: absolute;
+        border-radius: 20px;
+        right: 20px;
+        bottom: -5px;
+        pointer-events: none;
+        user-select: none;
+      }
+    // Element 
+      img.character-element {
+        height: $element-icon-size;
+        width: $element-icon-size;
+        position: absolute;
+        z-index: 2;
+        top: -10px;
+        left: -20px;
+        pointer-events: none;
+        user-select: none;
+      }
+    // Banner 
+      div.character-banner-wrapper {
+        width: 100%;
+        height: $banner-size;
+        position: absolute;
+        bottom: 0px;
+        z-index: 0;
+        overflow: hidden;
+        opacity: 0.7;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+
+        img.character-banner {
+          width: 100%;
+          position: relative;
+          bottom: 60px;
+          pointer-events: none;
+          user-select: none;
+        }  
+      }
+    // Titles - Name + Build 
+      div.character-title {
+        position: absolute;
+        left: $banner-size + 25px;
+        top: 20px;
+        text-shadow: 1px 1px 5px black;
+
+        h2.character-name {
+          color: #FFF;
+        }
+        h3.build-name {
+          position: relative;
+          top: -5px;
+          margin: 0;
+          color: #DDD;
+          font-weight: 700;
+        }
+      }
+    // Pin build button 
+      div.pin-build {
+        position: absolute;
+        top: 3px;
+        right: 5px;
+
+        button.pin-build-button {
+          color: #aaa;
+          background: none;
+          border: none;
+          font-size: 2em;
+          text-shadow: 1px 1px 5px #333;
+        }
+        button.pin-build-button.active {
+          color: gold;
+        }
+      }
+    }
+
+  // Content wrapper 
+    div.build-content {
+      margin-left: 0;
+      padding: $character-card-gap;
+      position: relative;
+
+    // Applies to multiple sections 
+      div.build-section {
+        display: flex;
+        position: relative;
+        background-color: lighten(#222222, 1%);
+        padding: 10px 6px 12px 6px;
+        margin-bottom: $character-card-gap;
+        border-bottom: 1px solid #1D1D1D;
+        font-size: 0.95em;
+        box-shadow: 1px 3px 5px #202020;
+        border-radius: 5px;
+        flex-shrink: 0;
+        overflow: hidden;
+
+      // Single artifact icons 
+        img.artifact-icon {
+          z-index: 3;
+          height: $artifact-icon-size;
+          width: $artifact-icon-size;
+          opacity: 1;
+          pointer-events: none;
+          user-select: none;
+          flex-shrink: 0;
+        }
+      // Multi set artifact icons (show both) 
+        div.artifact-icons-double {
+          height: $artifact-icon-size;
+          width: $artifact-icon-size;
+          //align-self: center; 
+          pointer-events: none;
+          user-select: none;
+          flex-shrink: 0;
+
+          img.artifact-icon-top,
+          img.artifact-icon-bottom {
+            height: $artifact-icon-size / 1.3;
+            width: $artifact-icon-size / 1.3;
+          }
+          img.artifact-icon-top {
+            position: relative;
+            z-index: 4;
+          }
+          img.artifact-icon-bottom {
+            position: relative;
+            z-index: 5;
+            top: -$artifact-icon-size / 2;
+            left: 12px;
+          }
+        }
+      // Generic icons (substats, ER) 
+        img.artifact-icon-simple {
+          opacity: 0.7;
+          height: $artifact-icon-simple-size;
+          width: $artifact-icon-simple-size;
+          pointer-events: none;
+          user-select: none;
+        }
+      // Text blocks 
+        div.build-section-text {
+          padding-left: 5px;
+          padding-right: 5px;
+          //align-self: center;
+
+          h4 {
+            font-size: 0.9em;
+            font-weight: 400;
+            color: #BBB;
+          }
+          p, li {
+            font-weight: 400;
+            position: relative;
+          }
+          span.artifact-logic {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.87);
+          }
+          span.parentheses {
+            font-size: 0.9em;
+            font-weight: 400;
+            color: #BBB;
+          }
+          .highlighted {
+            font-weight: 700;
+          }
+        }
+      }
+    
+    // Applies to specific sections
+      // Background element 
+        div.constellation {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          //opacity: 1;
+          opacity: 0.02;
+          pointer-events: none;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      // Artifacts 
+        div.artifact-set {
+          position: relative;
+
+          li {
+            padding-top: 3px;
+            line-height: 1.1;
+            padding-bottom: 3px;
+          }
+
+          img.artifact-icon {
+            //align-self: center;
+          }
+        }
+      // Artifact types - Sands, Goblet, Circlet 
+        div.artifact-types {
+          float: left;
+        }
+      // Substats 
+        div.substats {
+          float: left;
+        }
+      // ER Recommendation 
+        div.er-recommendation {
+          float: left;
+
+          li {
+            //font-size: 0.9em;
+          }
+
+          li.er-note {
+            //font-size: 0.9em;
+            font-weight: 400;
+            //color: #BBB;
+          }
+        }
+      // About 
+        div.about {
+          font-weight: 400;
+          line-height: 1.35;
+          clear: both;
+
+          div.build-section-text { 
+            align-self: unset;
+          }
+
+          // Expand text button
+          button {
+            position: absolute;
+            z-index: 10;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(transparent 0%, #252525 75%, #252525 100%);
+            border: none;
+            padding: 10px;
+
+            // Triangle icon
+            span {
+              color: #999;
+              position: relative;
+              top: 11px;
+            }
+          }
+
+          // Expand text button:hover
+          button:hover {
+            cursor: pointer;
+
+            // Triangle icon
+            span {
+              color: #FFF;
+            }
+          }
+
+          // Minimized section class
+          div.build-section.minimized {
+            max-height: 85px;
+            overflow: hidden;
+          }
+          // Expanded section class
+          div.build-section.expanded {
+            overflow: unset;
+            padding-bottom: 30px;
+          }
+        }
+    }
+  }

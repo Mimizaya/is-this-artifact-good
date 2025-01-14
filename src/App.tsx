@@ -1,22 +1,17 @@
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// Return to BrowserRouter at later time. 
+// HashBrowser currently in use because of github-pages hosting limitations
+
+import Home from './Home.tsx';
+//import News from './News.tsx';
 
 export default function App() {
-
-
-  caches.keys().then(function(names) {
-      for (let name of names)
-          caches.delete(name);
-  });
-
   return (
-    <div>
-      <img src="./images/icon.webp" />
-      <div id="text">
-        <h1>We have moved
-        <br/>
-        <a href="https://www.crimsonwitch.com"><span className="link-sub">https://www.</span>crimsonwitch.com</a>
-        </h1>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/:id" element={<Home />} />
+      </Routes>
+    </Router>
   );
 };

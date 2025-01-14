@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const ReactCompilerConfig = {
   target: '19' // '17' | '18' | '19'
@@ -12,6 +13,28 @@ export default defineConfig({
       babel: {
         plugins: [
           ["babel-plugin-react-compiler", ReactCompilerConfig],
+        ],
+      },
+    }),
+    VitePWA({
+      registerType: 'autoUpdate', // Automatically update service worker
+      workbox: {
+        // Specify caching options here
+        runtimeCaching: [
+          {
+            urlPattern: (event: any) => {
+              const { url } = event; // event is a FetchEvent, which has a 'url' property
+              return url.pathname.startsWith('/is-this-artifact-good/images/'); // Cache assets from public folder
+            },
+            handler: 'CacheFirst', // Use Cache-First strategy (prefer cache)
+            options: {
+              cacheName: 'assets-cache',
+              expiration: {
+                maxEntries: 1000, // Limit to 1000 images
+                maxAgeSeconds: 60 * 60 * 24 * 30, // Cache for 30 days
+              },
+            },
+          },
         ],
       },
     }),
