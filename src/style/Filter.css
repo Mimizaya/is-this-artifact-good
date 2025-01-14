@@ -8,8 +8,8 @@
   section#filter {
     width: 100%;
     transition: all 0.3s ease-out;
-    padding: 10px;
-    top: 175px;
+    padding: 10px 10px 105px 10px;
+    top: 205px;
   }
   section#filter div#filter-header.closed {
     left: -100%;
@@ -21,7 +21,7 @@
     top: 40px;
     left: 0;
     width: 100%;
-    height: 95px;
+    height: 125px;
     transition: all 0.3s ease-out;
   }
   section#filter div#filter-header div#logo {
@@ -30,37 +30,50 @@
     margin-left: 5px;
   }
   section#filter div#filter-header div#logo img {
-    height: 40px;
-    width: 40px;
+    height: 70px;
+    width: 70px;
     margin-right: 5px;
   }
   section#filter div#filter-header div#logo h1 {
     line-height: 1;
     font-size: 1.8em;
+    display: flex;
+    flex-direction: column;
   }
   section#filter div#filter-header div.filter-option {
     margin-top: 2px;
     padding: 0 10px;
   }
+  section#filter div#filter-header div.filter-option div.dropdown {
+    border-radius: 5px;
+  }
   section#filter div#filter-header div.filter-option div.dropdown p {
     padding: 10px 2px;
+  }
+  section#filter div#filter-header div.filter-option div.element-toggle {
+    width: 100%;
   }
   section#filter div#filter-tabs {
     position: fixed;
     display: block;
     width: 100%;
     left: 0;
-    top: 135px;
+    top: 165px;
     transition: all 0.3s ease-out;
     display: flex;
     z-index: 10;
     background-color: #202020;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   section#filter div#filter-tabs div.filter-tab {
     background-color: #1c1c1c;
     border: none;
     width: 70px;
     height: 40px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: 1px solid #1c1c1c;
   }
   section#filter div#filter-tabs div.filter-tab button.filter-select {
     color: #FFF;
@@ -93,6 +106,9 @@
     background-color: #1c1c1c;
     font-size: 1.1em;
     overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: 1px solid #1c1c1c;
   }
   section#filter div#filter-tabs button.filter-pinned.highlighted {
     background-color: #222222;
@@ -246,7 +262,7 @@ section#filter div#logo {
   cursor: pointer;
 }
 section#filter h3 {
-  font-size: 1.1em;
+  font-size: 1.3em;
   margin-bottom: 3px;
 }
 section#filter div.filter-artifact-mainstats div.filter-option {
@@ -298,7 +314,8 @@ section#filter div.filter-option label:hover {
 }
 section#filter div.element-toggle {
   display: flex;
-  width: 250px;
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
 section#filter div.element-toggle button.selected {
   filter: grayscale(0);
@@ -308,8 +325,10 @@ section#filter div.element-toggle button.unselected {
 }
 section#filter div.element-toggle button {
   cursor: pointer;
-  height: 35px;
+  max-width: 40px;
+  max-height: 40px;
   border: none;
+  background: none;
   transition: all 0.3s ease-out;
 }
 section#filter div.element-toggle button img {

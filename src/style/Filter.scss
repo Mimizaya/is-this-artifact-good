@@ -13,8 +13,8 @@ $filter-padding: 20px;
   section#filter {
     width: 100%;
     transition: all 0.3s ease-out;
-    padding: $filter-padding / 2;
-    top: 175px;
+    padding: $filter-padding / 2 $filter-padding / 2 105px $filter-padding / 2;
+    top: 205px;
 
     div#filter-header.closed {
       left: -100%;
@@ -26,7 +26,7 @@ $filter-padding: 20px;
       top: 40px;
       left: 0;
       width: 100%;
-      height: 95px;
+      height: 125px;
       transition: all 0.3s ease-out;
 
       div#logo {
@@ -35,13 +35,15 @@ $filter-padding: 20px;
         margin-left: 5px;
 
         img {
-          height: 40px;
-          width: 40px;
+          height: 70px;
+          width: 70px;
           margin-right: 5px;
         }
         h1 {
           line-height: 1;
           font-size: 1.8em;
+          display: flex;
+          flex-direction: column;
         }
       }
 
@@ -49,8 +51,15 @@ $filter-padding: 20px;
         margin-top: 2px;
         padding: 0 10px;
 
-        div.dropdown p {
-          padding: 10px 2px;
+        div.dropdown {
+          border-radius: 5px;
+
+          p {
+            padding: 10px 2px;
+          }
+        }
+        div.element-toggle {
+          width: 100%;
         }
       }
     }
@@ -59,17 +68,22 @@ $filter-padding: 20px;
       display: block;
       width: 100%;
       left: 0;
-      top: 135px;
+      top: 165px;
       transition: all 0.3s ease-out;
       display: flex;
       z-index: 10;
       background-color: #202020;
+      padding-left: 10px;
+      padding-right: 10px;
 
       div.filter-tab {
         background-color: #1c1c1c;
         border: none;
         width: 70px;
         height: 40px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-top: 1px solid #1c1c1c;
 
         button.filter-select {
           color: #FFF;
@@ -104,6 +118,9 @@ $filter-padding: 20px;
         background-color: #1c1c1c;
         font-size: 1.1em;
         overflow: hidden;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-top: 1px solid #1c1c1c;
       }
       button.filter-pinned.highlighted {
         background-color: #222222;
@@ -289,7 +306,7 @@ section#filter {
 
   // Filter sections: Applicable to all 
     h3 {
-      font-size: 1.1em;
+      font-size: 1.3em;
       margin-bottom: 3px;
       //display: none;
     }
@@ -357,7 +374,8 @@ section#filter {
   // Character Element selection
   div.element-toggle {
     display: flex;
-    width: $filter-width;
+    justify-content: space-between;
+    margin-bottom: 5px;
 
     button.selected {
       filter: grayscale(0)
@@ -367,8 +385,10 @@ section#filter {
     }
     button {
       cursor: pointer;
-      height: 35px;
+      max-width: 40px;
+      max-height: 40px;
       border: none;
+      background: none;
       transition: all 0.3s ease-out;
 
       img {
