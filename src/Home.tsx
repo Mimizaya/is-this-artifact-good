@@ -823,23 +823,23 @@ export default function Home() {
 
     // Check for specific single selections first
     if (isOnlyCharacterSelected()) {
-      navigate(`/${selectedCharacter[0].replace(/ /g, '_')}`, { replace: true });
+      navigate(`/is-this-artifact-good/${selectedCharacter[0].replace(/ /g, '_')}`, { replace: true });
     }
     else if (isOnlyArtifactSetSelected()) {
-      navigate(`/${selectedArtifactSet[0].replace(/ /g, '_')}`, { replace: true });
+      navigate(`/is-this-artifact-good/${selectedArtifactSet[0].replace(/ /g, '_')}`, { replace: true });
     }
     else if (isOnlyElementSelected()) {
-      navigate(`/${selectedElements[0]}`, { replace: true });
+      navigate(`/is-this-artifact-good/${selectedElements[0]}`, { replace: true });
     }
 
     // Any selection that is not one of the above
     else if (urlBase58 !== 'BMepza') {
-      navigate(`/${urlPrefix}${urlBase58}`, { replace: true });
+      navigate(`/is-this-artifact-good/${urlPrefix}${urlBase58}`, { replace: true });
     }
 
     // If no selection
     else {
-      navigate(`/`, { replace: true });
+      navigate(`/is-this-artifact-good/`, { replace: true });
     }
   }, [selectedSubstats, selectedCharacter, selectedArtifactSet, selectedSands, selectedGoblet, selectedCirclet, selectedElements]);
 
