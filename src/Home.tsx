@@ -345,14 +345,12 @@ export default function Home() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const urlPrefix = '';
+  const urlPrefix = 'view=';
   
 
   // 1. Update State based on URL
   useEffect(() => {
     if (id) {
-
-      console.log(id)
 
       // Check for match with character name or alias 
         const character = characterData.find(character => 
